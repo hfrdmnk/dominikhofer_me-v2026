@@ -7,7 +7,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
 ?>
 <header id="site-header" class="relative" data-header="full">
   <div class="absolute inset-x-0 top-0 z-20 px-4 py-4">
-    <div class="mx-auto flex max-w-(--container-prose) items-center justify-between">
+    <div class="flex items-center justify-between">
       <a href="<?= $site->url() ?>" class="block" aria-label="Home">
         <?php snippet('icon', ['name' => 'logo', 'class' => 'h-8 w-8 text-(--accent)']) ?>
       </a>
@@ -24,7 +24,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
   </div>
 
   <?php if ($headerImage): ?>
-  <div class="relative h-48 overflow-hidden">
+  <div class="relative h-48 overflow-hidden rounded-t-(--radius-big)">
     <img
       src="<?= $headerImage->resize(1200)->url() ?>"
       alt=""
@@ -33,10 +33,10 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
     <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
   </div>
   <?php else: ?>
-  <div class="h-48 bg-gradient-to-br from-cyan-400 to-purple-500"></div>
+  <div class="h-48 rounded-t-(--radius-big) bg-gradient-to-br from-cyan-400 to-purple-500"></div>
   <?php endif ?>
 
-  <div class="relative mx-auto max-w-(--container-prose) px-4">
+  <div class="relative px-4">
     <div class="-mt-12 flex items-end gap-4">
       <?php if ($profileImage): ?>
       <img
@@ -87,7 +87,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
 </header>
 
 <header id="site-header-collapsed" class="sticky top-0 z-30 hidden border-b border-(--border) bg-(--bg-secondary)" data-header="collapsed">
-  <div class="mx-auto max-w-(--container-prose) px-4">
+  <div class="px-4">
     <div class="flex h-14 items-center justify-between">
       <a href="<?= $site->url() ?>" class="font-semibold text-(--text-primary)">
         <?= $site->author_name() ?>

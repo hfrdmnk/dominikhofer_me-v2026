@@ -4,7 +4,7 @@
 $currentFilter = $page->slug();
 ?>
 <header class="sticky top-0 z-30 border-b border-(--border) bg-(--bg-secondary)">
-  <div class="mx-auto max-w-(--container-prose) px-4">
+  <div class="px-4">
     <div class="flex h-14 items-center justify-between">
       <a href="<?= $site->url() ?>" class="font-semibold text-(--text-primary)">
         <?= $site->author_name() ?>

@@ -20,7 +20,7 @@ $parentUrl = match($template) {
 $backUrl = $page->parent()?->url() ?? $site->url();
 ?>
 <header class="sticky top-0 z-30 border-b border-(--border) bg-(--bg-secondary)">
-  <div class="mx-auto max-w-(--container-prose) px-4">
+  <div class="px-4">
     <div class="flex min-h-14 items-center gap-4 py-3">
       <a
         href="<?= $backUrl ?>"

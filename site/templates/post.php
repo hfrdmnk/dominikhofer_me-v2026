@@ -8,7 +8,7 @@
 $cover = $page->cover()->toFile();
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
-  <article class="mx-auto max-w-(--container-prose) px-4 py-8">
+  <article class="px-4 py-8">
     <?php snippet('author-row', ['item' => $page, 'showReadTime' => true]) ?>
 
     <?php if ($cover): ?>

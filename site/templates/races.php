@@ -11,7 +11,7 @@ $feed = $page->children()
   ->paginate(20);
 ?>
 <?php snippet('layouts/base', ['header' => 'header-collapsed'], slots: true) ?>
-  <div class="mx-auto max-w-(--container-prose) px-4 py-8">
+  <div class="px-4 py-8">
     <?php if ($feed->isNotEmpty()): ?>
       <?php foreach ($feed as $item): ?>
         <?php snippet('feed-item', ['item' => $item]) ?>

@@ -8,6 +8,12 @@ Icon
 # ----
 
 /node_modules
+
+# Composer
+# --------
+
+/vendor
+/kirby
 /assets/css
 
 # Temporary files
