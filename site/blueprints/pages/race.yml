@@ -1,0 +1,60 @@
+title: Race
+icon: 🏃
+
+num: '{{ page.date.toDate("Ymd") }}'
+
+status:
+  draft:
+    label: Draft
+    text: Race is not visible
+  listed:
+    label: Published
+    text: Race is published
+
+columns:
+  main:
+    width: 2/3
+    sections:
+      content:
+        type: fields
+        fields:
+          content:
+            label: Race Report
+            type: blocks
+
+  sidebar:
+    width: 1/3
+    sections:
+      stats:
+        type: fields
+        fields:
+          date:
+            label: Race Date
+            type: date
+            required: true
+          distance:
+            label: Distance
+            type: number
+            required: true
+            help: In kilometers
+            after: km
+            step: 0.1
+          time:
+            label: Finish Time
+            type: text
+            required: true
+            help: Format "01:20:00"
+            placeholder: "01:20:00"
+          pace:
+            label: Pace
+            type: text
+            required: true
+            help: Format "04:30" (min/km)
+            placeholder: "04:30"
+          location:
+            label: Location
+            type: text
+            help: e.g. "Bern, CH"
+          tags:
+            label: Tags
+            type: tags

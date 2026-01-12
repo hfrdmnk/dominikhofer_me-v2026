@@ -1,0 +1,54 @@
+title: Post
+icon: 📝
+
+num: '{{ page.date.toDate("YmdHi") }}'
+
+status:
+  draft:
+    label: Draft
+    text: Post is not visible
+  listed:
+    label: Published
+    text: Post is published
+
+columns:
+  main:
+    width: 2/3
+    sections:
+      content:
+        type: fields
+        fields:
+          content:
+            label: Content
+            type: blocks
+
+  sidebar:
+    width: 1/3
+    sections:
+      meta:
+        type: fields
+        fields:
+          date:
+            label: Publish Date
+            type: date
+            required: true
+            default: today
+            time: true
+          updated:
+            label: Last Updated
+            type: date
+            time: true
+          excerpt:
+            label: Excerpt
+            type: textarea
+            help: Short description for feeds/cards
+            buttons: false
+          tags:
+            label: Tags
+            type: tags
+      cover:
+        type: files
+        label: Cover Image
+        max: 1
+        uploads:
+          template: image

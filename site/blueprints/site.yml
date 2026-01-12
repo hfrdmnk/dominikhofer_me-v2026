@@ -1,5 +1,117 @@
 title: Site
 
-sections:
+tabs:
+  profile:
+    label: Profile
+    icon: user
+    sections:
+      author:
+        type: fields
+        fields:
+          author_name:
+            label: Name
+            type: text
+            required: true
+          author_tagline:
+            label: Tagline
+            type: text
+            help: Short tagline, e.g. "Curious. Creative. Coder."
+          author_bio:
+            label: Bio
+            type: textarea
+            help: Short bio for homepage header
+          author_image:
+            label: Profile Photo
+            type: files
+            max: 1
+            uploads:
+              template: image
+          header_image:
+            label: Header Background
+            type: files
+            max: 1
+            help: Gradient/blur background for home page
+            uploads:
+              template: image
+
+  social:
+    label: Social
+    icon: heart
+    sections:
+      links:
+        type: fields
+        fields:
+          social_links:
+            label: Social Links
+            type: structure
+            fields:
+              platform:
+                label: Platform
+                type: select
+                options:
+                  bluesky: Bluesky
+                  mastodon: Mastodon
+                  github: GitHub
+                  email: Email
+                  rss: RSS
+              url:
+                label: URL
+                type: text
+                help: "Accepts URLs and mailto: links"
+              icon:
+                label: Icon
+                type: select
+                options:
+                  bluesky: Bluesky
+                  fediverse: Fediverse
+                  mail: Mail
+                  rss: RSS
+                  subscribe: Subscribe
+
+  subscribe:
+    label: Subscribe
+    icon: rss
+    sections:
+      newsletter:
+        type: fields
+        fields:
+          newsletter_url:
+            label: Newsletter URL
+            type: url
+            help: Buttondown subscription URL
+          rss_feeds:
+            label: RSS Feeds
+            type: structure
+            fields:
+              name:
+                label: Feed Name
+                type: text
+              url:
+                label: Feed URL
+                type: url
+              description:
+                label: Description
+                type: text
+
+  footer:
+    label: Footer
+    icon: quote
+    sections:
+      quotes:
+        type: fields
+        fields:
+          quote_left:
+            label: Left Quote
+            type: text
+            default: less, but better.
+          quote_right:
+            label: Right Quote
+            type: text
+            default: trust the process.
+
   pages:
-    type: pages
+    label: Pages
+    icon: page
+    sections:
+      pages:
+        type: pages

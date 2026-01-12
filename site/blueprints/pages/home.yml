@@ -1,0 +1,27 @@
+title: Home
+icon: 🏠
+
+options:
+  changeSlug: false
+  changeStatus: false
+  changeTemplate: false
+  delete: false
+
+sections:
+  info:
+    type: info
+    label: Homepage
+    text: |
+      The homepage displays an aggregated feed of all content types.
+      Edit author profile and site settings in **Site Settings**.
+
+  listings:
+    type: pages
+    label: Content Sections
+    templates:
+      - posts
+      - notes
+      - photos
+      - races
+    sortBy: title asc
+    info: "{{ page.children.listed.count }} items"

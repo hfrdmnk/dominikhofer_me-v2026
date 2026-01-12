@@ -1,0 +1,56 @@
+title: '{{ page.date.toDate("U") }}'
+icon: 💬
+
+num: '{{ page.date.toDate("YmdHi") }}'
+
+create:
+  title: '{{ page.date.toDate("U") }}'
+  slug: '{{ page.date.toDate("U") }}'
+  fields:
+    - date
+
+status:
+  draft:
+    label: Draft
+    text: Note is not visible
+  listed:
+    label: Published
+    text: Note is published
+
+columns:
+  main:
+    width: 2/3
+    sections:
+      content:
+        type: fields
+        fields:
+          content:
+            label: Content
+            type: textarea
+            required: true
+            buttons:
+              - bold
+              - italic
+              - link
+
+  sidebar:
+    width: 1/3
+    sections:
+      meta:
+        type: fields
+        fields:
+          date:
+            label: Publish Date
+            type: date
+            required: true
+            default: today
+            time: true
+          tags:
+            label: Tags
+            type: tags
+      image:
+        type: files
+        label: Image
+        max: 1
+        uploads:
+          template: image

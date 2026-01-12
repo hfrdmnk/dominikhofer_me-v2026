@@ -17,6 +17,11 @@ Icon
 !/media/index.html
 /docs/img/*
 
+# Temporary files
+# ---------------
+/content/*
+!/content/index.html
+
 # Lock files
 # ---------------
 

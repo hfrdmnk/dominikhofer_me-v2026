@@ -1,0 +1,24 @@
+title: Races
+icon: 🏃
+
+options:
+  changeSlug: false
+  changeStatus: false
+  changeTemplate: false
+  delete: false
+
+sections:
+  drafts:
+    type: pages
+    label: Drafts
+    status: draft
+    template: race
+    sortBy: date desc
+    info: "{{ page.distance }}km in {{ page.time }}"
+  published:
+    type: pages
+    label: Published
+    status: listed
+    template: race
+    sortBy: date desc
+    info: "{{ page.distance }}km in {{ page.time }}"

@@ -1,0 +1,24 @@
+title: Notes
+icon: 💬
+
+options:
+  changeSlug: false
+  changeStatus: false
+  changeTemplate: false
+  delete: false
+
+sections:
+  drafts:
+    type: pages
+    label: Drafts
+    status: draft
+    template: note
+    sortBy: date desc
+    info: "{{ page.date.toDate('M d, Y H:i') }}"
+  published:
+    type: pages
+    label: Published
+    status: listed
+    template: note
+    sortBy: date desc
+    info: "{{ page.date.toDate('M d, Y H:i') }}"
