@@ -20,7 +20,8 @@ columns:
         fields:
           content:
             label: Content
-            type: blocks
+            type: textarea
+            size: large
 
   sidebar:
     width: 1/3
