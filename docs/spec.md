@@ -403,7 +403,7 @@ Consider using the [Kirby Feed plugin](https://github.com/getkirby/feed) or cust
 
 ### Typography
 
--   **Font family:** Inter + System Sans Stack
+-   **Font family:** --font-sans
 -   **Body:** 16px/1.6
 -   **Headings:** Variable weight
 -   **Monospace:** Departure Mono + System Mono Stack: For code, timestamps, slugs

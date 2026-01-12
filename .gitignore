@@ -4,6 +4,12 @@
 Icon
 .DS_Store
 
+# Node
+# ----
+
+/node_modules
+/assets/css
+
 # Temporary files
 # ---------------
 
