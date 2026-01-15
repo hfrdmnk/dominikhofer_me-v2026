@@ -38,9 +38,9 @@
     </p>
     <?php endif ?>
 
-    <?php if ($page->content()->isNotEmpty()): ?>
+    <?php if ($page->body()->isNotEmpty()): ?>
     <div class="prose prose-neutral mt-8 max-w-none">
-      <?= $page->content()->kirbytext() ?>
+      <?= $page->body()->kirbytext() ?>
     </div>
     <?php endif ?>
 

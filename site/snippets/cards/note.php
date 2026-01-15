@@ -10,7 +10,7 @@ $image = $item->files()->first();
     <?php snippet('author-row', ['item' => $item]) ?>
 
     <div class="mt-3 text-sm leading-relaxed text-(--text-secondary)">
-      <?= $item->content()->kt() ?>
+      <?= $item->body()->kt() ?>
     </div>
 
     <?php if ($image): ?>

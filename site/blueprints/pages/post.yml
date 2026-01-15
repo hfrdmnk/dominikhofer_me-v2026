@@ -1,7 +1,7 @@
 title: Post
 icon: 📝
 
-num: '{{ page.date.toDate("YmdHi") }}'
+num: '{{ page.date.toDate("Ymd") }}'
 
 status:
   draft:
@@ -18,8 +18,8 @@ columns:
       content:
         type: fields
         fields:
-          content:
-            label: Content
+          body:
+            label: Body
             type: textarea
             size: large
 
@@ -33,7 +33,7 @@ columns:
             label: Publish Date
             type: date
             required: true
-            default: today
+            default: now
             time: true
           updated:
             label: Last Updated

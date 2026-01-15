@@ -29,9 +29,9 @@ $image = $page->files()->first();
     </div>
     <?php endif ?>
 
-    <?php if ($page->content()->isNotEmpty()): ?>
+    <?php if ($page->body()->isNotEmpty()): ?>
     <div class="prose prose-neutral mt-6 max-w-none">
-      <?= $page->content()->kt() ?>
+      <?= $page->body()->kt() ?>
     </div>
     <?php endif ?>
 

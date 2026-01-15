@@ -1,11 +1,13 @@
-title: '{{ page.date.toDate("U") }}'
 icon: 💬
 
-num: '{{ page.date.toDate("YmdHi") }}'
+num: '{{ page.date.toDate("Ymd") }}'
+
+options:
+  changeTitle: false
 
 create:
-  title: '{{ page.date.toDate("U") }}'
-  slug: '{{ page.date.toDate("U") }}'
+  title: '{{ site.newId }}'
+  slug: '{{ site.newId }}'
   fields:
     - date
 
@@ -24,8 +26,8 @@ columns:
       content:
         type: fields
         fields:
-          content:
-            label: Content
+          body:
+            label: Body
             type: textarea
             required: true
             buttons:
@@ -43,7 +45,7 @@ columns:
             label: Publish Date
             type: date
             required: true
-            default: today
+            default: now
             time: true
           tags:
             label: Tags

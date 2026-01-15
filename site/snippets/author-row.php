@@ -23,8 +23,8 @@ $readTime = $showReadTime ?? false;
     <time datetime="<?= $item->date()->toDate('c') ?>" class="text-(--text-muted)">
       <?= $date ?>
     </time>
-    <?php if ($readTime && $item->content()->isNotEmpty()): ?>
-    <?php $minutes = round(str_word_count(strip_tags($item->content()->kirbytext())) / 200); ?>
+    <?php if ($readTime && $item->body()->isNotEmpty()): ?>
+    <?php $minutes = round(str_word_count(strip_tags($item->body()->kirbytext())) / 200); ?>
     <?php if ($minutes > 0): ?>
     <span class="text-(--text-muted)">&middot;</span>
     <span class="text-(--text-muted)"><?= $minutes ?> min read</span>

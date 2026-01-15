@@ -22,32 +22,44 @@ return [
           'format'  => 'webp'
         ]);
       }
+    },
+
+    // Update folder prefix when date changes on listed pages
+    'page.update:after' => function ($newPage, $oldPage) {
+      if ($newPage->status() !== 'listed') {
+        return;
+      }
+
+      $template = $newPage->intendedTemplate()->name();
+      if (!in_array($template, ['post', 'note', 'photo', 'race'])) {
+        return;
+      }
+
+      $newDate = $newPage->date()->toDate();
+      $oldDate = $oldPage->date()->toDate();
+
+      if ($newDate !== $oldDate) {
+        $newNum = (int) date('Ymd', $newDate);
+        if ($newPage->num() !== $newNum) {
+          $newPage->changeNum($newNum);
+        }
+      }
     }
   ],
 
-  // Flat URL routing for nested content
+  // Flat URL routing for content items
   'routes' => [
-    // Route listing pages (posts, notes, photos, races) to their nested location
-    [
-      'pattern' => '(posts|notes|photos|races)',
-      'action'  => function ($slug) {
-        if ($page = page('home/' . $slug)) {
-          return site()->visit($page);
-        }
-        return site()->errorPage();
-      }
-    ],
     // Route individual content items to flat URLs
     [
       'pattern' => '(:any)',
       'action'  => function ($slug) {
-        // Try direct pages first (about, now, slash, home, etc.)
+        // Try direct pages first (about, now, slash, home, posts, notes, etc.)
         if ($page = page($slug)) {
           return $page;
         }
-        // Try nested content types under home
+        // Try content types as children of collection pages
         foreach (['posts', 'notes', 'photos', 'races'] as $parent) {
-          if ($page = page('home/' . $parent . '/' . $slug)) {
+          if ($page = page($parent . '/' . $slug)) {
             return site()->visit($page);
           }
         }

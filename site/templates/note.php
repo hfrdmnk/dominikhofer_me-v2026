@@ -12,7 +12,7 @@ $image = $page->files()->first();
     <?php snippet('author-row', ['item' => $page]) ?>
 
     <div class="prose prose-neutral mt-6 max-w-none">
-      <?= $page->content()->kt() ?>
+      <?= $page->body()->kt() ?>
     </div>
 
     <?php if ($image): ?>

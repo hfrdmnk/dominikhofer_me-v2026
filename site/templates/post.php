@@ -22,7 +22,7 @@ $cover = $page->cover()->toFile();
     <?php endif ?>
 
     <div class="prose prose-neutral mt-8 max-w-none">
-      <?= $page->content()->kirbytext() ?>
+      <?= $page->body()->kirbytext() ?>
     </div>
 
     <?php if ($page->tags()->isNotEmpty()): ?>

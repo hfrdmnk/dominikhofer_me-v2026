@@ -1,0 +1,5 @@
+/* Hide title field for notes and photos */
+[data-template="note"] .k-page-view > header,
+[data-template="photo"] .k-page-view > header {
+  display: none;
+}

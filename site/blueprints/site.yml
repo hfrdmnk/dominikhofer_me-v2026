@@ -109,9 +109,57 @@ tabs:
             type: text
             default: trust the process.
 
+  content:
+    label: Content
+    icon: text
+    columns:
+      left:
+        width: 1/2
+        sections:
+          posts:
+            type: pages
+            label: Posts
+            parent: site.find("posts")
+            template: post
+            status: all
+            info: "{{ page.date.toDate('M d, Y') }}"
+            sortBy: date desc
+          notes:
+            type: pages
+            label: Notes
+            parent: site.find("notes")
+            template: note
+            status: all
+            info: "{{ page.date.toDate('M d, Y H:i') }}"
+            sortBy: date desc
+      right:
+        width: 1/2
+        sections:
+          photos:
+            type: pages
+            label: Photos
+            parent: site.find("photos")
+            template: photo
+            status: all
+            image: true
+            info: "{{ page.date.toDate('M d, Y') }}"
+            sortBy: date desc
+          races:
+            type: pages
+            label: Races
+            parent: site.find("races")
+            template: race
+            status: all
+            info: "{{ page.distance }}km in {{ page.time }}"
+            sortBy: date desc
+
   pages:
     label: Pages
     icon: page
     sections:
       pages:
         type: pages
+        parent: site
+        templates:
+          - default
+          - home

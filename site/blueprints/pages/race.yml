@@ -18,7 +18,7 @@ columns:
       content:
         type: fields
         fields:
-          content:
+          body:
             label: Race Report
             type: textarea
             size: large
