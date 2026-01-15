@@ -5,27 +5,6 @@
 (function() {
   'use strict';
 
-  // Header collapse on scroll (home page only)
-  const fullHeader = document.querySelector('[data-header="full"]');
-  const collapsedHeader = document.querySelector('[data-header="collapsed"]');
-
-  if (fullHeader && collapsedHeader) {
-    const threshold = 200;
-
-    function updateHeader() {
-      if (window.scrollY > threshold) {
-        fullHeader.classList.add('hidden');
-        collapsedHeader.classList.remove('hidden');
-      } else {
-        fullHeader.classList.remove('hidden');
-        collapsedHeader.classList.add('hidden');
-      }
-    }
-
-    window.addEventListener('scroll', updateHeader, { passive: true });
-    updateHeader();
-  }
-
   // Mobile menu
   const mobileMenu = document.querySelector('[data-mobile-menu]');
   const menuTriggers = document.querySelectorAll('[data-mobile-menu-trigger]');

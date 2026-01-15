@@ -1,15 +1,15 @@
 <?php
 $navItems = [
-  ['url' => url('about'), 'label' => 'About'],
-  ['url' => url('now'), 'label' => 'Now'],
-  ['url' => url('slash'), 'label' => 'Slash'],
+  ['url' => url('about'), 'label' => '/about'],
+  ['url' => url('now'), 'label' => '/now'],
+  ['url' => url('slash'), 'label' => '/slash'],
 ];
 ?>
-<nav class="hidden items-center gap-6 md:flex">
+<nav class="hidden items-center gap-6 font-mono text-sm md:flex">
   <?php foreach ($navItems as $item): ?>
   <a
     href="<?= $item['url'] ?>"
-    class="text-sm text-(--text-secondary) transition-colors hover:text-(--text-primary)"
+    class="text-(--text-muted) transition-colors hover:text-(--text-primary)"
   >
     <?= $item['label'] ?>
   </a>

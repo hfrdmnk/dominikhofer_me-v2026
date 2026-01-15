@@ -2,46 +2,46 @@
 /** @var Kirby\Cms\Site $site */
 /** @var Kirby\Cms\Page $page */
 
-$template = $page->intendedTemplate()->name();
-$parentLabels = [
-  'post' => 'view all posts',
-  'note' => 'view all notes',
-  'photo' => 'view all photos',
-  'race' => 'view all races',
-];
-$parentLabel = $parentLabels[$template] ?? null;
-$parentUrl = match($template) {
-  'post' => url('posts'),
-  'note' => url('notes'),
-  'photo' => url('photos'),
-  'race' => url('races'),
-  default => $site->url(),
-};
 $backUrl = $page->parent()?->url() ?? $site->url();
 ?>
-<header class="sticky top-0 z-30 border-b border-(--border) bg-(--bg-secondary)">
+<header class="border-b border-(--border)">
   <div class="px-4">
-    <div class="flex min-h-14 items-center gap-4 py-3">
-      <a
-        href="<?= $backUrl ?>"
-        class="shrink-0 text-(--text-muted) transition-colors hover:text-(--text-primary)"
-        aria-label="Go back"
-      >
-        <?php snippet('icon', ['name' => 'back', 'class' => 'h-5 w-5']) ?>
-      </a>
-
-      <div class="min-w-0 flex-1">
-        <?php if ($parentLabel): ?>
-        <a href="<?= $parentUrl ?>" class="block font-mono text-xs uppercase tracking-wide text-(--text-muted) transition-colors hover:text-(--accent)">
-          <?= $parentLabel ?>
+    <div class="flex min-h-14 items-center justify-between gap-4 py-3">
+      <div class="flex min-w-0 items-center gap-3">
+        <a
+          href="<?= $backUrl ?>"
+          class="shrink-0 text-(--text-muted) transition-colors hover:text-(--text-primary)"
+          aria-label="Go back"
+        >
+          <?php snippet('icon', ['name' => 'back', 'class' => 'h-5 w-5']) ?>
         </a>
-        <?php endif ?>
+
         <h1 class="truncate text-base font-semibold text-(--text-primary)">
           <?= $page->title() ?>
         </h1>
       </div>
 
-      <?php snippet('share-button') ?>
+      <div class="flex shrink-0 items-center gap-3">
+        <?php snippet('social-icons', ['outlined' => true]) ?>
+        <button
+          type="button"
+          class="hidden cursor-pointer items-center gap-2 rounded-(--radius-medium) bg-(--accent) px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-(--accent-hover) md:flex"
+          data-follow-trigger
+        >
+          Follow
+        </button>
+
+        <button
+          type="button"
+          class="md:hidden"
+          aria-label="Open menu"
+          data-mobile-menu-trigger
+        >
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </header>
