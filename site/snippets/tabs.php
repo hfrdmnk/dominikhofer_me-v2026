@@ -8,7 +8,7 @@ $tabs = [
   ['slug' => 'races', 'url' => url('races'), 'label' => 'Races'],
 ];
 ?>
-<nav class="mt-6 -mx-4 overflow-x-auto overflow-y-hidden border-b border-border">
+<nav class="isolate relative mt-6 -mx-4 overflow-x-auto overflow-y-hidden after:absolute after:inset-x-0 after:bottom-0 after:-z-10 after:h-px after:bg-border">
   <ul class="flex gap-6 px-4">
     <?php foreach ($tabs as $tab): ?>
     <?php $isActive = ($current ?? 'all') === $tab['slug']; ?>
