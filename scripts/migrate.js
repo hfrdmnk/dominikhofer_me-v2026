@@ -17,10 +17,10 @@ const PATHS = {
   oldRaces: path.join(OLD_PROJECT, 'src/content/races'),
   oldPhotos: path.join(OLD_PROJECT, 'src/content/photos'),
   oldAssets: path.join(OLD_PROJECT, 'src/assets'),
-  newPosts: path.join(NEW_PROJECT, 'content/home/posts'),
-  newNotes: path.join(NEW_PROJECT, 'content/home/notes'),
-  newRaces: path.join(NEW_PROJECT, 'content/home/races'),
-  newPhotos: path.join(NEW_PROJECT, 'content/home/photos'),
+  newPosts: path.join(NEW_PROJECT, 'content/posts'),
+  newNotes: path.join(NEW_PROJECT, 'content/notes'),
+  newRaces: path.join(NEW_PROJECT, 'content/races'),
+  newPhotos: path.join(NEW_PROJECT, 'content/photos'),
 };
 
 // ============================================================================
@@ -156,6 +156,37 @@ function slugify(str) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+}
+
+/**
+ * Generate 16-character lowercase alphanumeric UUID
+ */
+function generateUuid() {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < 16; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
+/**
+ * Get date prefix in YYYYMMDD format (no time component)
+ */
+function getDatePrefix(dateStr) {
+  if (!dateStr) {
+    const now = new Date();
+    return `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+  }
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) {
+    const now = new Date();
+    return `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+  }
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}${month}${day}`;
 }
 
 /**
@@ -339,9 +370,9 @@ function migrateTil() {
     const raw = fs.readFileSync(filePath, 'utf-8');
     const { data, content } = parseFrontmatter(raw);
 
-    const timestamp = getUnixTimestamp(data.date);
-    const folderNum = getFolderNum(data.date);
-    const folderName = `${folderNum}_${timestamp}`;
+    const uuid = generateUuid();
+    const datePrefix = getDatePrefix(data.date);
+    const folderName = `${datePrefix}_${uuid}`;
     const destFolder = path.join(PATHS.newNotes, folderName);
 
     // Create folder
@@ -359,7 +390,7 @@ function migrateTil() {
 
     // Create content file
     const kirbyContent = createKirbyContent({
-      title: timestamp,
+      title: uuid,
       date: formatDate(data.date),
       tags: 'til',
       content: noteContent,
@@ -420,10 +451,10 @@ function migratePhotos() {
     const raw = fs.readFileSync(filePath, 'utf-8');
     const { data } = parseFrontmatter(raw);
 
-    const timestamp = getUnixTimestamp(data.date);
-    const folderNum = getFolderNum(data.date);
+    const uuid = generateUuid();
+    const datePrefix = getDatePrefix(data.date);
     const slug = file.replace('.md', '');
-    const folderName = `${folderNum}_${timestamp}`;
+    const folderName = `${datePrefix}_${uuid}`;
     const destFolder = path.join(PATHS.newPhotos, folderName);
 
     // Create folder
@@ -439,7 +470,7 @@ function migratePhotos() {
 
     // Create content file
     const kirbyContent = createKirbyContent({
-      title: timestamp,
+      title: uuid,
       date: formatDate(data.date),
       location: data.location || '',
       content: '',
