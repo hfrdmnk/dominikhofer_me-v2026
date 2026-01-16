@@ -10,30 +10,30 @@
     <?php snippet('author-row', ['item' => $page]) ?>
 
     <div class="mt-6 grid grid-cols-3 gap-3">
-      <div class="rounded-(--radius-medium) bg-(--accent-bg) p-6 text-center">
-        <span class="block font-mono text-3xl font-semibold text-(--text-primary)">
+      <div class="rounded-medium bg-accent-bg p-6 text-center">
+        <span class="block font-mono text-3xl font-semibold text-primary">
           <?= $page->distance() ?>
         </span>
-        <span class="mt-2 block text-sm uppercase tracking-wide text-(--text-muted)">km</span>
+        <span class="mt-2 block text-sm uppercase tracking-wide text-muted">km</span>
       </div>
 
-      <div class="rounded-(--radius-medium) bg-(--accent-bg) p-6 text-center">
-        <span class="block font-mono text-3xl font-semibold text-(--text-primary)">
+      <div class="rounded-medium bg-accent-bg p-6 text-center">
+        <span class="block font-mono text-3xl font-semibold text-primary">
           <?= $page->time() ?>
         </span>
-        <span class="mt-2 block text-sm uppercase tracking-wide text-(--text-muted)">time</span>
+        <span class="mt-2 block text-sm uppercase tracking-wide text-muted">time</span>
       </div>
 
-      <div class="rounded-(--radius-medium) bg-(--accent-bg) p-6 text-center">
-        <span class="block font-mono text-3xl font-semibold text-(--text-primary)">
+      <div class="rounded-medium bg-accent-bg p-6 text-center">
+        <span class="block font-mono text-3xl font-semibold text-primary">
           <?= $page->pace() ?>
         </span>
-        <span class="mt-2 block text-sm uppercase tracking-wide text-(--text-muted)">min/km</span>
+        <span class="mt-2 block text-sm uppercase tracking-wide text-muted">min/km</span>
       </div>
     </div>
 
     <?php if ($page->location()->isNotEmpty()): ?>
-    <p class="mt-6 text-sm text-(--text-muted)">
+    <p class="mt-6 text-sm text-muted">
       <?= $page->location() ?>
     </p>
     <?php endif ?>
@@ -47,7 +47,7 @@
     <?php if ($page->tags()->isNotEmpty()): ?>
     <div class="mt-8 flex flex-wrap gap-2">
       <?php foreach ($page->tags()->split() as $tag): ?>
-      <span class="rounded-full bg-(--accent-bg) px-3 py-1 text-sm text-(--accent)">
+      <span class="rounded-full bg-accent-bg px-3 py-1 text-sm text-accent">
         <?= $tag ?>
       </span>
       <?php endforeach ?>

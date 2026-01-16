@@ -4,7 +4,7 @@
 <div class="flex shrink-0 items-center gap-2">
   <button
     type="button"
-    class="cursor-pointer rounded-(--radius-medium) bg-(--accent) p-2 text-white transition-colors hover:bg-(--accent-hover)"
+    class="cursor-pointer rounded-medium bg-accent p-2 text-white transition-colors hover:bg-accent-hover"
     aria-label="Share this page"
     data-share-button
     data-share-title="<?= $page->title()->escape() ?>"

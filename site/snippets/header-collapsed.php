@@ -3,10 +3,10 @@
 /** @var Kirby\Cms\Page $page */
 $currentFilter = $page->slug();
 ?>
-<header class="border-b border-(--border)">
+<header class="border-b border-border">
   <div class="px-4">
     <div class="flex h-14 items-center justify-between">
-      <a href="<?= $site->url() ?>" class="font-semibold text-(--text-primary)">
+      <a href="<?= $site->url() ?>" class="font-semibold text-primary">
         <?= $site->author_name() ?>
       </a>
 
@@ -14,7 +14,7 @@ $currentFilter = $page->slug();
         <?php snippet('social-icons', ['outlined' => true]) ?>
         <button
           type="button"
-          class="hidden cursor-pointer items-center gap-2 rounded-(--radius-medium) bg-(--accent) px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-(--accent-hover) md:flex"
+          class="hidden cursor-pointer items-center gap-2 rounded-small bg-accent px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover md:flex"
           data-follow-trigger
         >
           Follow

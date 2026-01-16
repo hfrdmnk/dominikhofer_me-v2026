@@ -12,7 +12,7 @@ $cover = $page->cover()->toFile();
     <?php snippet('author-row', ['item' => $page, 'showReadTime' => true]) ?>
 
     <?php if ($cover): ?>
-    <div class="mt-6 overflow-hidden rounded-(--radius-medium)">
+    <div class="mt-6 overflow-hidden rounded-medium">
       <img
         src="<?= $cover->resize(1200)->url() ?>"
         alt=""
@@ -28,7 +28,7 @@ $cover = $page->cover()->toFile();
     <?php if ($page->tags()->isNotEmpty()): ?>
     <div class="mt-8 flex flex-wrap gap-2">
       <?php foreach ($page->tags()->split() as $tag): ?>
-      <span class="rounded-full bg-(--accent-bg) px-3 py-1 text-sm text-(--accent)">
+      <span class="rounded-full bg-accent-bg px-3 py-1 text-sm text-accent">
         <?= $tag ?>
       </span>
       <?php endforeach ?>

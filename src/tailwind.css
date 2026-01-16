@@ -11,15 +11,15 @@
 
   --container-prose: 42rem;
 
-  --bg: oklch(0.9753 0.004 106.47);
-  --bg-secondary: oklch(1 0 0);
-  --accent: oklch(0.6759 0.21747 38.8022);
-  --accent-hover: oklch(from var(--accent) calc(l * 0.95) c h);
-  --accent-bg: oklch(from var(--accent) l c h / 0.1);
-  --border: oklch(92.3% 0.003 48.717);
-  --text-primary: oklch(14.7% 0.004 49.25);
-  --text-secondary: oklch(26.8% 0.007 34.298);
-  --text-muted: oklch(55.3% 0.013 58.071);
+  --color-bg: oklch(0.9753 0.004 106.47);
+  --color-bg-secondary: oklch(1 0 0);
+  --color-accent: oklch(0.6759 0.21747 38.8022);
+  --color-accent-hover: oklch(from var(--color-accent) calc(l * 0.95) c h);
+  --color-accent-bg: oklch(from var(--color-accent) l c h / 0.1);
+  --color-border: oklch(92.3% 0.003 48.717);
+  --color-primary: oklch(14.7% 0.004 49.25);
+  --color-secondary: oklch(26.8% 0.007 34.298);
+  --color-muted: oklch(55.3% 0.013 58.071);
 
   --radius-big: 1rem;
   --radius-medium: 0.5rem;

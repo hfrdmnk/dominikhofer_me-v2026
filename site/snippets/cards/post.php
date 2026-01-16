@@ -9,18 +9,18 @@ $cover = $item->cover()->toFile();
   <a href="<?= $item->url() ?>" class="block">
     <?php snippet('author-row', ['item' => $item, 'showReadTime' => true]) ?>
 
-    <h2 class="mt-3 text-lg font-semibold text-(--text-primary) group-hover:text-(--accent)">
+    <h2 class="mt-3 text-lg font-semibold text-primary group-hover:text-accent">
       <?= $item->title() ?>
     </h2>
 
     <?php if ($item->excerpt()->isNotEmpty()): ?>
-    <p class="mt-2 text-sm leading-relaxed text-(--text-secondary)">
+    <p class="mt-2 text-sm leading-relaxed text-secondary">
       <?= $item->excerpt() ?>
     </p>
     <?php endif ?>
 
     <?php if ($cover): ?>
-    <div class="mt-4 overflow-hidden rounded-(--radius-medium)">
+    <div class="mt-4 overflow-hidden rounded-medium">
       <img
         src="<?= $cover->resize(800)->url() ?>"
         alt=""

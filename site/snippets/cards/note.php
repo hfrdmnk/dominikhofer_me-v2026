@@ -9,12 +9,12 @@ $image = $item->files()->first();
   <a href="<?= $item->url() ?>" class="block">
     <?php snippet('author-row', ['item' => $item]) ?>
 
-    <div class="mt-3 text-sm leading-relaxed text-(--text-secondary)">
+    <div class="mt-3 text-sm leading-relaxed text-secondary">
       <?= $item->body()->kt() ?>
     </div>
 
     <?php if ($image): ?>
-    <div class="mt-4 overflow-hidden rounded-(--radius-medium)">
+    <div class="mt-4 overflow-hidden rounded-medium">
       <img
         src="<?= $image->resize(800)->url() ?>"
         alt=""

@@ -26,7 +26,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
       <img
         src="<?= $profileImage->crop(200, 200)->url() ?>"
         alt="<?= $site->author_name() ?>"
-        class="h-24 w-24 shrink-0 rounded-(--radius-medium) border-4 border-(--bg-secondary) bg-(--bg-secondary) object-cover"
+        class="h-24 w-24 shrink-0 rounded-medium border-4 border-bg-secondary bg-bg-secondary object-cover"
       >
       <?php endif ?>
     </div>
@@ -34,9 +34,9 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
     <!-- Name, tagline, social icons, follow button row -->
     <div class="mt-3 flex items-start justify-between gap-4">
       <div>
-        <h1 class="text-lg font-semibold text-(--text-primary)"><?= $site->author_name() ?></h1>
+        <h1 class="text-lg font-semibold text-primary"><?= $site->author_name() ?></h1>
         <?php if ($site->author_tagline()->isNotEmpty()): ?>
-        <p class="text-sm text-(--text-muted)"><?= $site->author_tagline() ?></p>
+        <p class="text-sm text-muted"><?= $site->author_tagline() ?></p>
         <?php endif ?>
       </div>
 
@@ -44,7 +44,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
         <?php snippet('social-icons', ['outlined' => true]) ?>
         <button
           type="button"
-          class="hidden cursor-pointer items-center gap-2 rounded-(--radius-medium) bg-(--accent) px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-(--accent-hover) md:flex"
+          class="hidden cursor-pointer items-center gap-2 rounded-small bg-accent px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover md:flex"
           data-follow-trigger
         >
           Follow
@@ -53,7 +53,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
     </div>
 
     <?php if ($site->author_bio()->isNotEmpty()): ?>
-    <p class="mt-4 text-sm leading-relaxed text-(--text-secondary)">
+    <p class="mt-4 text-sm leading-relaxed text-secondary">
       <?= $site->author_bio()->escape() ?>
     </p>
     <?php endif ?>

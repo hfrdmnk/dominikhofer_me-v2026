@@ -9,17 +9,17 @@ $tabs = [
 ];
 ?>
 <nav class="-mx-4 overflow-x-auto px-4">
-  <ul class="flex gap-6 border-b border-(--border)">
+  <ul class="flex gap-6 border-b border-border">
     <?php foreach ($tabs as $tab): ?>
     <?php $isActive = ($current ?? 'all') === $tab['slug']; ?>
     <li>
       <a
         href="<?= $tab['url'] ?>"
-        class="relative block py-3 text-sm transition-colors <?= $isActive ? 'font-medium text-(--accent)' : 'text-(--text-muted) hover:text-(--text-primary)' ?>"
+        class="relative block py-3 text-sm transition-colors <?= $isActive ? 'font-medium text-accent' : 'text-muted hover:text-primary' ?>"
       >
         <?= $tab['label'] ?>
         <?php if ($isActive): ?>
-        <span class="absolute inset-x-0 -bottom-px h-0.5 bg-(--accent)"></span>
+        <span class="absolute inset-x-0 -bottom-px h-0.5 bg-accent"></span>
         <?php endif ?>
       </a>
     </li>

@@ -10,7 +10,7 @@ $outlined = $outlined ?? false;
   <?php if ($outlined): ?>
   <a
     href="<?= $link->url() ?>"
-    class="flex h-9 w-9 items-center justify-center rounded-(--radius-medium) border border-(--border) text-(--text-muted) transition-colors hover:border-(--accent) hover:text-(--accent)"
+    class="flex h-9 w-9 items-center justify-center rounded-small border border-border text-muted transition-colors hover:border-accent hover:text-accent"
     <?= Str::startsWith($link->url(), 'mailto:') ? '' : 'target="_blank" rel="noopener noreferrer"' ?>
     aria-label="<?= $link->platform() ?>"
   >
@@ -19,7 +19,7 @@ $outlined = $outlined ?? false;
   <?php else: ?>
   <a
     href="<?= $link->url() ?>"
-    class="text-(--text-muted) transition-colors hover:text-(--accent)"
+    class="text-muted transition-colors hover:text-accent"
     <?= Str::startsWith($link->url(), 'mailto:') ? '' : 'target="_blank" rel="noopener noreferrer"' ?>
     aria-label="<?= $link->platform() ?>"
   >

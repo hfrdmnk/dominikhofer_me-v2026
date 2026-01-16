@@ -5,11 +5,11 @@ $navItems = [
   ['url' => url('slash'), 'label' => '/slash'],
 ];
 ?>
-<nav class="hidden items-center gap-6 font-mono text-sm md:flex">
+<nav class="hidden items-bottom gap-6 font-mono text-xs md:flex">
   <?php foreach ($navItems as $item): ?>
   <a
     href="<?= $item['url'] ?>"
-    class="text-(--text-muted) transition-colors hover:text-(--text-primary)"
+    class="text-muted transition-colors hover:text-accent"
   >
     <?= $item['label'] ?>
   </a>

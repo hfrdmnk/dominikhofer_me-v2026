@@ -18,16 +18,16 @@ $readTime = $showReadTime ?? false;
   <?php endif ?>
 
   <div class="flex flex-wrap items-center gap-x-2 text-sm">
-    <span class="font-medium text-(--text-primary)"><?= $site->author_name() ?></span>
-    <span class="text-(--text-muted)">&middot;</span>
-    <time datetime="<?= $item->date()->toDate('c') ?>" class="text-(--text-muted)">
+    <span class="font-medium text-primary"><?= $site->author_name() ?></span>
+    <span class="text-muted">&middot;</span>
+    <time datetime="<?= $item->date()->toDate('c') ?>" class="text-muted">
       <?= $date ?>
     </time>
     <?php if ($readTime && $item->body()->isNotEmpty()): ?>
     <?php $minutes = round(str_word_count(strip_tags($item->body()->kirbytext())) / 200); ?>
     <?php if ($minutes > 0): ?>
-    <span class="text-(--text-muted)">&middot;</span>
-    <span class="text-(--text-muted)"><?= $minutes ?> min read</span>
+    <span class="text-muted">&middot;</span>
+    <span class="text-muted"><?= $minutes ?> min read</span>
     <?php endif ?>
     <?php endif ?>
   </div>

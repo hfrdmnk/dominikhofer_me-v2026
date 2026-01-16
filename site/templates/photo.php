@@ -12,7 +12,7 @@ $image = $page->files()->first();
     <?php snippet('author-row', ['item' => $page]) ?>
 
     <?php if ($image): ?>
-    <div class="mt-6 overflow-hidden rounded-(--radius-medium)">
+    <div class="mt-6 overflow-hidden rounded-medium">
       <img
         src="<?= $image->resize(1200)->url() ?>"
         alt=""
@@ -20,7 +20,7 @@ $image = $page->files()->first();
       >
     </div>
 
-    <div class="mt-4 flex items-center justify-between text-sm text-(--text-muted)">
+    <div class="mt-4 flex items-center justify-between text-sm text-muted">
       <div class="flex items-center gap-4">
         <?php if ($page->location()->isNotEmpty()): ?>
         <span><?= $page->location() ?></span>
@@ -38,7 +38,7 @@ $image = $page->files()->first();
     <?php if ($page->tags()->isNotEmpty()): ?>
     <div class="mt-8 flex flex-wrap gap-2">
       <?php foreach ($page->tags()->split() as $tag): ?>
-      <span class="rounded-full bg-(--accent-bg) px-3 py-1 text-sm text-(--accent)">
+      <span class="rounded-full bg-accent-bg px-3 py-1 text-sm text-accent">
         <?= $tag ?>
       </span>
       <?php endforeach ?>

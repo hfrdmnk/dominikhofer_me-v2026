@@ -3,12 +3,12 @@
 <head>
   <?php snippet('head') ?>
 </head>
-<body class="min-h-screen bg-(--bg) text-(--text-primary) antialiased">
+<body class="min-h-screen bg-bg text-primary antialiased">
   <div class="mx-auto max-w-3xl px-4 py-6 md:py-10">
     <!-- Top bar: Logo + Navigation (outside white card) -->
-    <div class="mb-6 flex items-center justify-between">
+    <div class="mb-4 flex items-baseline justify-between">
       <a href="<?= $site->url() ?>" class="block" aria-label="Home">
-        <?php snippet('icon', ['name' => 'logo', 'class' => 'h-10 w-10 text-(--accent)']) ?>
+        <?php snippet('icon', ['name' => 'logo', 'class' => 'h-10 w-10 text-accent']) ?>
       </a>
 
       <div class="flex items-center gap-6">
@@ -22,7 +22,7 @@
     </div>
 
     <!-- White card container -->
-    <div class="overflow-hidden rounded-(--radius-big) bg-(--bg-secondary)">
+    <div class="overflow-hidden rounded-big bg-bg-secondary">
       <?php snippet($header ?? 'header') ?>
       <main>
         <?= $slot ?>

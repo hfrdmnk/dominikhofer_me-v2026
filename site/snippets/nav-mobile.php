@@ -13,11 +13,11 @@ $navItems = [
 >
   <div class="absolute inset-0 bg-black/50" data-mobile-menu-backdrop></div>
 
-  <nav class="absolute bottom-0 right-0 top-0 w-72 max-w-[80vw] bg-(--bg-secondary) p-6 shadow-xl">
+  <nav class="absolute bottom-0 right-0 top-0 w-72 max-w-[80vw] bg-bg-secondary p-6 shadow-xl">
     <div class="mb-8 flex justify-end">
       <button
         type="button"
-        class="text-(--text-muted) transition-colors hover:text-(--text-primary)"
+        class="text-muted transition-colors hover:text-primary"
         aria-label="Close menu"
         data-mobile-menu-close
       >
@@ -32,7 +32,7 @@ $navItems = [
       <li>
         <a
           href="<?= $item['url'] ?>"
-          class="block text-lg text-(--text-primary) transition-colors hover:text-(--accent)"
+          class="block text-lg text-primary transition-colors hover:text-accent"
         >
           <?= $item['label'] ?>
         </a>
@@ -40,7 +40,7 @@ $navItems = [
       <?php endforeach ?>
     </ul>
 
-    <hr class="my-6 border-(--border)">
+    <hr class="my-6 border-border">
 
     <div class="flex items-center gap-3">
       <?php snippet('social-icons') ?>
@@ -48,7 +48,7 @@ $navItems = [
 
     <button
       type="button"
-      class="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-(--radius-medium) bg-(--accent) px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-(--accent-hover)"
+      class="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-medium bg-accent px-4 py-3 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
       data-follow-trigger
     >
       <?php snippet('icon', ['name' => 'subscribe', 'class' => 'h-4 w-4']) ?>
@@ -56,7 +56,7 @@ $navItems = [
     </button>
 
     <?php if ($site->quote_right()->isNotEmpty()): ?>
-    <p class="mt-8 font-mono text-sm text-(--accent)">
+    <p class="mt-8 font-mono text-sm text-accent">
       <?= $site->quote_right() ?>
     </p>
     <?php endif ?>

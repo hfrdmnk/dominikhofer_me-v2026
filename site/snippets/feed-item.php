@@ -13,7 +13,7 @@ $cardSnippet = match($template) {
 };
 ?>
 <?php if ($cardSnippet): ?>
-<div class="border-b border-(--border) py-6 first:pt-0 last:border-b-0">
+<div class="border-b border-border py-6 first:pt-0 last:border-b-0">
   <?php snippet($cardSnippet, ['item' => $item]) ?>
 </div>
 <?php endif ?>

@@ -16,7 +16,7 @@ $image = $page->files()->first();
     </div>
 
     <?php if ($image): ?>
-    <div class="mt-6 overflow-hidden rounded-(--radius-medium)">
+    <div class="mt-6 overflow-hidden rounded-medium">
       <img
         src="<?= $image->resize(1200)->url() ?>"
         alt=""
@@ -28,7 +28,7 @@ $image = $page->files()->first();
     <?php if ($page->tags()->isNotEmpty()): ?>
     <div class="mt-8 flex flex-wrap gap-2">
       <?php foreach ($page->tags()->split() as $tag): ?>
-      <span class="rounded-full bg-(--accent-bg) px-3 py-1 text-sm text-(--accent)">
+      <span class="rounded-full bg-accent-bg px-3 py-1 text-sm text-accent">
         <?= $tag ?>
       </span>
       <?php endforeach ?>

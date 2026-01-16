@@ -10,7 +10,7 @@ $image = $item->files()->first();
     <?php snippet('author-row', ['item' => $item]) ?>
 
     <?php if ($image): ?>
-    <div class="mt-4 overflow-hidden rounded-(--radius-medium)">
+    <div class="mt-4 overflow-hidden rounded-medium">
       <img
         src="<?= $image->resize(800)->url() ?>"
         alt=""
@@ -20,7 +20,7 @@ $image = $item->files()->first();
     </div>
     <?php endif ?>
 
-    <div class="mt-3 flex items-center gap-4 text-sm text-(--text-muted)">
+    <div class="mt-3 flex items-center gap-4 text-sm text-muted">
       <?php if ($item->location()->isNotEmpty()): ?>
       <span><?= $item->location() ?></span>
       <?php endif ?>
