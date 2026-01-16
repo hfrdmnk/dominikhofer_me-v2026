@@ -393,7 +393,7 @@ function migrateTil() {
       title: uuid,
       date: formatDate(data.date),
       tags: 'til',
-      content: noteContent,
+      body: noteContent,
     });
 
     fs.writeFileSync(path.join(destFolder, 'note.txt'), kirbyContent);
@@ -473,7 +473,7 @@ function migratePhotos() {
       title: uuid,
       date: formatDate(data.date),
       location: data.location || '',
-      content: '',
+      body: '',
       tags: '',
     });
 
