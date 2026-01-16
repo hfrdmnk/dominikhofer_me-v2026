@@ -64,6 +64,31 @@
         followModal.close();
       }
     });
+
+    // RSS copy-to-clipboard
+    const copyOverlay = followModal.querySelector('[data-copy-overlay]');
+    const rssCopyButtons = followModal.querySelectorAll('[data-rss-copy]');
+
+    rssCopyButtons.forEach(button => {
+      button.addEventListener('click', async () => {
+        const url = button.dataset.rssUrl;
+        if (!url || !copyOverlay) return;
+
+        try {
+          await navigator.clipboard.writeText(url);
+
+          // Show overlay
+          copyOverlay.classList.add('opacity-100');
+
+          // Hide after delay
+          setTimeout(() => {
+            copyOverlay.classList.remove('opacity-100');
+          }, 1500);
+        } catch (err) {
+          // Fail silently - no prompt fallback
+        }
+      });
+    });
   }
 
   // Share button (Web Share API with fallback)

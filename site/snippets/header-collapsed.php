@@ -3,7 +3,7 @@
 /** @var Kirby\Cms\Page $page */
 $currentFilter = $page->slug();
 ?>
-<header class="border-b border-border">
+<header>
   <div class="px-4">
     <div class="flex h-14 items-center justify-between">
       <a href="<?= $site->url() ?>" class="font-semibold text-primary">

@@ -20,24 +20,22 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
   <?php endif ?>
 
   <div class="relative px-4">
-    <!-- Profile section: image overlapping banner -->
-    <div class="-mt-14 flex items-end gap-4">
-      <?php if ($profileImage): ?>
-      <img
-        src="<?= $profileImage->crop(200, 200)->url() ?>"
-        alt="<?= $site->author_name() ?>"
-        class="h-24 w-24 shrink-0 rounded-medium border-4 border-bg-secondary bg-bg-secondary object-cover"
-      >
-      <?php endif ?>
-    </div>
-
-    <!-- Name, tagline, social icons, follow button row -->
-    <div class="mt-3 flex items-start justify-between gap-4">
-      <div>
-        <h1 class="text-lg font-semibold text-primary"><?= $site->author_name() ?></h1>
-        <?php if ($site->author_tagline()->isNotEmpty()): ?>
-        <p class="text-sm text-muted"><?= $site->author_tagline() ?></p>
+    <!-- Profile section: image, name/tagline, and social icons bottom-aligned -->
+    <div class="-mt-12 flex items-end justify-between gap-4">
+      <div class="flex items-end gap-4">
+        <?php if ($profileImage): ?>
+        <img
+          src="<?= $profileImage->crop(256, 256)->url() ?>"
+          alt="<?= $site->author_name() ?>"
+          class="h-28 w-28 shrink-0 rounded-medium border-4 border-bg-secondary bg-bg-secondary object-cover"
+        >
         <?php endif ?>
+        <div>
+          <h1 class="text-lg font-semibold text-primary"><?= $site->author_name() ?></h1>
+          <?php if ($site->author_tagline()->isNotEmpty()): ?>
+          <p class="text-sm text-muted"><?= $site->author_tagline() ?></p>
+          <?php endif ?>
+        </div>
       </div>
 
       <div class="flex shrink-0 items-center gap-3">
@@ -53,7 +51,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
     </div>
 
     <?php if ($site->author_bio()->isNotEmpty()): ?>
-    <p class="mt-4 text-sm leading-relaxed text-secondary">
+    <p class="mt-6 text-sm leading-relaxed text-secondary">
       <?= $site->author_bio()->escape() ?>
     </p>
     <?php endif ?>

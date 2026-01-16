@@ -8,8 +8,8 @@ $tabs = [
   ['slug' => 'races', 'url' => url('races'), 'label' => 'Races'],
 ];
 ?>
-<nav class="-mx-4 overflow-x-auto px-4">
-  <ul class="flex gap-6 border-b border-border">
+<nav class="mt-6 -mx-4 overflow-x-auto overflow-y-hidden border-b border-border">
+  <ul class="flex gap-6 px-4">
     <?php foreach ($tabs as $tab): ?>
     <?php $isActive = ($current ?? 'all') === $tab['slug']; ?>
     <li>
@@ -19,7 +19,7 @@ $tabs = [
       >
         <?= $tab['label'] ?>
         <?php if ($isActive): ?>
-        <span class="absolute inset-x-0 -bottom-px h-0.5 bg-accent"></span>
+        <span class="absolute inset-x-0 bottom-0 h-px bg-accent"></span>
         <?php endif ?>
       </a>
     </li>

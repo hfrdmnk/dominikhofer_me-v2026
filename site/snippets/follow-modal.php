@@ -5,9 +5,17 @@ $rssFeeds = $site->rss_feeds()->toStructure();
 ?>
 <dialog
   id="follow-modal"
-  class="w-full max-w-md rounded-big border border-border bg-bg-secondary p-0 shadow-xl backdrop:bg-black/50"
+  class="relative m-auto w-full max-w-md rounded-big bg-bg-secondary p-0 shadow-xl backdrop:bg-black/50"
   data-follow-modal
 >
+  <!-- Copy success overlay -->
+  <div
+    class="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-accent opacity-0 transition-opacity duration-300"
+    data-copy-overlay
+  >
+    <span class="font-mono text-sm font-medium text-white">Successfully copied to clipboard</span>
+  </div>
+
   <div class="p-6">
     <div class="mb-6 flex items-center justify-between">
       <h2 class="text-lg font-semibold text-primary">Follow</h2>
@@ -46,11 +54,11 @@ $rssFeeds = $site->rss_feeds()->toStructure();
       <h3 class="mb-2 text-sm font-medium text-primary">RSS Feeds</h3>
       <div class="space-y-2">
         <?php foreach ($rssFeeds as $feed): ?>
-        <a
-          href="<?= $feed->url() ?>"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="flex items-center gap-3 rounded-medium border border-border p-3 transition-colors hover:border-accent hover:bg-accent-bg"
+        <button
+          type="button"
+          data-rss-copy
+          data-rss-url="<?= $feed->url() ?>"
+          class="flex w-full items-center gap-3 rounded-medium border border-border p-3 text-left transition-colors hover:border-accent hover:bg-accent-bg"
         >
           <?php snippet('icon', ['name' => 'rss', 'class' => 'h-4 w-4 shrink-0 text-accent']) ?>
           <div class="min-w-0 flex-1">
@@ -59,7 +67,7 @@ $rssFeeds = $site->rss_feeds()->toStructure();
             <span class="block truncate text-sm text-muted"><?= $feed->description() ?></span>
             <?php endif ?>
           </div>
-        </a>
+        </button>
         <?php endforeach ?>
       </div>
     </div>

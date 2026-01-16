@@ -18,7 +18,7 @@
   --color-accent-bg: oklch(from var(--color-accent) l c h / 0.1);
   --color-border: oklch(92.3% 0.003 48.717);
   --color-primary: oklch(14.7% 0.004 49.25);
-  --color-secondary: oklch(26.8% 0.007 34.298);
+  --color-secondary: oklch(37.4% 0.01 67.558);
   --color-muted: oklch(55.3% 0.013 58.071);
 
   --radius-big: 1rem;
