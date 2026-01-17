@@ -5,34 +5,36 @@
  */
 ?>
 <article class="group">
-  <a href="<?= $item->url() ?>" class="block">
-    <?php snippet('author-row', ['item' => $item]) ?>
+  <?php snippet('author-row', ['item' => $item]) ?>
 
-    <h2 class="mt-3 text-lg font-semibold text-primary group-hover:text-accent">
+  <a href="<?= $item->url() ?>" class="mt-3 block">
+    <h2 class="text-base font-semibold text-primary group-hover:text-accent">
       <?= $item->title() ?>
     </h2>
+  </a>
 
-    <div class="mt-4 grid grid-cols-3 gap-3">
-      <div class="rounded-medium bg-accent-bg p-4 text-center">
-        <span class="block font-mono text-2xl font-semibold text-primary">
-          <?= $item->distance() ?>
-        </span>
-        <span class="mt-1 block text-xs uppercase tracking-wide text-muted">km</span>
-      </div>
+  <a href="<?= $item->url() ?>" class="mt-4 grid grid-cols-3 gap-3">
+    <div class="rounded-medium bg-accent p-4 text-center">
+      <span class="block font-mono text-xl font-semibold text-white">
+        <?= $item->distance() ?>
+      </span>
+      <span class="mt-1 block text-base text-white/80">km</span>
+    </div>
 
-      <div class="rounded-medium bg-accent-bg p-4 text-center">
-        <span class="block font-mono text-2xl font-semibold text-primary">
-          <?= $item->time() ?>
-        </span>
-        <span class="mt-1 block text-xs uppercase tracking-wide text-muted">time</span>
-      </div>
+    <div class="rounded-medium bg-accent p-4 text-center">
+      <span class="block font-mono text-xl font-semibold text-white">
+        <?= $item->time() ?>
+      </span>
+      <span class="mt-1 block text-base text-white/80">time</span>
+    </div>
 
-      <div class="rounded-medium bg-accent-bg p-4 text-center">
-        <span class="block font-mono text-2xl font-semibold text-primary">
-          <?= $item->pace() ?>
-        </span>
-        <span class="mt-1 block text-xs uppercase tracking-wide text-muted">min/km</span>
-      </div>
+    <div class="rounded-medium bg-accent p-4 text-center">
+      <span class="block font-mono text-xl font-semibold text-white">
+        <?= $item->pace() ?>
+      </span>
+      <span class="mt-1 block text-base text-white/80">min/km</span>
     </div>
   </a>
+
+  <?php snippet('card-footer', ['item' => $item]) ?>
 </article>

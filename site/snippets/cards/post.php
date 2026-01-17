@@ -4,30 +4,38 @@
  * @param Kirby\Cms\Page $item - The post page
  */
 $cover = $item->cover()->toFile();
+$minutes = $item->body()->isNotEmpty() ? round(str_word_count(strip_tags($item->body()->kirbytext())) / 200) : 0;
+$readTime = $minutes > 0 ? $minutes . ' min read' : null;
 ?>
 <article class="group">
-  <a href="<?= $item->url() ?>" class="block">
-    <?php snippet('author-row', ['item' => $item, 'showReadTime' => true]) ?>
+  <?php snippet('author-row', ['item' => $item]) ?>
 
-    <h2 class="mt-3 text-lg font-semibold text-primary group-hover:text-accent">
+  <a href="<?= $item->url() ?>" class="mt-3 block">
+    <h2 class="text-base font-semibold text-primary hover:text-accent transition-colors">
       <?= $item->title() ?>
     </h2>
-
-    <?php if ($item->excerpt()->isNotEmpty()): ?>
-    <p class="mt-2 text-sm leading-relaxed text-secondary">
-      <?= $item->excerpt() ?>
-    </p>
-    <?php endif ?>
-
-    <?php if ($cover): ?>
-    <div class="mt-4 overflow-hidden rounded-medium">
-      <img
-        src="<?= $cover->resize(800)->url() ?>"
-        alt=""
-        class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        loading="lazy"
-      >
-    </div>
-    <?php endif ?>
   </a>
+
+  <?php if ($item->excerpt()->isNotEmpty()): ?>
+  <p class="mt-2 text-sm leading-relaxed text-secondary">
+    <?= $item->excerpt() ?>
+  </p>
+  <?php endif ?>
+
+  <?php if ($cover): ?>
+  <a href="<?= $item->url() ?>" class="mt-4 block overflow-hidden rounded-medium">
+    <img
+      src="<?= $cover->resize(800)->url() ?>"
+      alt=""
+      class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      loading="lazy"
+    >
+  </a>
+  <?php endif ?>
+
+  <?php snippet('card-footer', [
+    'item' => $item,
+    'leftContent' => $readTime,
+    'leftClass' => 'font-mono text-muted'
+  ]) ?>
 </article>

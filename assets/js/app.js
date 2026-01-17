@@ -131,4 +131,26 @@
       toast.remove();
     }, 2000);
   }
+
+  // Copy link buttons in share popovers
+  document.querySelectorAll('[data-copy-link]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const url = button.dataset.copyLink;
+      if (!url) return;
+
+      try {
+        await navigator.clipboard.writeText(url);
+        showToast('Link copied to clipboard');
+
+        // Close the popover
+        const popover = button.closest('[popover]');
+        if (popover) {
+          popover.hidePopover();
+        }
+      } catch (err) {
+        // Fallback for older browsers
+        window.prompt('Copy this link:', url);
+      }
+    });
+  });
 })();

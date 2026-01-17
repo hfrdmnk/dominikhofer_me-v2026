@@ -309,7 +309,7 @@ function migratePosts() {
       updated: data.lastUpdated ? formatDate(data.lastUpdated) : '',
       excerpt: data.excerpt || '',
       tags: formatTags(data.tags),
-      content: stripMdx(content),
+      body: stripMdx(content),
     });
 
     fs.writeFileSync(path.join(destFolder, 'post.txt'), kirbyContent);
@@ -349,7 +349,7 @@ function migrateNewsletter() {
       date: formatDate(data.date),
       excerpt: data.excerpt || '',
       tags: 'tiny sparks',
-      content: stripMdx(content),
+      body: stripMdx(content),
     });
 
     fs.writeFileSync(path.join(destFolder, 'post.txt'), kirbyContent);

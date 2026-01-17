@@ -4,26 +4,25 @@
  * @param Kirby\Cms\Page $item - The photo page
  */
 $image = $item->files()->first();
+$location = $item->location()->isNotEmpty() ? $item->location()->value() : null;
 ?>
 <article class="group">
-  <a href="<?= $item->url() ?>" class="block">
-    <?php snippet('author-row', ['item' => $item]) ?>
+  <?php snippet('author-row', ['item' => $item]) ?>
 
-    <?php if ($image): ?>
-    <div class="mt-4 overflow-hidden rounded-medium">
-      <img
-        src="<?= $image->resize(800)->url() ?>"
-        alt=""
-        class="w-full object-cover transition-transform duration-300 group-hover:scale-105"
-        loading="lazy"
-      >
-    </div>
-    <?php endif ?>
-
-    <div class="mt-3 flex items-center gap-4 text-sm text-muted">
-      <?php if ($item->location()->isNotEmpty()): ?>
-      <span><?= $item->location() ?></span>
-      <?php endif ?>
-    </div>
+  <?php if ($image): ?>
+  <a href="<?= $item->url() ?>" class="mt-4 block overflow-hidden rounded-medium">
+    <img
+      src="<?= $image->resize(800)->url() ?>"
+      alt=""
+      class="w-full object-cover"
+      loading="lazy"
+    >
   </a>
+  <?php endif ?>
+
+  <?php snippet('card-footer', [
+    'item' => $item,
+    'leftContent' => $location,
+    'leftClass' => 'font-mono text-muted'
+  ]) ?>
 </article>

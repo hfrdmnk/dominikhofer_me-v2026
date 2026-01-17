@@ -22,4 +22,6 @@ $image = $item->files()->first();
     >
   </a>
   <?php endif ?>
+
+  <?php snippet('card-footer', ['item' => $item]) ?>
 </article>
