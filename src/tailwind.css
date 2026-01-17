@@ -46,3 +46,16 @@
   text-decoration-color: transparent;
   color: white;
 }
+
+/* Share popover anchor positioning */
+[popovertarget^="share-"] {
+  anchor-name: --share-trigger;
+}
+
+[popover][id^="share-"] {
+  position-anchor: --share-trigger;
+  inset: unset;
+  top: anchor(bottom);
+  right: anchor(right);
+  margin-top: 0.5rem;
+}

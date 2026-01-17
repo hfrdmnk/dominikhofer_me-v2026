@@ -11,7 +11,6 @@ $popoverId = 'share-' . $item->id();
 $shareUrl = $item->url();
 $shareTitle = $item->title()->value() ?: 'Check this out';
 $blueskyUrl = 'https://bsky.app/intent/compose?text=' . urlencode($shareTitle . ' ' . $shareUrl);
-$whatsappUrl = 'https://wa.me/?text=' . urlencode($shareTitle . ' ' . $shareUrl);
 ?>
 <footer class="mt-4 flex items-center justify-between text-xs">
   <div class="<?= $leftClass ?>">
@@ -47,14 +46,6 @@ $whatsappUrl = 'https://wa.me/?text=' . urlencode($shareTitle . ' ' . $shareUrl)
       >
         Copy link
       </button>
-      <a
-        href="<?= $whatsappUrl ?>"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="block rounded-small px-3 py-2 text-sm text-secondary hover:bg-accent-bg hover:text-primary"
-      >
-        Share on WhatsApp
-      </a>
     </div>
   </div>
 </footer>
