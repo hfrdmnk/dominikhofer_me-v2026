@@ -10,7 +10,7 @@ $feed = $page->children()
   ->sortBy('date', 'desc')
   ->paginate(20);
 ?>
-<?php snippet('layouts/base', ['header' => 'header-collapsed'], slots: true) ?>
+<?php snippet('layouts/base', slots: true) ?>
   <div class="px-4 py-8">
     <?php if ($feed->isNotEmpty()): ?>
       <?php foreach ($feed as $item): ?>
