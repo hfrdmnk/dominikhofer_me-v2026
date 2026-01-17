@@ -25,3 +25,24 @@
   --radius-medium: 0.5rem;
   --radius-small: 0.25rem;
 }
+
+/*
+ * Link hover effect: Underline transforms to highlight mark
+ * Ref: https://dannyguo.medium.com/animated-multiline-link-underlines-with-css
+ */
+.prose a:not(:has(svg), :has(img)) {
+  text-decoration-color: var(--color-border);
+  text-underline-offset: 2px;
+  background-position: 0% 100%;
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  transition: background-size 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.prose a:not(:has(svg), :has(img)):hover,
+.prose a:not(:has(svg), :has(img)):focus {
+  background-size: 100% 100%;
+  text-decoration-color: transparent;
+  color: white;
+}
