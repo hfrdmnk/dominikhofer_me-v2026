@@ -50,9 +50,30 @@ columns:
           tags:
             label: Tags
             type: tags
-      image:
-        type: files
-        label: Image
-        max: 1
-        uploads:
-          template: image
+      media:
+        type: fields
+        fields:
+          media_1:
+            label: Media 1
+            type: files
+            max: 1
+            uploads:
+              template: media
+          media_2:
+            label: Media 2
+            type: files
+            max: 1
+            uploads:
+              template: media
+          media_3:
+            label: Media 3
+            type: files
+            max: 1
+            uploads:
+              template: media
+          media_4:
+            label: Media 4
+            type: files
+            max: 1
+            uploads:
+              template: media

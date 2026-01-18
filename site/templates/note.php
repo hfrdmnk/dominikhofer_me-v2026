@@ -5,7 +5,14 @@
  * @var Kirby\Cms\Site $site
  */
 
-$image = $page->files()->first();
+// Collect media files
+$mediaFiles = [];
+for ($i = 1; $i <= 4; $i++) {
+  $file = $page->{'media_' . $i}()->toFile();
+  if ($file) {
+    $mediaFiles[] = $file;
+  }
+}
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
@@ -15,13 +22,24 @@ $image = $page->files()->first();
       <?= $page->body()->kt() ?>
     </div>
 
-    <?php if ($image): ?>
-    <div class="mt-6 overflow-hidden rounded-medium">
-      <img
-        src="<?= $image->resize(1200)->url() ?>"
-        alt=""
-        class="w-full"
-      >
+    <?php if (count($mediaFiles) > 0): ?>
+    <div class="mt-6 flex flex-col gap-4">
+      <?php foreach ($mediaFiles as $file): ?>
+        <?php if ($file->type() === 'video'): ?>
+        <video
+          src="<?= $file->url() ?>"
+          class="w-full rounded-medium"
+          controls
+          playsinline
+        ></video>
+        <?php else: ?>
+        <img
+          src="<?= $file->resize(1200)->url() ?>"
+          alt=""
+          class="w-full rounded-medium"
+        >
+        <?php endif ?>
+      <?php endforeach ?>
     </div>
     <?php endif ?>
 
