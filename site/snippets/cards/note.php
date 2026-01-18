@@ -28,7 +28,7 @@ $mediaCount = count($mediaFiles);
       <?php if ($file->type() === 'video'): ?>
       <video
         src="<?= $file->url() ?>"
-        class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        class="aspect-video w-full object-cover"
         muted
         loop
         autoplay
@@ -38,7 +38,7 @@ $mediaCount = count($mediaFiles);
       <img
         src="<?= $file->resize(800)->url() ?>"
         alt=""
-        class="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        class="aspect-[4/3] w-full object-cover"
         loading="lazy"
       >
       <?php endif ?>
@@ -49,7 +49,7 @@ $mediaCount = count($mediaFiles);
           <?php if ($file->type() === 'video'): ?>
           <video
             src="<?= $file->url() ?>"
-            class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            class="aspect-square w-full object-cover"
             muted
             loop
             autoplay
@@ -59,7 +59,7 @@ $mediaCount = count($mediaFiles);
           <img
             src="<?= $file->resize(400)->url() ?>"
             alt=""
-            class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            class="aspect-square w-full object-cover"
             loading="lazy"
           >
           <?php endif ?>
@@ -76,7 +76,7 @@ $mediaCount = count($mediaFiles);
           <?php if ($file->type() === 'video'): ?>
           <video
             src="<?= $file->url() ?>"
-            class="<?= $spanClass ?> <?= $aspectClass ?> h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            class="<?= $spanClass ?> <?= $aspectClass ?> h-full w-full object-cover"
             muted
             loop
             autoplay
@@ -86,7 +86,7 @@ $mediaCount = count($mediaFiles);
           <img
             src="<?= $file->resize(400)->url() ?>"
             alt=""
-            class="<?= $spanClass ?> <?= $aspectClass ?> h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            class="<?= $spanClass ?> <?= $aspectClass ?> h-full w-full object-cover"
             loading="lazy"
           >
           <?php endif ?>
@@ -99,7 +99,7 @@ $mediaCount = count($mediaFiles);
           <?php if ($file->type() === 'video'): ?>
           <video
             src="<?= $file->url() ?>"
-            class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            class="aspect-square w-full object-cover"
             muted
             loop
             autoplay
@@ -109,7 +109,7 @@ $mediaCount = count($mediaFiles);
           <img
             src="<?= $file->resize(400)->url() ?>"
             alt=""
-            class="aspect-square w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            class="aspect-square w-full object-cover"
             loading="lazy"
           >
           <?php endif ?>

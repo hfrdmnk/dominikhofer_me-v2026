@@ -27,7 +27,7 @@ $readTime = $minutes > 0 ? $minutes . ' min read' : null;
     <img
       src="<?= $cover->resize(800)->url() ?>"
       alt=""
-      class="aspect-video w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      class="aspect-video w-full object-cover"
       loading="lazy"
     >
   </a>

@@ -8,14 +8,6 @@ $rssFeeds = $site->rss_feeds()->toStructure();
   class="relative m-auto w-full max-w-md rounded-big bg-bg-secondary p-0 shadow-xl backdrop:bg-black/50"
   data-follow-modal
 >
-  <!-- Copy success overlay -->
-  <div
-    class="pointer-events-none absolute inset-0 z-10 flex items-center justify-center bg-accent opacity-0 transition-opacity duration-300"
-    data-copy-overlay
-  >
-    <span class="font-mono text-sm font-medium text-white">Successfully copied to clipboard</span>
-  </div>
-
   <div class="p-6">
     <div class="mb-6 flex items-center justify-between">
       <h2 class="text-lg font-semibold text-primary">Follow</h2>

@@ -66,26 +66,18 @@
     });
 
     // RSS copy-to-clipboard
-    const copyOverlay = followModal.querySelector('[data-copy-overlay]');
     const rssCopyButtons = followModal.querySelectorAll('[data-rss-copy]');
 
     rssCopyButtons.forEach(button => {
       button.addEventListener('click', async () => {
         const url = button.dataset.rssUrl;
-        if (!url || !copyOverlay) return;
+        if (!url) return;
 
         try {
           await navigator.clipboard.writeText(url);
-
-          // Show overlay
-          copyOverlay.classList.add('opacity-100');
-
-          // Hide after delay
-          setTimeout(() => {
-            copyOverlay.classList.remove('opacity-100');
-          }, 1500);
+          showToast('RSS link copied to clipboard');
         } catch (err) {
-          // Fail silently - no prompt fallback
+          // Fail silently
         }
       });
     });
@@ -123,7 +115,7 @@
 
   function showToast(message) {
     const toast = document.createElement('div');
-    toast.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-gray-900 px-4 py-2 text-sm text-white shadow-lg';
+    toast.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-accent px-4 py-2 text-sm text-white shadow-lg';
     toast.textContent = message;
     document.body.appendChild(toast);
 
