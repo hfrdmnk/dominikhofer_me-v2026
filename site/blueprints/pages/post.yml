@@ -21,7 +21,15 @@ columns:
           body:
             label: Body
             type: textarea
+            required: true
             size: large
+            buttons:
+              - bold
+              - italic
+              - link
+              - file
+            files: page.files
+            uploads: true
 
   sidebar:
     width: 1/3

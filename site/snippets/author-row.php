@@ -3,10 +3,13 @@
  * Author row snippet
  * @param Kirby\Cms\Page $item - The content page
  * @param string|null $linkUrl - Optional URL to link the timestamp
+ * @param bool $relativeDate - Use relative date (true) or formatted date (false)
  */
 $profileImage = $site->author_image()->toFile();
 $linkUrl = $linkUrl ?? null;
+$relativeDate = $relativeDate ?? true;
 $tags = $item->tags()->isNotEmpty() ? $item->tags()->split() : [];
+$displayDate = $relativeDate ? $item->timeAgo() : $item->formattedDate();
 ?>
 <div class="flex items-center justify-between gap-3">
   <div class="flex items-center gap-3">
@@ -22,10 +25,10 @@ $tags = $item->tags()->isNotEmpty() ? $item->tags()->split() : [];
       <span class="font-medium text-primary text-sm"><?= $site->author_name() ?></span>
       <?php if ($linkUrl): ?>
       <a href="<?= $linkUrl ?>" class="font-mono text-muted hover:text-primary text-xs">
-        <time datetime="<?= $item->date()->toDate('c') ?>"><?= $item->timeAgo() ?></time>
+        <time datetime="<?= $item->date()->toDate('c') ?>"><?= $displayDate ?></time>
       </a>
       <?php else: ?>
-      <time datetime="<?= $item->date()->toDate('c') ?>" class="font-mono text-muted text-xs"><?= $item->timeAgo() ?></time>
+      <time datetime="<?= $item->date()->toDate('c') ?>" class="font-mono text-muted text-xs"><?= $displayDate ?></time>
       <?php endif ?>
     </div>
   </div>

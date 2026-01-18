@@ -40,6 +40,9 @@ columns:
               - bold
               - italic
               - link
+              - file
+            files: page.files
+            uploads: true
 
   sidebar:
     width: 1/3
