@@ -6,7 +6,7 @@ $currentFilter = $page->slug();
 <header>
   <div class="px-4">
     <div class="flex h-14 items-center justify-between">
-      <a href="<?= $site->url() ?>" class="font-semibold text-primary">
+      <a href="<?= $site->url() ?>" class="font-medium text-primary">
         <?= $site->author_name() ?>
       </a>
 

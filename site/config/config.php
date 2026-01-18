@@ -3,6 +3,11 @@
 return [
   'debug' => false,
 
+  // Enable Markdown Extra for footnotes support
+  'markdown' => [
+    'extra' => true
+  ],
+
   // Image processing: Replace originals on upload (2160px max, 80% quality, WebP)
   'hooks' => [
     'file.create:after' => function ($file) {

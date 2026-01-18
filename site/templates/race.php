@@ -11,21 +11,21 @@
 
     <div class="mt-6 grid grid-cols-3 gap-3">
       <div class="rounded-medium bg-accent-bg p-6 text-center">
-        <span class="block font-mono text-3xl font-semibold text-primary">
+        <span class="block font-mono text-3xl font-medium text-primary">
           <?= $page->distance() ?>
         </span>
         <span class="mt-2 block text-sm uppercase tracking-wide text-muted">km</span>
       </div>
 
       <div class="rounded-medium bg-accent-bg p-6 text-center">
-        <span class="block font-mono text-3xl font-semibold text-primary">
+        <span class="block font-mono text-3xl font-medium text-primary">
           <?= $page->time() ?>
         </span>
         <span class="mt-2 block text-sm uppercase tracking-wide text-muted">time</span>
       </div>
 
       <div class="rounded-medium bg-accent-bg p-6 text-center">
-        <span class="block font-mono text-3xl font-semibold text-primary">
+        <span class="block font-mono text-3xl font-medium text-primary">
           <?= $page->pace() ?>
         </span>
         <span class="mt-2 block text-sm uppercase tracking-wide text-muted">min/km</span>

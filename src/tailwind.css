@@ -51,6 +51,11 @@
   color: white;
 }
 
+/* Global prose font size */
+.prose {
+  font-size: 0.875rem; /* text-sm */
+}
+
 /* Card-specific prose sizing: text-sm base, text-base headings */
 .prose-card {
   font-size: 0.875rem; /* text-sm */
@@ -65,5 +70,50 @@
 
 .prose-card :is(h1, h2, h3, h4, h5, h6):first-child {
   margin-top: 0;
+}
+
+/* Footnotes styling */
+.prose .footnote-ref {
+  font-size: 0.75em;
+  color: var(--color-accent);
+  text-decoration: none;
+  background: none;
+}
+
+.prose .footnote-ref:hover {
+  text-decoration: underline;
+  background: none;
+}
+
+.prose .footnotes {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.875rem;
+  color: var(--color-secondary);
+}
+
+.prose .footnotes hr {
+  display: none;
+}
+
+.prose .footnotes ol {
+  padding-left: 1.25rem;
+}
+
+.prose .footnotes li {
+  margin-bottom: 0.5rem;
+}
+
+.prose .footnotes .footnote-backref {
+  color: var(--color-accent);
+  text-decoration: none;
+  margin-left: 0.25rem;
+  background: none;
+}
+
+.prose .footnotes .footnote-backref:hover {
+  text-decoration: underline;
+  background: none;
 }
 

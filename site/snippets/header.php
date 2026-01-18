@@ -31,7 +31,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
         >
         <?php endif ?>
         <div>
-          <h1 class="text-lg font-semibold text-primary"><?= $site->author_name() ?></h1>
+          <h1 class="text-lg font-medium text-primary"><?= $site->author_name() ?></h1>
           <?php if ($site->author_tagline()->isNotEmpty()): ?>
           <p class="text-sm text-muted"><?= $site->author_tagline() ?></p>
           <?php endif ?>

@@ -10,7 +10,7 @@ $rssFeeds = $site->rss_feeds()->toStructure();
 >
   <div class="p-6">
     <div class="mb-6 flex items-center justify-between">
-      <h2 class="text-lg font-semibold text-primary">Follow</h2>
+      <h2 class="text-lg font-medium text-primary">Follow</h2>
       <button
         type="button"
         class="text-muted transition-colors hover:text-primary"

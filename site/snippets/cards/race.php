@@ -9,28 +9,28 @@ $detailUrl = $item->url();
   <?php snippet('author-row', ['item' => $item]) ?>
 
   <a href="<?= $detailUrl ?>" class="mt-3 block">
-    <h2 class="text-base font-semibold text-primary hover:text-accent transition-colors">
+    <h2 class="text-base font-medium text-primary hover:text-accent transition-colors">
       <?= $item->title() ?>
     </h2>
   </a>
 
   <a href="<?= $detailUrl ?>" class="mt-4 grid grid-cols-3 gap-3">
     <div class="rounded-medium bg-accent p-4 text-center">
-      <span class="block font-mono text-xl font-semibold text-white">
+      <span class="block font-mono text-xl font-medium text-white">
         <?= $item->distance() ?>
       </span>
       <span class="mt-1 block text-base text-white/80">km</span>
     </div>
 
     <div class="rounded-medium bg-accent p-4 text-center">
-      <span class="block font-mono text-xl font-semibold text-white">
+      <span class="block font-mono text-xl font-medium text-white">
         <?= $item->time() ?>
       </span>
       <span class="mt-1 block text-base text-white/80">time</span>
     </div>
 
     <div class="rounded-medium bg-accent p-4 text-center">
-      <span class="block font-mono text-xl font-semibold text-white">
+      <span class="block font-mono text-xl font-medium text-white">
         <?= $item->pace() ?>
       </span>
       <span class="mt-1 block text-base text-white/80">min/km</span>

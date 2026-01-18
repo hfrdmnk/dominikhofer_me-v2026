@@ -16,7 +16,7 @@
           <?php snippet('icon', ['name' => 'back', 'class' => 'h-5 w-5']) ?>
         </button>
 
-        <h1 class="truncate text-base font-semibold text-primary">
+        <h1 class="truncate text-base font-medium text-primary">
           <?= $page->title() ?>
         </h1>
       </div>

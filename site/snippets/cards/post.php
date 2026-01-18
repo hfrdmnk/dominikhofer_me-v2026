@@ -12,7 +12,7 @@ $detailUrl = $item->url();
   <?php snippet('author-row', ['item' => $item]) ?>
 
   <a href="<?= $detailUrl ?>" class="mt-3 block">
-    <h2 class="text-base font-semibold text-primary hover:text-accent transition-colors">
+    <h2 class="text-base font-medium text-primary hover:text-accent transition-colors">
       <?= $item->title() ?>
     </h2>
   </a>
