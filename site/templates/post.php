@@ -21,7 +21,7 @@ $cover = $page->cover()->toFile();
     </div>
     <?php endif ?>
 
-    <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium mt-8 max-w-none">
+    <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium prose-img:rounded-small mt-8 max-w-none">
       <?= $page->body()->kirbytext() ?>
     </div>
 
