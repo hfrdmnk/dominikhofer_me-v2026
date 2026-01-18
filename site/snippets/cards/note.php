@@ -18,7 +18,7 @@ $detailUrl = $item->url() . '?from=' . urlencode($page->url());
 <article class="group">
   <?php snippet('author-row', ['item' => $item, 'linkUrl' => $detailUrl]) ?>
 
-  <div class="prose prose-neutral mt-3 max-w-none text-sm leading-relaxed text-secondary">
+  <div class="prose prose-neutral prose-card mt-3 max-w-none leading-relaxed text-secondary">
     <?= $item->body()->kt() ?>
   </div>
 
