@@ -6,8 +6,9 @@
 @source not "../kirby";
 
 @theme {
-  --font-mono: "Departure Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
-    Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono:
+    "Departure Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 
   --container-prose: 42rem;
 
@@ -19,7 +20,7 @@
   --color-border: oklch(92.3% 0.003 48.717);
   --color-primary: oklch(14.7% 0.004 49.25);
   --color-secondary: oklch(37.4% 0.01 67.558);
-  --color-muted: oklch(55.3% 0.013 58.071);
+  --color-muted: oklch(70.9% 0.01 56.259);
 
   --radius-big: 1rem;
   --radius-medium: 0.5rem;
@@ -37,7 +38,10 @@
   background-image: linear-gradient(var(--color-accent), var(--color-accent));
   background-repeat: no-repeat;
   background-size: 0% 100%;
-  transition: background-size 0.3s ease-in-out, text-decoration-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  transition:
+    background-size 0.3s ease-in-out,
+    text-decoration-color 0.3s ease-in-out,
+    color 0.3s ease-in-out;
 }
 
 .prose a:not(:has(svg), :has(img)):hover,
@@ -47,15 +51,3 @@
   color: white;
 }
 
-/* Share popover anchor positioning */
-[popovertarget^="share-"] {
-  anchor-name: --share-trigger;
-}
-
-[popover][id^="share-"] {
-  position-anchor: --share-trigger;
-  inset: unset;
-  top: anchor(bottom);
-  right: anchor(right);
-  margin-top: 0.5rem;
-}

@@ -298,8 +298,10 @@ function migratePosts() {
     fs.mkdirSync(destFolder, { recursive: true });
 
     // Copy image if exists
+    let imageCopied = false;
     if (data.visual) {
-      copyImage(data.visual, destFolder, 'cover' + path.extname(data.visual));
+      const copied = copyImage(data.visual, destFolder, 'cover' + path.extname(data.visual));
+      imageCopied = !!copied;
     }
 
     // Create content file
@@ -309,6 +311,7 @@ function migratePosts() {
       updated: data.lastUpdated ? formatDate(data.lastUpdated) : '',
       excerpt: data.excerpt || '',
       tags: formatTags(data.tags),
+      cover: imageCopied ? `- cover${path.extname(data.visual)}` : '',
       body: stripMdx(content),
     });
 
@@ -339,8 +342,10 @@ function migrateNewsletter() {
     fs.mkdirSync(destFolder, { recursive: true });
 
     // Copy image if exists
+    let imageCopied = false;
     if (data.visual) {
-      copyImage(data.visual, destFolder, 'cover' + path.extname(data.visual));
+      const copied = copyImage(data.visual, destFolder, 'cover' + path.extname(data.visual));
+      imageCopied = !!copied;
     }
 
     // Create content file
@@ -349,6 +354,7 @@ function migrateNewsletter() {
       date: formatDate(data.date),
       excerpt: data.excerpt || '',
       tags: 'tiny sparks',
+      cover: imageCopied ? `- cover${path.extname(data.visual)}` : '',
       body: stripMdx(content),
     });
 
