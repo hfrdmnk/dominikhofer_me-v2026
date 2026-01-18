@@ -3,6 +3,37 @@
 return [
   'debug' => false,
 
+  // Panel sidebar menu with quick access to content types
+  'panel' => [
+    'menu' => [
+      'site',
+      '-',
+      'posts' => [
+        'label' => 'Posts',
+        'link'  => 'pages/posts',
+        'icon'  => 'text'
+      ],
+      'notes' => [
+        'label' => 'Notes',
+        'link'  => 'pages/notes',
+        'icon'  => 'chat'
+      ],
+      'photos' => [
+        'label' => 'Photos',
+        'link'  => 'pages/photos',
+        'icon'  => 'image'
+      ],
+      'races' => [
+        'label' => 'Races',
+        'link'  => 'pages/races',
+        'icon'  => 'bolt'
+      ],
+      '-',
+      'users',
+      'system'
+    ]
+  ],
+
   // Enable Markdown Extra for footnotes support
   'markdown' => [
     'extra' => true
