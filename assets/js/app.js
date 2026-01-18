@@ -2,80 +2,80 @@
  * Site interactivity
  */
 
-(function() {
-  'use strict';
+(function () {
+  "use strict";
 
   // Mobile menu
-  const mobileMenu = document.querySelector('[data-mobile-menu]');
-  const menuTriggers = document.querySelectorAll('[data-mobile-menu-trigger]');
-  const menuClose = document.querySelector('[data-mobile-menu-close]');
-  const menuBackdrop = document.querySelector('[data-mobile-menu-backdrop]');
+  const mobileMenu = document.querySelector("[data-mobile-menu]");
+  const menuTriggers = document.querySelectorAll("[data-mobile-menu-trigger]");
+  const menuClose = document.querySelector("[data-mobile-menu-close]");
+  const menuBackdrop = document.querySelector("[data-mobile-menu-backdrop]");
 
   if (mobileMenu) {
     function openMenu() {
-      mobileMenu.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
+      mobileMenu.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
     }
 
     function closeMenu() {
-      mobileMenu.classList.add('hidden');
-      document.body.style.overflow = '';
+      mobileMenu.classList.add("hidden");
+      document.body.style.overflow = "";
     }
 
-    menuTriggers.forEach(trigger => {
-      trigger.addEventListener('click', openMenu);
+    menuTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", openMenu);
     });
 
     if (menuClose) {
-      menuClose.addEventListener('click', closeMenu);
+      menuClose.addEventListener("click", closeMenu);
     }
 
     if (menuBackdrop) {
-      menuBackdrop.addEventListener('click', closeMenu);
+      menuBackdrop.addEventListener("click", closeMenu);
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !mobileMenu.classList.contains("hidden")) {
         closeMenu();
       }
     });
   }
 
   // Follow modal
-  const followModal = document.querySelector('[data-follow-modal]');
-  const followTriggers = document.querySelectorAll('[data-follow-trigger]');
-  const followClose = document.querySelector('[data-follow-modal-close]');
+  const followModal = document.querySelector("[data-follow-modal]");
+  const followTriggers = document.querySelectorAll("[data-follow-trigger]");
+  const followClose = document.querySelector("[data-follow-modal-close]");
 
   if (followModal) {
-    followTriggers.forEach(trigger => {
-      trigger.addEventListener('click', () => {
+    followTriggers.forEach((trigger) => {
+      trigger.addEventListener("click", () => {
         followModal.showModal();
       });
     });
 
     if (followClose) {
-      followClose.addEventListener('click', () => {
+      followClose.addEventListener("click", () => {
         followModal.close();
       });
     }
 
-    followModal.addEventListener('click', (e) => {
+    followModal.addEventListener("click", (e) => {
       if (e.target === followModal) {
         followModal.close();
       }
     });
 
     // RSS copy-to-clipboard
-    const rssCopyButtons = followModal.querySelectorAll('[data-rss-copy]');
+    const rssCopyButtons = followModal.querySelectorAll("[data-rss-copy]");
 
-    rssCopyButtons.forEach(button => {
-      button.addEventListener('click', async () => {
+    rssCopyButtons.forEach((button) => {
+      button.addEventListener("click", async () => {
         const url = button.dataset.rssUrl;
         if (!url) return;
 
         try {
           await navigator.clipboard.writeText(url);
-          showToast('RSS link copied to clipboard');
+          showToast("RSS link copied to clipboard", followModal);
         } catch (err) {
           // Fail silently
         }
@@ -84,10 +84,10 @@
   }
 
   // Share button (Web Share API with fallback)
-  const shareButtons = document.querySelectorAll('[data-share-button]');
+  const shareButtons = document.querySelectorAll("[data-share-button]");
 
-  shareButtons.forEach(button => {
-    button.addEventListener('click', async () => {
+  shareButtons.forEach((button) => {
+    button.addEventListener("click", async () => {
       const title = button.dataset.shareTitle || document.title;
       const url = button.dataset.shareUrl || window.location.href;
 
@@ -95,7 +95,7 @@
         try {
           await navigator.share({ title, url });
         } catch (err) {
-          if (err.name !== 'AbortError') {
+          if (err.name !== "AbortError") {
             fallbackShare(url);
           }
         }
@@ -106,42 +106,62 @@
   });
 
   function fallbackShare(url) {
-    navigator.clipboard.writeText(url).then(() => {
-      showToast('Link copied to clipboard');
-    }).catch(() => {
-      window.prompt('Copy this link:', url);
-    });
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        showToast("Link copied to clipboard");
+      })
+      .catch(() => {
+        window.prompt("Copy this link:", url);
+      });
   }
 
-  function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-accent px-4 py-2 text-sm text-white shadow-lg';
-    toast.textContent = message;
-    document.body.appendChild(toast);
+  function showToast(message, container = null) {
+    const toast = document.createElement("div");
 
+    const baseClasses =
+      "rounded-lg bg-accent px-4 py-2 font-mono text-xs text-center text-white shadow-lg opacity-0 transition-opacity duration-300";
+
+    if (container) {
+      toast.className = `absolute bottom-4 left-1/2 -translate-x-1/2 ${baseClasses}`;
+      container.appendChild(toast);
+    } else {
+      toast.className = `fixed bottom-4 left-1/2 -translate-x-1/2 ${baseClasses}`;
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+
+    // Fade in
+    requestAnimationFrame(() => {
+      toast.classList.add("opacity-100");
+    });
+
+    // Fade out and remove
     setTimeout(() => {
-      toast.remove();
+      toast.classList.remove("opacity-100");
+      setTimeout(() => toast.remove(), 300);
     }, 2000);
   }
 
   // Copy link buttons in share popovers
-  document.querySelectorAll('[data-copy-link]').forEach(button => {
-    button.addEventListener('click', async () => {
+  document.querySelectorAll("[data-copy-link]").forEach((button) => {
+    button.addEventListener("click", async () => {
       const url = button.dataset.copyLink;
       if (!url) return;
 
       try {
         await navigator.clipboard.writeText(url);
-        showToast('Link copied to clipboard');
+        showToast("Link copied to clipboard");
 
         // Close the popover
-        const popover = button.closest('[popover]');
+        const popover = button.closest("[popover]");
         if (popover) {
           popover.hidePopover();
         }
       } catch (err) {
         // Fallback for older browsers
-        window.prompt('Copy this link:', url);
+        window.prompt("Copy this link:", url);
       }
     });
   });
