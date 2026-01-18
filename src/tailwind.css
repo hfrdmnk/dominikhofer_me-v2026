@@ -72,6 +72,10 @@
   margin-top: 0;
 }
 
+.prose-card img {
+  border-radius: var(--radius-small);
+}
+
 /* Footnotes styling */
 .prose .footnote-ref {
   font-size: 0.75em;
@@ -117,3 +121,15 @@
   background: none;
 }
 
+/* Responsive video embeds (YouTube, Vimeo) */
+.prose figure.video {
+  width: 100%;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.prose figure.video iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: theme(borderRadius.medium);
+}
