@@ -7,7 +7,7 @@
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
-    <?php snippet('author-row', ['item' => $page]) ?>
+    <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
 
     <div class="mt-6 grid grid-cols-3 gap-3">
       <div class="rounded-medium bg-accent-bg p-6 text-center">

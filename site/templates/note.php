@@ -16,7 +16,7 @@ for ($i = 1; $i <= 4; $i++) {
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
-    <?php snippet('author-row', ['item' => $page]) ?>
+    <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
 
     <div class="prose prose-neutral mt-6 max-w-none">
       <?= $page->body()->kt() ?>

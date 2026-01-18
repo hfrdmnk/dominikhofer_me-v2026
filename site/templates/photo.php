@@ -9,7 +9,7 @@ $image = $page->files()->first();
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
-    <?php snippet('author-row', ['item' => $page]) ?>
+    <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
 
     <?php if ($image): ?>
     <div class="mt-6 overflow-hidden rounded-medium">

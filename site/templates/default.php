@@ -7,7 +7,7 @@
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="mx-auto max-w-container-prose px-4 py-8">
-    <?php snippet('author-row', ['item' => $page]) ?>
+    <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
 
     <?php if ($page->text()->isNotEmpty()): ?>
     <div class="prose prose-neutral mt-8 max-w-none">

@@ -9,7 +9,7 @@ $cover = $page->cover()->toFile();
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
-    <?php snippet('author-row', ['item' => $page, 'showReadTime' => true]) ?>
+    <?php snippet('author-row', ['item' => $page, 'showReadTime' => true, 'relativeDate' => false]) ?>
 
     <?php if ($cover): ?>
     <div class="mt-6 overflow-hidden rounded-medium">
