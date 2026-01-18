@@ -41,4 +41,4 @@ columns:
           - Posts with #buildinpublic hashtag
 
           To manually sync, run:
-          `curl -X POST localhost:8000/api/bluesky/sync`
+          `curl -X POST {{ site.url }}/api/bluesky/sync`

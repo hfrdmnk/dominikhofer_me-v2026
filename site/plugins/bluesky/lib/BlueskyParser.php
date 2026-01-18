@@ -16,31 +16,54 @@ class BlueskyParser
     $text = $post['record']['text'] ?? '';
     $excludeDomains = option('dominik.bluesky.excludeDomains', ['bsky.app', 'dominikhofer.me']);
 
-    // Match lines that are just a URL
+    // Check 1: Lines in text that are full URLs (https://...)
     if (preg_match_all('/^(https?:\/\/[^\s]+)$/m', $text, $matches)) {
       foreach ($matches[1] as $url) {
         $host = parse_url($url, PHP_URL_HOST);
-        if ($host === null) continue;
-
-        // Remove www. prefix for comparison
-        $host = preg_replace('/^www\./', '', $host);
-
-        // Check if the host is not in excluded domains
-        $excluded = false;
-        foreach ($excludeDomains as $domain) {
-          if ($host === $domain || str_ends_with($host, '.' . $domain)) {
-            $excluded = true;
-            break;
-          }
-        }
-
-        if (!$excluded) {
+        if ($host && self::isAllowedDomain($host, $excludeDomains)) {
           return true;
         }
       }
     }
 
+    // Check 2: External embed where domain appears on its own line
+    $embed = $post['embed'] ?? null;
+    if ($embed && isset($embed['external']['uri'])) {
+      $embedHost = parse_url($embed['external']['uri'], PHP_URL_HOST);
+      if ($embedHost) {
+        $embedHost = preg_replace('/^www\./', '', $embedHost);
+
+        // Check if any line starts with this domain
+        $lines = explode("\n", $text);
+        foreach ($lines as $line) {
+          $line = trim($line);
+          // Match: domain/path or domain (line is just the domain with optional path)
+          if (preg_match('/^' . preg_quote($embedHost, '/') . '(\/\S*)?$/', $line)) {
+            if (self::isAllowedDomain($embedHost, $excludeDomains)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+
     return false;
+  }
+
+  /**
+   * Check if domain is not in excluded list
+   */
+  private static function isAllowedDomain(string $host, array $excludeDomains): bool
+  {
+    $host = preg_replace('/^www\./', '', $host);
+
+    foreach ($excludeDomains as $domain) {
+      if ($host === $domain || str_ends_with($host, '.' . $domain)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 
   /**
