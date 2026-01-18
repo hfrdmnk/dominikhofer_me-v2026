@@ -7,18 +7,38 @@ options:
   changeTemplate: false
   delete: false
 
-sections:
-  drafts:
-    type: pages
-    label: Drafts
-    status: draft
-    template: note
-    sortBy: date desc
-    info: "{{ page.date.toDate('M d, Y H:i') }}"
-  published:
-    type: pages
-    label: Published
-    status: listed
-    template: note
-    sortBy: date desc
-    info: "{{ page.date.toDate('M d, Y H:i') }}"
+columns:
+  main:
+    width: 2/3
+    sections:
+      drafts:
+        type: pages
+        label: Drafts
+        status: draft
+        template: note
+        sortBy: date desc
+        info: "{{ page.date.toDate('M d, Y H:i') }}"
+      published:
+        type: pages
+        label: Published
+        status: listed
+        template: note
+        sortBy: date desc
+        info: "{{ page.date.toDate('M d, Y H:i') }}"
+
+  sidebar:
+    width: 1/3
+    sections:
+      bluesky:
+        type: info
+        label: Bluesky Import
+        theme: info
+        text: |
+          Bluesky posts are automatically imported and cached for 1 hour.
+
+          Posts matching these criteria appear in the feed:
+          - Posts with a standalone link (not bsky.app or dominikhofer.me)
+          - Posts with #buildinpublic hashtag
+
+          To manually sync, run:
+          `curl -X POST localhost:8000/api/bluesky/sync`

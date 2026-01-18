@@ -3,6 +3,18 @@
 return [
   'debug' => false,
 
+  // Bluesky integration
+  'dominik.bluesky' => [
+    'did' => 'did:plc:fthx2gjakdj4ynxxu5vysjty',
+    'cacheTtl' => 60 * 60, // 1 hour
+    'excludeDomains' => ['bsky.app', 'dominikhofer.me'],
+  ],
+
+  // Enable Bluesky cache
+  'cache' => [
+    'bluesky' => true
+  ],
+
   // Panel sidebar menu with quick access to content types
   'panel' => [
     'menu' => [
