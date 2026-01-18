@@ -131,5 +131,5 @@
 .prose figure.video iframe {
   width: 100%;
   aspect-ratio: 16 / 9;
-  border-radius: theme(borderRadius.medium);
+  border-radius: var(--radius-medium);
 }
