@@ -8,7 +8,7 @@
   <?php snippet('author-row', ['item' => $item]) ?>
 
   <a href="<?= $item->url() ?>" class="mt-3 block">
-    <h2 class="text-base font-semibold text-primary group-hover:text-accent">
+    <h2 class="text-base font-semibold text-primary hover:text-accent transition-colors">
       <?= $item->title() ?>
     </h2>
   </a>

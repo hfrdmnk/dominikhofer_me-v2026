@@ -18,14 +18,14 @@ $tags = $item->tags()->isNotEmpty() ? $item->tags()->split() : [];
     >
     <?php endif ?>
 
-    <div class="flex items-center gap-2 text-xs">
-      <span class="font-medium text-primary"><?= $site->author_name() ?></span>
+    <div class="flex items-center gap-2 ">
+      <span class="font-medium text-primary text-sm"><?= $site->author_name() ?></span>
       <?php if ($linkUrl): ?>
-      <a href="<?= $linkUrl ?>" class="font-mono text-muted hover:text-primary">
+      <a href="<?= $linkUrl ?>" class="font-mono text-muted hover:text-primary text-xs">
         <time datetime="<?= $item->date()->toDate('c') ?>"><?= $item->timeAgo() ?></time>
       </a>
       <?php else: ?>
-      <time datetime="<?= $item->date()->toDate('c') ?>" class="font-mono text-muted"><?= $item->timeAgo() ?></time>
+      <time datetime="<?= $item->date()->toDate('c') ?>" class="font-mono text-muted text-xs"><?= $item->timeAgo() ?></time>
       <?php endif ?>
     </div>
   </div>
