@@ -9,7 +9,7 @@ $feed = $site->index()
   ->listed()
   ->filterBy('intendedTemplate', 'in', ['post', 'note', 'photo', 'race'])
   ->sortBy('date', 'desc')
-  ->paginate(20);
+  ->paginate(50);
 ?>
 <?php snippet('layouts/base', slots: true) ?>
   <div class="px-4 py-8">

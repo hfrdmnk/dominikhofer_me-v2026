@@ -18,7 +18,7 @@ for ($i = 1; $i <= 4; $i++) {
   <article class="px-4 py-8">
     <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
 
-    <div class="prose prose-neutral mt-6 max-w-none">
+    <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium mt-6 max-w-none">
       <?= $page->body()->kt() ?>
     </div>
 

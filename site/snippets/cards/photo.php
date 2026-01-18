@@ -5,7 +5,7 @@
  */
 $image = $item->files()->first();
 $location = $item->location()->isNotEmpty() ? $item->location()->value() : null;
-$detailUrl = $item->url() . '?from=' . urlencode($page->url());
+$detailUrl = $item->url();
 ?>
 <article class="group">
   <?php snippet('author-row', ['item' => $item]) ?>

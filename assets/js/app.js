@@ -165,4 +165,20 @@
       }
     });
   });
+
+  // Back button with history support
+  document.querySelectorAll("[data-back-button]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const fallbackUrl = btn.dataset.fallbackUrl;
+      const referrer = document.referrer;
+      const currentHost = window.location.host;
+
+      // Check if referrer is from our site (internal navigation)
+      if (referrer && new URL(referrer).host === currentHost) {
+        history.back();
+      } else {
+        window.location.href = fallbackUrl;
+      }
+    });
+  });
 })();

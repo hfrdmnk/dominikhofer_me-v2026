@@ -1,21 +1,20 @@
 <?php
 /** @var Kirby\Cms\Site $site */
 /** @var Kirby\Cms\Page $page */
-
-$from = get('from');
-$backUrl = $from ? url($from) : $site->url();
 ?>
 <header class="border-b border-border">
   <div class="px-4">
     <div class="flex min-h-14 items-center justify-between gap-4 py-3">
       <div class="flex min-w-0 items-center gap-3">
-        <a
-          href="<?= $backUrl ?>"
-          class="shrink-0 text-muted transition-colors hover:text-primary"
+        <button
+          type="button"
+          class="shrink-0 cursor-pointer text-muted transition-colors hover:text-primary"
           aria-label="Go back"
+          data-back-button
+          data-fallback-url="<?= $site->url() ?>"
         >
           <?php snippet('icon', ['name' => 'back', 'class' => 'h-5 w-5']) ?>
-        </a>
+        </button>
 
         <h1 class="truncate text-base font-semibold text-primary">
           <?= $page->title() ?>

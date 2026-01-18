@@ -3,7 +3,7 @@
  * Race card for feed
  * @param Kirby\Cms\Page $item - The race page
  */
-$detailUrl = $item->url() . '?from=' . urlencode($page->url());
+$detailUrl = $item->url();
 ?>
 <article class="group">
   <?php snippet('author-row', ['item' => $item]) ?>

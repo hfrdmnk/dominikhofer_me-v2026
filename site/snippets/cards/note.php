@@ -13,7 +13,7 @@ for ($i = 1; $i <= 4; $i++) {
   }
 }
 $mediaCount = count($mediaFiles);
-$detailUrl = $item->url() . '?from=' . urlencode($page->url());
+$detailUrl = $item->url();
 ?>
 <article class="group">
   <?php snippet('author-row', ['item' => $item, 'linkUrl' => $detailUrl]) ?>

@@ -6,7 +6,7 @@
 $cover = $item->cover()->toFile();
 $minutes = $item->body()->isNotEmpty() ? round(str_word_count(strip_tags($item->body()->kirbytext())) / 200) : 0;
 $readTime = $minutes > 0 ? $minutes . ' min read' : null;
-$detailUrl = $item->url() . '?from=' . urlencode($page->url());
+$detailUrl = $item->url();
 ?>
 <article class="group">
   <?php snippet('author-row', ['item' => $item]) ?>

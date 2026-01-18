@@ -8,7 +8,7 @@
 $feed = $page->children()
   ->listed()
   ->sortBy('date', 'desc')
-  ->paginate(20);
+  ->paginate(50);
 ?>
 <?php snippet('layouts/base', slots: true) ?>
   <div class="px-4 py-8">
