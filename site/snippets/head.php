@@ -9,7 +9,7 @@
 <meta name="description" content="<?= $site->author_bio()->excerpt(160)->escape() ?>">
 <?php endif ?>
 
-<link rel="icon" href="<?= url('assets/icons/logo.svg') ?>" type="image/svg+xml">
+<link rel="icon" href="<?= url('assets/icons/favicon.svg') ?>" type="image/svg+xml">
 <link rel="canonical" href="<?= $page->url() ?>">
 
 <meta property="og:title" content="<?= $page->title()->escape() ?>">
