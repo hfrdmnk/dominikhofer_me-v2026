@@ -17,14 +17,14 @@ $displayDate = $relativeDate ? $item->timeAgo() : $item->formattedDate();
     <img
       src="<?= $profileImage->crop(64, 64)->url() ?>"
       alt="<?= $site->author_name() ?>"
-      class="h-8 w-8 rounded-medium object-cover"
+      class="h-8 w-8 rounded-small object-cover"
     >
     <?php endif ?>
 
     <div class="flex items-center gap-2 ">
       <span class="font-medium text-primary text-sm"><?= $site->author_name() ?></span>
       <?php if ($linkUrl): ?>
-      <a href="<?= $linkUrl ?>" class="font-mono text-muted hover:text-primary text-xs">
+      <a href="<?= $linkUrl ?>" class="font-mono text-muted hover:text-accent transition-colors text-xs">
         <time datetime="<?= $item->date()->toDate('c') ?>"><?= $displayDate ?></time>
       </a>
       <?php else: ?>

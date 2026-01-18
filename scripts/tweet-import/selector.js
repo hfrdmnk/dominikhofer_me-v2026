@@ -73,17 +73,19 @@ function displayTweet(tweet, index, total, selectedCount, isDeselected) {
   clearScreen();
 
   // Header line
-  const positionStr = `Tweet ${index + 1}/${total}`;
+  const typeStr = tweet.isThread ? 'Thread' : 'Tweet';
+  const positionStr = `${typeStr} ${index + 1}/${total}`;
   const selectedStr = `Selected: ${selectedCount}`;
   const padding = width - positionStr.length - selectedStr.length;
   console.log(positionStr + ' '.repeat(Math.max(padding, 2)) + selectedStr);
 
   console.log(divider);
 
-  // Date and media indicator
+  // Date and indicators
   const mediaIndicator = tweet.hasMedia ? '[📷]' : '';
+  const threadIndicator = tweet.isThread ? `[🧵${tweet.tweetCount}]` : '';
   const selectIndicator = isDeselected ? '[✗]' : '';
-  const indicators = [selectIndicator, mediaIndicator].filter(Boolean).join(' ');
+  const indicators = [selectIndicator, threadIndicator, mediaIndicator].filter(Boolean).join(' ');
   const datePadding = width - tweet.displayDate.length - indicators.length;
   console.log(tweet.displayDate + ' '.repeat(Math.max(datePadding, 2)) + indicators);
 
@@ -108,7 +110,7 @@ async function runSelector() {
   const tweets = loadTweets();
   const state = loadState();
 
-  console.log(`Found ${tweets.length} top-level tweets.`);
+  console.log(`Found ${tweets.length} tweets/threads.`);
   console.log(`Starting from position ${state.position + 1}, ${tweets.length - (state.deselected?.length || 0)} selected.`);
   console.log('Press any key to start...');
 

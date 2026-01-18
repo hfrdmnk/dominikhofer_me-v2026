@@ -5,12 +5,13 @@
  */
 $image = $item->files()->first();
 $location = $item->location()->isNotEmpty() ? $item->location()->value() : null;
+$detailUrl = $item->url() . '?from=' . urlencode($page->url());
 ?>
 <article class="group">
   <?php snippet('author-row', ['item' => $item]) ?>
 
   <?php if ($image): ?>
-  <a href="<?= $item->url() ?>" class="mt-4 block overflow-hidden rounded-medium">
+  <a href="<?= $detailUrl ?>" class="mt-4 block overflow-hidden rounded-medium">
     <img
       src="<?= $image->resize(800)->url() ?>"
       alt=""

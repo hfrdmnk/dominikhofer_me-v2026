@@ -2,7 +2,8 @@
 /** @var Kirby\Cms\Site $site */
 /** @var Kirby\Cms\Page $page */
 
-$backUrl = $page->parent()?->url() ?? $site->url();
+$from = get('from');
+$backUrl = $from ? url($from) : $site->url();
 ?>
 <header class="border-b border-border">
   <div class="px-4">

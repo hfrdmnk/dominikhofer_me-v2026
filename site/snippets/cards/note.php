@@ -13,16 +13,17 @@ for ($i = 1; $i <= 4; $i++) {
   }
 }
 $mediaCount = count($mediaFiles);
+$detailUrl = $item->url() . '?from=' . urlencode($page->url());
 ?>
 <article class="group">
-  <?php snippet('author-row', ['item' => $item, 'linkUrl' => $item->url()]) ?>
+  <?php snippet('author-row', ['item' => $item, 'linkUrl' => $detailUrl]) ?>
 
   <div class="prose prose-neutral mt-3 max-w-none text-sm leading-relaxed text-secondary">
     <?= $item->body()->kt() ?>
   </div>
 
   <?php if ($mediaCount > 0): ?>
-  <a href="<?= $item->url() ?>" class="mt-4 block overflow-hidden rounded-medium">
+  <a href="<?= $detailUrl ?>" class="mt-4 block overflow-hidden rounded-medium">
     <?php if ($mediaCount === 1): ?>
       <?php $file = $mediaFiles[0]; ?>
       <?php if ($file->type() === 'video'): ?>

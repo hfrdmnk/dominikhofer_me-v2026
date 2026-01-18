@@ -4,6 +4,7 @@ const path = require('path');
 const TWITTER_EXPORT = 'TWITTER_EXPORT_PATH';
 const TWEETS_FILE = path.join(TWITTER_EXPORT, 'data/tweets.js');
 const MEDIA_FOLDER = path.join(TWITTER_EXPORT, 'data/tweets_media');
+const MY_USER_ID = '960963811636404225';
 
 /**
  * Parse Twitter export tweets.js file
@@ -15,25 +16,6 @@ function parseTweetsFile() {
   const jsonStr = content.replace(/^window\.YTD\.tweets\.part0\s*=\s*/, '');
   const tweets = JSON.parse(jsonStr);
   return tweets.map(t => t.tweet);
-}
-
-/**
- * Filter to only top-level tweets (not replies or retweets)
- * @param {Array} tweets - All tweets
- * @returns {Array} Top-level tweets only
- */
-function filterTopLevel(tweets) {
-  return tweets.filter(tweet => {
-    // Exclude replies
-    if (tweet.in_reply_to_status_id || tweet.in_reply_to_status_id_str) {
-      return false;
-    }
-    // Exclude retweets (start with "RT @")
-    if (tweet.full_text.startsWith('RT @')) {
-      return false;
-    }
-    return true;
-  });
 }
 
 /**
@@ -51,7 +33,6 @@ function findMediaFiles(tweetId) {
 
 /**
  * Parse Twitter date format to Date object
- * Example: "Mon Jun 10 08:40:19 +0000 2024"
  * @param {string} dateStr - Twitter date string
  * @returns {Date}
  */
@@ -62,7 +43,7 @@ function parseTwitterDate(dateStr) {
 /**
  * Format Date to human readable (for display)
  * @param {Date} date
- * @returns {string} e.g. "Feb 16, 2024"
+ * @returns {string}
  */
 function formatDisplayDate(date) {
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -73,7 +54,7 @@ function formatDisplayDate(date) {
 /**
  * Format Date for Kirby content file
  * @param {Date} date
- * @returns {string} e.g. "2024-02-16 14:30:00"
+ * @returns {string}
  */
 function formatKirbyDate(date) {
   const year = date.getFullYear();
@@ -88,7 +69,7 @@ function formatKirbyDate(date) {
 /**
  * Format Date for folder prefix
  * @param {Date} date
- * @returns {string} e.g. "20240216"
+ * @returns {string}
  */
 function formatDatePrefix(date) {
   const year = date.getFullYear();
@@ -100,7 +81,7 @@ function formatDatePrefix(date) {
 /**
  * Clean tweet text (expand t.co URLs and remove media links)
  * @param {Object} tweet - Tweet object
- * @returns {string} Cleaned text
+ * @returns {string}
  */
 function cleanTweetText(tweet) {
   let text = tweet.full_text;
@@ -123,55 +104,186 @@ function cleanTweetText(tweet) {
   text = text.replace(/twitter\.com/g, 'xcancel.com');
   text = text.replace(/x\.com/g, 'xcancel.com');
 
-  return text;
+  return text.trim();
 }
 
 /**
- * Transform raw tweet into simplified format
+ * Check if a tweet is a reply to yourself (part of a thread)
  * @param {Object} tweet - Raw tweet object
- * @returns {Object} Simplified tweet
+ * @returns {boolean}
  */
-function transformTweet(tweet) {
-  const date = parseTwitterDate(tweet.created_at);
-  const mediaFiles = findMediaFiles(tweet.id_str);
+function isReplyToSelf(tweet) {
+  return tweet.in_reply_to_user_id_str === MY_USER_ID;
+}
+
+/**
+ * Check if a tweet is a reply to someone else
+ * @param {Object} tweet - Raw tweet object
+ * @returns {boolean}
+ */
+function isReplyToOthers(tweet) {
+  return tweet.in_reply_to_status_id_str && !isReplyToSelf(tweet);
+}
+
+/**
+ * Check if a tweet is a retweet
+ * @param {Object} tweet - Raw tweet object
+ * @returns {boolean}
+ */
+function isRetweet(tweet) {
+  return tweet.full_text.startsWith('RT @');
+}
+
+/**
+ * Build threads from all tweets
+ * Groups connected tweets where you replied to yourself
+ * @param {Array} allTweets - All raw tweets
+ * @returns {Array} Array of thread objects
+ */
+function buildThreads(allTweets) {
+  // Create a map of tweet ID to tweet
+  const tweetMap = new Map();
+  for (const tweet of allTweets) {
+    tweetMap.set(tweet.id_str, tweet);
+  }
+
+  // Track which tweets are part of a thread (as non-first tweets)
+  const usedInThread = new Set();
+
+  // Build threads: find chains where you replied to yourself
+  const threads = [];
+
+  for (const tweet of allTweets) {
+    // Skip retweets
+    if (isRetweet(tweet)) continue;
+
+    // Skip replies to others
+    if (isReplyToOthers(tweet)) continue;
+
+    // Skip if this tweet is already used as a continuation of another thread
+    if (usedInThread.has(tweet.id_str)) continue;
+
+    // This is either a standalone tweet or the START of a thread
+    // A tweet starts a thread if it's not a reply to self
+    if (isReplyToSelf(tweet)) continue;
+
+    // Find all replies that continue this thread
+    const threadTweets = [tweet];
+    let currentTweetId = tweet.id_str;
+
+    // Look for replies to this tweet (and subsequent replies)
+    let foundContinuation = true;
+    while (foundContinuation) {
+      foundContinuation = false;
+      for (const candidate of allTweets) {
+        if (candidate.in_reply_to_status_id_str === currentTweetId && isReplyToSelf(candidate)) {
+          threadTweets.push(candidate);
+          usedInThread.add(candidate.id_str);
+          currentTweetId = candidate.id_str;
+          foundContinuation = true;
+          break;
+        }
+      }
+    }
+
+    threads.push(threadTweets);
+  }
+
+  return threads;
+}
+
+/**
+ * Transform a thread (array of tweets) into a unified thread object
+ * @param {Array} tweets - Array of raw tweets in chronological order (first tweet first)
+ * @returns {Object} Thread object
+ */
+function transformThread(tweets) {
+  const firstTweet = tweets[0];
+  const date = parseTwitterDate(firstTweet.created_at);
+
+  // Collect all media files from all tweets
+  const allMediaFiles = [];
+  const firstTweetMedia = findMediaFiles(firstTweet.id_str);
+
+  for (const tweet of tweets) {
+    const media = findMediaFiles(tweet.id_str);
+    allMediaFiles.push(...media);
+  }
+
+  // Build combined text with separators
+  let combinedText;
+  if (tweets.length === 1) {
+    combinedText = cleanTweetText(firstTweet);
+  } else {
+    const textParts = [];
+    for (let i = 0; i < tweets.length; i++) {
+      const tweet = tweets[i];
+      let text = cleanTweetText(tweet);
+
+      // For non-first tweets, add inline images for their media
+      if (i > 0) {
+        const tweetMedia = findMediaFiles(tweet.id_str);
+        for (const mediaPath of tweetMedia) {
+          const filename = path.basename(mediaPath).replace(`${tweet.id_str}-`, '');
+          text += `\n\n(image: ${filename})`;
+        }
+      }
+
+      textParts.push(text);
+    }
+    combinedText = textParts.join('\n\n---\n\n');
+  }
 
   return {
-    id: tweet.id_str,
-    text: cleanTweetText(tweet),
-    rawText: tweet.full_text,
+    id: firstTweet.id_str,
+    isThread: tweets.length > 1,
+    tweetCount: tweets.length,
+    tweetIds: tweets.map(t => t.id_str),
+    text: combinedText,
     date: date,
     displayDate: formatDisplayDate(date),
     kirbyDate: formatKirbyDate(date),
     datePrefix: formatDatePrefix(date),
-    hasMedia: mediaFiles.length > 0,
-    mediaFiles: mediaFiles,
+    hasMedia: allMediaFiles.length > 0,
+    mediaFiles: allMediaFiles,
+    firstTweetMedia: firstTweetMedia,
   };
 }
 
 /**
- * Load and parse all top-level tweets
- * @returns {Array} Array of simplified tweet objects
+ * Load and parse all tweets, grouped into threads
+ * @returns {Array} Array of thread objects (single tweets are threads of 1)
  */
 function loadTweets() {
   const allTweets = parseTweetsFile();
-  const topLevel = filterTopLevel(allTweets);
+  const threads = buildThreads(allTweets);
+
+  // Transform each thread
+  const transformed = threads.map(transformThread);
 
   // Sort by date (newest first)
-  const sorted = topLevel.sort((a, b) => {
-    const dateA = parseTwitterDate(a.created_at);
-    const dateB = parseTwitterDate(b.created_at);
-    return dateB - dateA;
-  });
+  transformed.sort((a, b) => b.date - a.date);
 
-  return sorted.map(transformTweet);
+  return transformed;
+}
+
+/**
+ * Load all raw tweets (for debugging/inspection)
+ * @returns {Array} Array of raw tweet objects
+ */
+function loadAllRawTweets() {
+  return parseTweetsFile();
 }
 
 module.exports = {
   loadTweets,
+  loadAllRawTweets,
   parseTwitterDate,
   formatDisplayDate,
   formatKirbyDate,
   formatDatePrefix,
+  findMediaFiles,
   TWITTER_EXPORT,
   MEDIA_FOLDER,
+  MY_USER_ID,
 };

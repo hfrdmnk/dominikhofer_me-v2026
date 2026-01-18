@@ -3,17 +3,18 @@
  * Race card for feed
  * @param Kirby\Cms\Page $item - The race page
  */
+$detailUrl = $item->url() . '?from=' . urlencode($page->url());
 ?>
 <article class="group">
   <?php snippet('author-row', ['item' => $item]) ?>
 
-  <a href="<?= $item->url() ?>" class="mt-3 block">
+  <a href="<?= $detailUrl ?>" class="mt-3 block">
     <h2 class="text-base font-semibold text-primary hover:text-accent transition-colors">
       <?= $item->title() ?>
     </h2>
   </a>
 
-  <a href="<?= $item->url() ?>" class="mt-4 grid grid-cols-3 gap-3">
+  <a href="<?= $detailUrl ?>" class="mt-4 grid grid-cols-3 gap-3">
     <div class="rounded-medium bg-accent p-4 text-center">
       <span class="block font-mono text-xl font-semibold text-white">
         <?= $item->distance() ?>

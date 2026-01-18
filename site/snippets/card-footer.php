@@ -45,7 +45,7 @@ $blueskyUrl = 'https://bsky.app/intent/compose?text=' . urlencode($shareTitle . 
       </a>
       <button
         data-copy-link="<?= $shareUrl ?>"
-        class="block w-full rounded-small px-3 py-2 text-left text-sm text-secondary hover:text-accent transition-colors"
+        class="block w-full rounded-small px-3 py-2 text-left text-sm text-secondary hover:text-accent transition-colors cursor-pointer"
       >
         Copy link
       </button>
