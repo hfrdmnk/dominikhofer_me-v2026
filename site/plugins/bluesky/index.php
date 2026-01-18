@@ -17,6 +17,27 @@ Kirby::plugin('dominik/bluesky', [
     'excludeDomains' => ['bsky.app', 'dominikhofer.me'],
   ],
 
+  'sections' => [
+    'bluesky' => [
+      'props' => [
+        'label' => function ($label = 'Bluesky Import') {
+          return $label;
+        }
+      ],
+      'computed' => [
+        'lastSync' => function () {
+          $cache = kirby()->cache('bluesky');
+          return $cache->get('lastSync');
+        },
+        'postCount' => function () {
+          $cache = kirby()->cache('bluesky');
+          $data = $cache->get('posts');
+          return $data !== null ? count($data) : 0;
+        }
+      ]
+    ]
+  ],
+
   'api' => [
     'routes' => [
       [
