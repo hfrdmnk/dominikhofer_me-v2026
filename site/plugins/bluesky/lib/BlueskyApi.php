@@ -38,7 +38,8 @@ class BlueskyApi
       if (isset($response['feed'])) {
         foreach ($response['feed'] as $feedItem) {
           if (isset($feedItem['post'])) {
-            $allPosts[] = $feedItem['post'];
+            // Keep full feed item to preserve 'reason' (repost info) and 'reply' context
+            $allPosts[] = $feedItem;
           }
         }
       }

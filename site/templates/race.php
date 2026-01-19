@@ -7,7 +7,9 @@
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
-    <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
+    <div class="grid grid-cols-[2rem_1fr] gap-x-3">
+      <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
+    </div>
 
     <div class="mt-6 grid grid-cols-3 gap-3">
       <div class="rounded-small border border-accent bg-accent/20 p-6 text-center">
@@ -33,7 +35,7 @@
     </div>
 
     <?php if ($page->location()->isNotEmpty()): ?>
-    <p class="mt-6 text-sm text-muted">
+    <p class="mt-6 font-mono text-sm text-muted">
       <?= $page->location() ?>
     </p>
     <?php endif ?>

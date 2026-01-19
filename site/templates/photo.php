@@ -9,7 +9,9 @@ $image = $page->files()->first();
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
-    <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
+    <div class="grid grid-cols-[2rem_1fr] gap-x-3">
+      <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
+    </div>
 
     <?php if ($image): ?>
     <div class="mt-6 overflow-hidden rounded-medium">
@@ -23,7 +25,7 @@ $image = $page->files()->first();
     <div class="mt-4 flex items-center justify-between text-sm text-muted">
       <div class="flex items-center gap-4">
         <?php if ($page->location()->isNotEmpty()): ?>
-        <span><?= $page->location() ?></span>
+        <span class="font-mono"><?= $page->location() ?></span>
         <?php endif ?>
       </div>
     </div>

@@ -4,6 +4,13 @@
  * @param Kirby\Cms\Page $item - The note page
  */
 
+// Check if this is a thread (body contains separator)
+$bodyContent = $item->body()->value();
+$bodyParts = explode("\n\n---\n\n", $bodyContent);
+$firstPost = $bodyParts[0];
+$hasThread = count($bodyParts) > 1;
+$threadCount = $item->thread_count()->or(count($bodyParts))->value();
+
 // Collect local media files
 $mediaFiles = [];
 for ($i = 1; $i <= 4; $i++) {
@@ -38,7 +45,15 @@ $detailUrl = $item->url();
   <?php snippet('author-row', ['item' => $item, 'linkUrl' => $detailUrl]) ?>
 
   <div class="col-start-2 prose prose-neutral prose-card mt-2 max-w-none leading-relaxed text-secondary">
-    <?= $item->body()->kt() ?>
+    <?= kirbytext($firstPost) ?>
+    <?php if ($hasThread): ?>
+    <a href="<?= $detailUrl ?>" class="mt-2 inline-flex items-center gap-1 text-sm text-accent no-underline hover:underline">
+      <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      Show thread (<?= $threadCount ?> posts)
+    </a>
+    <?php endif ?>
   </div>
 
   <?php if ($hasLocalMedia): ?>

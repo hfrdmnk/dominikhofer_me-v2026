@@ -5,6 +5,11 @@
  * @var Kirby\Cms\Site $site
  */
 
+// Check if this is a thread (body contains separator)
+$bodyContent = $page->body()->value();
+$bodyParts = explode("\n\n---\n\n", $bodyContent);
+$isThread = count($bodyParts) > 1;
+
 // Collect local media files
 $mediaFiles = [];
 for ($i = 1; $i <= 4; $i++) {
@@ -34,10 +39,21 @@ $hasRemoteMedia = count($remoteMedia) > 0;
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
-    <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
+    <div class="grid grid-cols-[2rem_1fr] gap-x-3">
+      <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
+    </div>
 
     <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium prose-img:rounded-small mt-6 max-w-none">
-      <?= $page->body()->kt() ?>
+      <?php if ($isThread): ?>
+        <?php foreach ($bodyParts as $index => $part): ?>
+          <?php if ($index > 0): ?>
+          <hr class="my-6 border-tertiary">
+          <?php endif ?>
+          <?= kirbytext($part) ?>
+        <?php endforeach ?>
+      <?php else: ?>
+        <?= $page->body()->kt() ?>
+      <?php endif ?>
     </div>
 
     <?php if ($hasLocalMedia): ?>

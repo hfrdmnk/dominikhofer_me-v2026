@@ -98,22 +98,129 @@ class BlueskyParser
 
     return [
       'text' => $text,
-      'tags' => $tags
+      'tags' => $tags,
+      'trailingStart' => $offset ?? strlen($text)
     ];
   }
 
   /**
-   * Check if post should be imported (matches filter criteria)
+   * Apply facets (links, mentions, hashtags) to text
+   * Returns HTML-formatted text with clickable links
+   *
+   * @param string $text The original post text
+   * @param array $facets The facets array from the post record
+   * @param int $trailingHashtagStart Byte offset where trailing hashtags begin (skip hashtag facets after this)
    */
-  public static function shouldImport(array $post): bool
+  public static function applyFacets(string $text, array $facets, int $trailingHashtagStart): string
   {
-    // Skip replies (posts that are in reply to someone else)
-    if (isset($post['record']['reply'])) {
-      return false;
+    if (empty($facets)) {
+      return $text;
     }
 
-    // Skip reposts
-    if (isset($post['record']['$type']) && $post['record']['$type'] === 'app.bsky.feed.repost') {
+    // Sort facets by byteStart descending (process from end to avoid offset shifts)
+    usort($facets, function ($a, $b) {
+      return ($b['index']['byteStart'] ?? 0) - ($a['index']['byteStart'] ?? 0);
+    });
+
+    foreach ($facets as $facet) {
+      $byteStart = $facet['index']['byteStart'] ?? null;
+      $byteEnd = $facet['index']['byteEnd'] ?? null;
+      $features = $facet['features'] ?? [];
+
+      // Validate bounds
+      if ($byteStart === null || $byteEnd === null) {
+        continue;
+      }
+      if ($byteStart >= strlen($text) || $byteEnd > strlen($text)) {
+        continue;
+      }
+      if ($byteStart < 0 || $byteEnd <= $byteStart) {
+        continue;
+      }
+
+      // Get the first feature (multiple features per facet is rare)
+      $feature = $features[0] ?? null;
+      if (!$feature) {
+        continue;
+      }
+
+      $type = $feature['$type'] ?? '';
+      $segment = substr($text, $byteStart, $byteEnd - $byteStart);
+
+      // Skip trailing hashtag facets (they become page tags, not inline links)
+      if ($type === 'app.bsky.richtext.facet#tag' && $byteStart >= $trailingHashtagStart) {
+        continue;
+      }
+
+      $replacement = null;
+
+      switch ($type) {
+        case 'app.bsky.richtext.facet#link':
+          $uri = $feature['uri'] ?? '';
+          if ($uri) {
+            // Check if this is a YouTube URL - render as Kirby video tag
+            if (self::isYouTubeUrl($uri)) {
+              $replacement = "\n\n(video: " . $uri . ")\n\n";
+            } else {
+              $replacement = '<a href="' . htmlspecialchars($uri, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">' .
+                            htmlspecialchars($segment, ENT_QUOTES, 'UTF-8') . '</a>';
+            }
+          }
+          break;
+
+        case 'app.bsky.richtext.facet#mention':
+          $did = $feature['did'] ?? '';
+          if ($did) {
+            $replacement = '<a href="https://bsky.app/profile/' . htmlspecialchars($did, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">' .
+                          htmlspecialchars($segment, ENT_QUOTES, 'UTF-8') . '</a>';
+          }
+          break;
+
+        case 'app.bsky.richtext.facet#tag':
+          $tag = $feature['tag'] ?? '';
+          if ($tag) {
+            $replacement = '<a href="https://bsky.app/hashtag/' . htmlspecialchars($tag, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">' .
+                          htmlspecialchars($segment, ENT_QUOTES, 'UTF-8') . '</a>';
+          }
+          break;
+      }
+
+      if ($replacement !== null) {
+        $text = substr($text, 0, $byteStart) . $replacement . substr($text, $byteEnd);
+      }
+    }
+
+    return $text;
+  }
+
+  /**
+   * Check if this is a repost (by checking feed item reason)
+   */
+  public static function isRepost(array $feedItem): bool
+  {
+    return isset($feedItem['reason']['$type']) &&
+           $feedItem['reason']['$type'] === 'app.bsky.feed.defs#reasonRepost';
+  }
+
+  /**
+   * Check if URL is a YouTube URL
+   */
+  private static function isYouTubeUrl(string $url): bool
+  {
+    return (bool) preg_match('/youtu\.?be/i', $url);
+  }
+
+  /**
+   * Check if feed item should be imported (matches filter criteria)
+   * Accepts full feed item (with 'post', 'reason', 'reply' fields)
+   */
+  public static function shouldImport(array $feedItem): bool
+  {
+    $post = $feedItem['post'] ?? $feedItem;
+
+    // Skip replies (posts that are replies to someone else, unless it's a repost)
+    // For reposts, we import based on the original post's criteria
+    if (!self::isRepost($feedItem) && isset($post['record']['reply'])) {
       return false;
     }
 
@@ -121,10 +228,14 @@ class BlueskyParser
   }
 
   /**
-   * Transform a Bluesky post to Kirby page data
+   * Transform a Bluesky feed item to Kirby page data
+   * Accepts full feed item (with 'post', 'reason', 'reply' fields)
    */
-  public static function toPageData(array $post): array
+  public static function toPageData(array $feedItem): array
   {
+    $post = $feedItem['post'] ?? $feedItem;
+    $isRepost = self::isRepost($feedItem);
+
     $rkey = BlueskyApi::extractRkey($post['uri']);
     $createdAt = $post['record']['createdAt'] ?? $post['indexedAt'] ?? date('c');
     $date = new DateTime($createdAt);
@@ -132,6 +243,27 @@ class BlueskyParser
     // Extract text and trailing hashtags
     $text = $post['record']['text'] ?? '';
     $extracted = self::extractTrailingHashtags($text);
+
+    // Apply facets (links, mentions, inline hashtags) to the text
+    $facets = $post['record']['facets'] ?? [];
+    $bodyText = self::applyFacets($text, $facets, $extracted['trailingStart']);
+
+    // Remove trailing hashtags from the facet-applied text
+    // We need to strip them since they're converted to tags
+    $bodyText = self::stripTrailingHashtags($bodyText, $extracted['tags']);
+
+    // Add repost prefix if this is a repost (show original author, not reposter)
+    if ($isRepost) {
+      $originalAuthor = $post['author'] ?? [];
+      $handle = $originalAuthor['handle'] ?? '';
+      $did = $originalAuthor['did'] ?? '';
+      if ($handle && $did) {
+        $repostPrefix = 'Reposting <a href="https://bsky.app/profile/' .
+                       htmlspecialchars($did, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">@' .
+                       htmlspecialchars($handle, ENT_QUOTES, 'UTF-8') . '</a>' . "\n\n";
+        $bodyText = $repostPrefix . $bodyText;
+      }
+    }
 
     // Build tags array: always include 'bluesky', plus extracted hashtags
     $tags = array_merge(['bluesky'], $extracted['tags']);
@@ -149,11 +281,26 @@ class BlueskyParser
         'title' => $rkey,
         'date' => $date->format('Y-m-d H:i:s'),
         'tags' => implode(', ', $tags),
-        'body' => $extracted['text'],
+        'body' => $bodyText,
         'uuid' => 'bluesky://' . $rkey,
         'media_urls' => implode(', ', $mediaUrls),
       ]
     ];
+  }
+
+  /**
+   * Strip trailing hashtags from text (after facets have been applied)
+   */
+  private static function stripTrailingHashtags(string $text, array $tagsToRemove): string
+  {
+    if (empty($tagsToRemove)) {
+      return $text;
+    }
+
+    // Build pattern to match trailing hashtags (with or without links)
+    // This handles both plain hashtags and linked hashtags like <a href="...">hashtag</a>
+    $pattern = '/(\s*(?:<a[^>]*>)?#(' . implode('|', array_map('preg_quote', $tagsToRemove)) . ')(?:<\/a>)?)+\s*$/i';
+    return preg_replace($pattern, '', $text);
   }
 
   /**
@@ -195,18 +342,145 @@ class BlueskyParser
   }
 
   /**
-   * Filter and transform posts for import
+   * Filter and transform feed items for import, with thread support
    */
-  public static function filterAndTransform(array $posts): array
+  public static function filterAndTransform(array $feedItems): array
   {
     $result = [];
+    $threads = [];
+    $processedRoots = [];
 
-    foreach ($posts as $post) {
-      if (self::shouldImport($post)) {
-        $result[] = self::toPageData($post);
+    // Get user's own DID for filtering self-replies
+    $userDid = option('dominik.bluesky.did', '');
+
+    // First pass: group posts by thread root
+    foreach ($feedItems as $feedItem) {
+      $post = $feedItem['post'] ?? $feedItem;
+      $postUri = $post['uri'] ?? '';
+      $authorDid = $post['author']['did'] ?? '';
+
+      // Determine thread root URI
+      $replyRoot = $post['record']['reply']['root']['uri'] ?? null;
+      $rootUri = $replyRoot ?? $postUri;
+
+      // For reposts, treat them as standalone (don't group into threads)
+      if (self::isRepost($feedItem)) {
+        if (self::shouldImport($feedItem)) {
+          $result[] = self::toPageData($feedItem);
+        }
+        continue;
       }
+
+      // Only consider replies to self (author threads)
+      // Skip replies to other users
+      if (isset($post['record']['reply'])) {
+        $parentAuthor = $post['record']['reply']['parent']['uri'] ?? '';
+        // If the parent is not from the same author, skip
+        if (!str_contains($parentAuthor, $authorDid)) {
+          continue;
+        }
+      }
+
+      // Group by root URI
+      if (!isset($threads[$rootUri])) {
+        $threads[$rootUri] = [];
+      }
+      $threads[$rootUri][] = $feedItem;
+    }
+
+    // Second pass: process threads
+    foreach ($threads as $rootUri => $threadItems) {
+      // Sort by createdAt ascending
+      usort($threadItems, function ($a, $b) {
+        $aDate = $a['post']['record']['createdAt'] ?? $a['post']['indexedAt'] ?? '';
+        $bDate = $b['post']['record']['createdAt'] ?? $b['post']['indexedAt'] ?? '';
+        return strcmp($aDate, $bDate);
+      });
+
+      // Find root post (first in sorted order, or specifically the one matching rootUri)
+      $rootItem = null;
+      foreach ($threadItems as $item) {
+        if (($item['post']['uri'] ?? '') === $rootUri) {
+          $rootItem = $item;
+          break;
+        }
+      }
+      // Fallback to first item if root not found
+      if (!$rootItem) {
+        $rootItem = $threadItems[0];
+      }
+
+      // Only import if root post matches filter criteria
+      if (!self::shouldImport($rootItem)) {
+        continue;
+      }
+
+      // Single post thread - use simple toPageData
+      if (count($threadItems) === 1) {
+        $result[] = self::toPageData($threadItems[0]);
+        continue;
+      }
+
+      // Multi-post thread - combine into single page
+      $result[] = self::combineThread($threadItems, $rootItem);
     }
 
     return $result;
+  }
+
+  /**
+   * Combine multiple thread posts into a single page
+   */
+  private static function combineThread(array $threadItems, array $rootItem): array
+  {
+    $bodies = [];
+    $allMediaUrls = [];
+    $allTags = ['bluesky'];
+
+    foreach ($threadItems as $feedItem) {
+      $post = $feedItem['post'] ?? $feedItem;
+
+      // Extract text and trailing hashtags
+      $text = $post['record']['text'] ?? '';
+      $extracted = self::extractTrailingHashtags($text);
+
+      // Apply facets
+      $facets = $post['record']['facets'] ?? [];
+      $bodyText = self::applyFacets($text, $facets, $extracted['trailingStart']);
+      $bodyText = self::stripTrailingHashtags($bodyText, $extracted['tags']);
+
+      $bodies[] = $bodyText;
+
+      // Collect tags
+      $allTags = array_merge($allTags, $extracted['tags']);
+
+      // Collect media URLs
+      $mediaUrls = self::extractMediaUrls($post);
+      $allMediaUrls = array_merge($allMediaUrls, $mediaUrls);
+    }
+
+    $rootPost = $rootItem['post'] ?? $rootItem;
+    $rkey = BlueskyApi::extractRkey($rootPost['uri']);
+    $createdAt = $rootPost['record']['createdAt'] ?? $rootPost['indexedAt'] ?? date('c');
+    $date = new DateTime($createdAt);
+
+    $allTags = array_unique($allTags);
+    $allMediaUrls = array_unique($allMediaUrls);
+
+    return [
+      'slug' => $rkey,
+      'num' => (int) $date->format('Ymd'),
+      'template' => 'note',
+      'model' => 'note',
+      'content' => [
+        'title' => $rkey,
+        'date' => $date->format('Y-m-d H:i:s'),
+        'tags' => implode(', ', $allTags),
+        'body' => implode("\n\n---\n\n", $bodies),
+        'uuid' => 'bluesky://' . $rkey,
+        'media_urls' => implode(', ', $allMediaUrls),
+        'thread_count' => count($threadItems),
+      ]
+    ];
   }
 }
