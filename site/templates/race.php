@@ -12,33 +12,33 @@
     </div>
 
     <div class="mt-6 grid grid-cols-3 gap-3">
-      <div class="rounded-small border border-accent bg-accent/20 p-6 text-center">
-        <span class="block font-mono text-3xl font-medium text-accent">
+      <div class="rounded-small border border-accent bg-accent/20 p-4 text-center">
+        <span class="block font-mono text-xl font-medium text-accent">
           <?= $page->distance() ?>
         </span>
-        <span class="mt-2 block text-sm uppercase tracking-wide text-accent/80">km</span>
+        <span class="mt-1 block text-base text-accent/80">km</span>
       </div>
 
-      <div class="rounded-small border border-accent bg-accent/20 p-6 text-center">
-        <span class="block font-mono text-3xl font-medium text-accent">
+      <div class="rounded-small border border-accent bg-accent/20 p-4 text-center">
+        <span class="block font-mono text-xl font-medium text-accent">
           <?= $page->time() ?>
         </span>
-        <span class="mt-2 block text-sm uppercase tracking-wide text-accent/80">time</span>
+        <span class="mt-1 block text-base text-accent/80">time</span>
       </div>
 
-      <div class="rounded-small border border-accent bg-accent/20 p-6 text-center">
-        <span class="block font-mono text-3xl font-medium text-accent">
+      <div class="rounded-small border border-accent bg-accent/20 p-4 text-center">
+        <span class="block font-mono text-xl font-medium text-accent">
           <?= $page->pace() ?>
         </span>
-        <span class="mt-2 block text-sm uppercase tracking-wide text-accent/80">min/km</span>
+        <span class="mt-1 block text-base text-accent/80">min/km</span>
       </div>
     </div>
 
-    <?php if ($page->location()->isNotEmpty()): ?>
-    <p class="mt-6 font-mono text-sm text-muted">
-      <?= $page->location() ?>
-    </p>
-    <?php endif ?>
+    <?php snippet('card-footer', [
+      'item' => $page,
+      'leftContent' => $page->location()->isNotEmpty() ? $page->location()->value() : null,
+      'leftClass' => 'font-mono text-muted'
+    ]) ?>
 
     <?php if ($page->body()->isNotEmpty()): ?>
     <div class="prose prose-neutral mt-8 max-w-none">

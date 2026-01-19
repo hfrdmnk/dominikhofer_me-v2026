@@ -96,6 +96,8 @@ $hasRemoteMedia = count($remoteMedia) > 0;
     </div>
     <?php endif ?>
 
+    <?php snippet('card-footer', ['item' => $page]) ?>
+
     <?php if ($page->tags()->isNotEmpty()): ?>
     <div class="mt-8 flex flex-wrap gap-2">
       <?php foreach ($page->tags()->split() as $tag): ?>

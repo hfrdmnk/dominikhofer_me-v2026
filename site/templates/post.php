@@ -9,7 +9,9 @@ $cover = $page->cover()->toFile();
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
-    <?php snippet('author-row', ['item' => $page, 'showReadTime' => true, 'relativeDate' => false]) ?>
+    <div class="grid grid-cols-[2rem_1fr] gap-x-3">
+      <?php snippet('author-row', ['item' => $page, 'showReadTime' => true, 'relativeDate' => false]) ?>
+    </div>
 
     <?php if ($cover): ?>
     <div class="mt-6 overflow-hidden rounded-medium">
@@ -24,6 +26,8 @@ $cover = $page->cover()->toFile();
     <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium prose-img:rounded-small mt-8 max-w-none">
       <?= $page->body()->kirbytext() ?>
     </div>
+
+    <?php snippet('card-footer', ['item' => $page]) ?>
 
     <?php if ($page->tags()->isNotEmpty()): ?>
     <div class="mt-8 flex flex-wrap gap-2">

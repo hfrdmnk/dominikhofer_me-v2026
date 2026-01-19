@@ -22,13 +22,11 @@ $image = $page->files()->first();
       >
     </div>
 
-    <div class="mt-4 flex items-center justify-between text-sm text-muted">
-      <div class="flex items-center gap-4">
-        <?php if ($page->location()->isNotEmpty()): ?>
-        <span class="font-mono"><?= $page->location() ?></span>
-        <?php endif ?>
-      </div>
-    </div>
+    <?php snippet('card-footer', [
+      'item' => $page,
+      'leftContent' => $page->location()->isNotEmpty() ? $page->location()->value() : null,
+      'leftClass' => 'font-mono text-muted'
+    ]) ?>
     <?php endif ?>
 
     <?php if ($page->body()->isNotEmpty()): ?>
