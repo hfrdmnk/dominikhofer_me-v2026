@@ -15,25 +15,25 @@ $detailUrl = $item->url();
   </a>
 
   <a href="<?= $detailUrl ?>" class="col-start-2 mt-3 grid grid-cols-3 gap-3">
-    <div class="rounded-medium bg-accent p-4 text-center">
-      <span class="block font-mono text-xl font-medium text-white">
+    <div class="rounded-small border border-accent bg-accent/20 p-4 text-center">
+      <span class="block font-mono text-xl font-medium text-accent">
         <?= $item->distance() ?>
       </span>
-      <span class="mt-1 block text-base text-white/80">km</span>
+      <span class="mt-1 block text-base text-accent/80">km</span>
     </div>
 
-    <div class="rounded-medium bg-accent p-4 text-center">
-      <span class="block font-mono text-xl font-medium text-white">
+    <div class="rounded-small border border-accent bg-accent/20 p-4 text-center">
+      <span class="block font-mono text-xl font-medium text-accent">
         <?= $item->time() ?>
       </span>
-      <span class="mt-1 block text-base text-white/80">time</span>
+      <span class="mt-1 block text-base text-accent/80">time</span>
     </div>
 
-    <div class="rounded-medium bg-accent p-4 text-center">
-      <span class="block font-mono text-xl font-medium text-white">
+    <div class="rounded-small border border-accent bg-accent/20 p-4 text-center">
+      <span class="block font-mono text-xl font-medium text-accent">
         <?= $item->pace() ?>
       </span>
-      <span class="mt-1 block text-base text-white/80">min/km</span>
+      <span class="mt-1 block text-base text-accent/80">min/km</span>
     </div>
   </a>
 

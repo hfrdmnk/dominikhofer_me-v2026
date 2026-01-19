@@ -10,25 +10,25 @@
     <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
 
     <div class="mt-6 grid grid-cols-3 gap-3">
-      <div class="rounded-medium bg-accent-bg p-6 text-center">
-        <span class="block font-mono text-3xl font-medium text-primary">
+      <div class="rounded-small border border-accent bg-accent/20 p-6 text-center">
+        <span class="block font-mono text-3xl font-medium text-accent">
           <?= $page->distance() ?>
         </span>
-        <span class="mt-2 block text-sm uppercase tracking-wide text-muted">km</span>
+        <span class="mt-2 block text-sm uppercase tracking-wide text-accent/80">km</span>
       </div>
 
-      <div class="rounded-medium bg-accent-bg p-6 text-center">
-        <span class="block font-mono text-3xl font-medium text-primary">
+      <div class="rounded-small border border-accent bg-accent/20 p-6 text-center">
+        <span class="block font-mono text-3xl font-medium text-accent">
           <?= $page->time() ?>
         </span>
-        <span class="mt-2 block text-sm uppercase tracking-wide text-muted">time</span>
+        <span class="mt-2 block text-sm uppercase tracking-wide text-accent/80">time</span>
       </div>
 
-      <div class="rounded-medium bg-accent-bg p-6 text-center">
-        <span class="block font-mono text-3xl font-medium text-primary">
+      <div class="rounded-small border border-accent bg-accent/20 p-6 text-center">
+        <span class="block font-mono text-3xl font-medium text-accent">
           <?= $page->pace() ?>
         </span>
-        <span class="mt-2 block text-sm uppercase tracking-wide text-muted">min/km</span>
+        <span class="mt-2 block text-sm uppercase tracking-wide text-accent/80">min/km</span>
       </div>
     </div>
 
