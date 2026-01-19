@@ -34,15 +34,15 @@ $hasRemoteMedia = count($remoteMedia) > 0;
 $mediaCount = $hasLocalMedia ? count($mediaFiles) : count($remoteMedia);
 $detailUrl = $item->url();
 ?>
-<article class="group">
+<article class="group grid grid-cols-[2rem_1fr] gap-x-3">
   <?php snippet('author-row', ['item' => $item, 'linkUrl' => $detailUrl]) ?>
 
-  <div class="prose prose-neutral prose-card mt-3 max-w-none leading-relaxed text-secondary">
+  <div class="col-start-2 prose prose-neutral prose-card mt-2 max-w-none leading-relaxed text-secondary">
     <?= $item->body()->kt() ?>
   </div>
 
   <?php if ($hasLocalMedia): ?>
-  <a href="<?= $detailUrl ?>" class="mt-4 block overflow-hidden rounded-medium">
+  <a href="<?= $detailUrl ?>" class="col-start-2 mt-3 block overflow-hidden rounded-medium">
     <?php if ($mediaCount === 1): ?>
       <?php $file = $mediaFiles[0]; ?>
       <?php if ($file->type() === 'video'): ?>
@@ -139,7 +139,7 @@ $detailUrl = $item->url();
   </a>
 
   <?php elseif ($hasRemoteMedia): ?>
-  <a href="<?= $detailUrl ?>" class="mt-4 block overflow-hidden rounded-medium">
+  <a href="<?= $detailUrl ?>" class="col-start-2 mt-3 block overflow-hidden rounded-medium">
     <?php if ($mediaCount === 1): ?>
       <?php $media = $remoteMedia[0]; ?>
       <?php if ($media['type'] === 'video'): ?>
@@ -236,5 +236,7 @@ $detailUrl = $item->url();
   </a>
   <?php endif ?>
 
-  <?php snippet('card-footer', ['item' => $item]) ?>
+  <div class="col-start-2">
+    <?php snippet('card-footer', ['item' => $item]) ?>
+  </div>
 </article>
