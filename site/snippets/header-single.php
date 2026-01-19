@@ -1,34 +1,57 @@
 <?php
 /** @var Kirby\Cms\Site $site */
 /** @var Kirby\Cms\Page $page */
+
+$template = $page->intendedTemplate()->name();
+
+// Custom titles for certain templates
+$displayTitle = match($template) {
+  'note' => 'Micro Post',
+  'photo' => 'Photo',
+  default => $page->title(),
+};
+
+// Show slug for all pages
+$slug = '/' . $page->slug();
 ?>
+
 <header class="border-b border-border">
   <div class="px-4">
     <div class="flex min-h-14 items-center justify-between gap-4 py-3">
       <div class="flex min-w-0 items-center gap-3">
+        <!-- Back button - shown inline on smaller screens -->
         <button
           type="button"
-          class="shrink-0 cursor-pointer text-muted transition-colors hover:text-primary"
+          class="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-small border border-border text-muted transition-colors hover:border-accent hover:text-accent lg:hidden"
           aria-label="Go back"
           data-back-button
           data-fallback-url="<?= $site->url() ?>"
         >
-          <?php snippet('icon', ['name' => 'back', 'class' => 'h-5 w-5']) ?>
+          <?php snippet('icon', ['name' => 'back', 'class' => 'h-4 w-4']) ?>
         </button>
 
-        <h1 class="truncate text-base font-medium text-primary">
-          <?= $page->title() ?>
-        </h1>
+        <!-- Title area with slug above -->
+        <div class="flex min-w-0 flex-col">
+          <span class="truncate font-mono text-xs text-accent">
+            <?= $slug ?>
+          </span>
+          <h1 class="truncate text-base font-medium text-primary">
+            <?= $displayTitle ?>
+          </h1>
+        </div>
       </div>
 
-      <div class="flex shrink-0 items-center gap-3">
+      <div class="flex shrink-0 items-center gap-2">
         <?php snippet('social-icons', ['outlined' => true]) ?>
+
+        <!-- Follow icon button (accent filled) -->
         <button
           type="button"
-          class="hidden cursor-pointer items-center gap-2 rounded-medium bg-accent px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover md:flex"
+          class="hidden h-9 w-9 cursor-pointer items-center justify-center rounded-small bg-accent text-white transition-colors hover:bg-accent-hover md:flex"
           data-follow-trigger
+          aria-label="Follow"
         >
-          Follow
+          <?php snippet('icon', ['name' => 'subscribe', 'class' => 'h-4 w-4']) ?>
         </button>
 
         <button
