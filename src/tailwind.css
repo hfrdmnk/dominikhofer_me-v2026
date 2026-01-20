@@ -24,7 +24,7 @@
   --color-muted: oklch(70.9% 0.01 56.259);
 
   /* Subtle colors for backgrounds and borders */
-  --color-subtle: oklch(from var(--color-primary) l c h / 0.05);
+  --color-subtle: oklch(from var(--color-bg) l c h / 0.5);
   --color-subtle-border: oklch(from var(--color-primary) l c h / 0.1);
 
   --radius-big: 1rem;

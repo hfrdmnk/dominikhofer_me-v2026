@@ -37,8 +37,10 @@ class BlueskyParser
         $lines = explode("\n", $text);
         foreach ($lines as $line) {
           $line = trim($line);
+          // Normalize line by stripping www. (same as embedHost)
+          $normalizedLine = preg_replace('/^www\./', '', $line);
           // Match: domain/path or domain (line is just the domain with optional path)
-          if (preg_match('/^' . preg_quote($embedHost, '/') . '(\/\S*)?$/', $line)) {
+          if (preg_match('/^' . preg_quote($embedHost, '/') . '(\/\S*)?$/', $normalizedLine)) {
             if (self::isAllowedDomain($embedHost, $excludeDomains)) {
               return true;
             }
