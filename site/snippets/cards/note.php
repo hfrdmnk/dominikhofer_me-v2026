@@ -68,7 +68,7 @@ $detailUrl = $item->url();
         }
       ?>
     <a href="<?= $quotedPostUrl ?>" target="_blank" rel="noopener noreferrer"
-       class="col-start-2 mt-3 grid grid-cols-[1.5rem_1fr] gap-x-2 rounded-medium border border-border bg-primary/5 p-3 transition-colors hover:border-accent">
+       class="col-start-2 mt-3 grid grid-cols-[1.5rem_1fr] gap-x-2 rounded-medium border border-border bg-subtle p-3 transition-colors hover:border-accent">
       <?php if (!empty($quotedPost['author_avatar'])): ?>
       <img src="<?= htmlspecialchars($quotedPost['author_avatar'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="size-6 rounded-small object-cover">
       <?php else: ?>

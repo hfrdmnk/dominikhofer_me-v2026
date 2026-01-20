@@ -20,7 +20,12 @@
   --color-border: oklch(92.3% 0.003 48.717);
   --color-primary: oklch(14.7% 0.004 49.25);
   --color-secondary: oklch(37.4% 0.01 67.558);
+  --color-tertiary: oklch(0.553 0.013 58.071);
   --color-muted: oklch(70.9% 0.01 56.259);
+
+  /* Subtle colors for backgrounds and borders */
+  --color-subtle: oklch(from var(--color-primary) l c h / 0.05);
+  --color-subtle-border: oklch(from var(--color-primary) l c h / 0.1);
 
   --radius-big: 1rem;
   --radius-medium: 0.5rem;
