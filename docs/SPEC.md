@@ -468,7 +468,7 @@ Consider using the [Kirby Feed plugin](https://github.com/getkirby/feed) or cust
 
 ## Future Considerations
 
--   **POSSE syndication:** Auto-post to Mastodon on publish
+-   **POSSE syndication:** Cross-post blog posts to Bluesky and micro.blog; consider Grain.social for photos
 -   **Webmentions:** IndieWeb support via IndieConnector plugin
 -   **ActivityPub:** Federation support
 -   **Search:** Client-side or Algolia integration
