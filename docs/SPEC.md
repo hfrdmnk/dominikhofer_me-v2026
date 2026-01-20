@@ -144,6 +144,81 @@ Running race results with structured data display.
 
 ---
 
+## Bluesky Integration
+
+The site imports Bluesky posts as virtual `note` pages using a Kirby plugin.
+
+### How It Works
+
+The plugin fetches from the public Bluesky API (`app.bsky.feed.getAuthorFeed`) and creates virtual pages that appear alongside native notes in the feed.
+
+**Configuration:**
+- **DID:** `did:plc:fthx2gjakdj4ynxxu5vysjty`
+- **Cache TTL:** 1 hour (configurable)
+- **Excluded domains:** `bsky.app`, `dominikhofer.me`
+
+### Filtering Criteria
+
+Posts are imported if they match **either** of these criteria:
+- Have `#buildinpublic` hashtag
+- Are a "link post" — contains a standalone URL to an allowed external domain
+
+**Excluded:**
+- Replies to other users (only self-replies are kept for threading)
+- Posts with only links to `bsky.app` or `dominikhofer.me`
+
+### Repost Handling
+
+Reposts are detected via the `reason` field in the feed response (`app.bsky.feed.defs#reasonRepost`).
+
+- Shows "Reposting @originalauthor" prefix with link to original author's profile
+- Treated as standalone posts (not grouped into threads)
+- Still filtered by the same criteria (original post must have hashtag or link)
+
+### Thread Detection & Combination
+
+Self-replies (author continuing their own thread) are automatically combined into a single note.
+
+**How it works:**
+- Posts are grouped by their reply root URI
+- Sorted chronologically (oldest first)
+- Combined into one page if root post matches filter criteria
+
+**Output:**
+- Body sections separated by `---` delimiter
+- `thread_count` field tracks number of posts combined
+- Feed preview shows "Show thread (X posts)" link
+
+### Media & Links
+
+**Media URLs:**
+- Remote Bluesky images stored in `media_urls` field
+- Supports images, videos, and quote post media
+- URLs point to CDN (e.g., `cdn.bsky.app/img/feed_fullsize/...`)
+
+**Link Handling:**
+- YouTube URLs automatically embedded as `(video: URL)` for Kirby video tag
+- External links become clickable `<a>` tags with `target="_blank"`
+- @mentions link to Bluesky profiles
+- Hashtags link to Bluesky hashtag pages
+
+**Facet Processing:**
+- Bluesky uses "facets" for rich text (links, mentions, hashtags)
+- Processed from byte offsets in the original text
+- Trailing hashtags are extracted as page tags, not inline links
+
+### Panel Integration
+
+**Sync Section:**
+- Custom section in Notes page sidebar
+- Shows last sync timestamp and post count
+
+**API Endpoints:**
+- `POST /api/bluesky/sync` — Clear cache and refetch
+- `GET /api/bluesky/status` — Get cache status
+
+---
+
 ## Site Configuration
 
 Global settings managed in `/site/blueprints/site.yml`.
@@ -334,6 +409,8 @@ Hamburger menu contains:
       /photos.yml
       /races.yml
       /default.yml
+  /plugins
+    /bluesky (Bluesky import plugin)
   /templates
   /snippets
 ```
@@ -391,7 +468,7 @@ Consider using the [Kirby Feed plugin](https://github.com/getkirby/feed) or cust
 
 ## Future Considerations
 
--   **POSSE syndication:** Auto-post to Bluesky/Mastodon on publish
+-   **POSSE syndication:** Auto-post to Mastodon on publish
 -   **Webmentions:** IndieWeb support via IndieConnector plugin
 -   **ActivityPub:** Federation support
 -   **Search:** Client-side or Algolia integration

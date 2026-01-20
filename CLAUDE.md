@@ -7,15 +7,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a personal website built with **Kirby 5** - a file-based CMS for PHP. Content is stored in flat files (no database), making it easy to version control and deploy.
 Use the docs (https://getkirby.com/docs/reference) or the forum (https://forum.getkirby.com/) for more information when you're stuck.
 
-More info about the project in @docs/spec.md. Also take a look at the designs in docs/img if needed.
+More info about the project in @docs/SPEC.md. Also take a look at the designs in docs/img if needed.
+
+## Local Development
+
+The project is served locally using **Laravel Herd**. The local URL is:
+- `https://dominikhofer_me-v2026.test`
+
+When using the Chrome extension, it should open this URL.
+
+The user runs `pnpm watch` to compile assets during development (Claude does not run this).
 
 ## Common Commands
 
 ```bash
-# Start local development server (user will run this himself)
-composer start
-# Runs PHP built-in server at http://localhost:8000
-
 # Install dependencies
 composer install
 ```
@@ -44,3 +49,7 @@ composer install
 
 -   2 spaces for indentation in templates, snippets, CSS, JS, YAML
 -   UTF-8 encoding, LF line endings
+
+## Skills
+
+-   **`/rams`** - Run accessibility and visual design review on component files
