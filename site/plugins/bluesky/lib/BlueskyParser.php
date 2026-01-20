@@ -238,6 +238,7 @@ class BlueskyParser
       'author_handle' => $record['author']['handle'] ?? '',
       'author_did' => $record['author']['did'] ?? '',
       'author_name' => $record['author']['displayName'] ?? $record['author']['handle'] ?? '',
+      'author_avatar' => $record['author']['avatar'] ?? '',
       'text' => $record['value']['text'] ?? '',
       'uri' => $record['uri'] ?? '',
       'external_uri' => $externalUri,
@@ -333,7 +334,7 @@ class BlueskyParser
       $handle = $originalAuthor['handle'] ?? '';
       $did = $originalAuthor['did'] ?? '';
       if ($handle && $did) {
-        $repostPrefix = 'Reposting <a href="https://bsky.app/profile/' .
+        $repostPrefix = '<span class="text-muted">Reposting</span> <a href="https://bsky.app/profile/' .
                        htmlspecialchars($did, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">@' .
                        htmlspecialchars($handle, ENT_QUOTES, 'UTF-8') . '</a>' . "\n\n";
         $bodyText = $repostPrefix . $bodyText;
@@ -347,7 +348,7 @@ class BlueskyParser
       if ($quotedPost) {
         $handle = $quotedPost['author_handle'];
         $did = $quotedPost['author_did'];
-        $quotePrefix = 'Quoting <a href="https://bsky.app/profile/' .
+        $quotePrefix = '<span class="text-muted">Quoting</span> <a href="https://bsky.app/profile/' .
                       htmlspecialchars($did, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">@' .
                       htmlspecialchars($handle, ENT_QUOTES, 'UTF-8') . '</a>' . "\n\n";
         $bodyText = $quotePrefix . $bodyText;
