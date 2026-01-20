@@ -50,6 +50,22 @@ composer install
 -   2 spaces for indentation in templates, snippets, CSS, JS, YAML
 -   UTF-8 encoding, LF line endings
 
+## Bluesky Sync
+
+The Bluesky plugin provides a sync endpoint for importing posts:
+
+- **Endpoint:** `POST /api/bluesky/sync`
+- **Authentication:** Uses Kirby's API authentication
+- **Response:** `{ "status": "success", "message": "..." }`
+
+For automated syncing via external cron on a production server:
+```bash
+# Cron example (every hour)
+0 * * * * curl -X POST https://yoursite.com/api/bluesky/sync -H "Authorization: Bearer YOUR_API_TOKEN"
+```
+
+The 1-hour cache TTL also provides passive refresh when pages are visited.
+
 ## Skills
 
 -   **`/rams`** - Run accessibility and visual design review on component files

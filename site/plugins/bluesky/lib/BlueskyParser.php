@@ -203,6 +203,48 @@ class BlueskyParser
   }
 
   /**
+   * Check if post is a quote post (embedding another post)
+   */
+  public static function isQuotePost(array $post): bool
+  {
+    $embedType = $post['embed']['$type'] ?? '';
+    return $embedType === 'app.bsky.embed.record#view' ||
+           $embedType === 'app.bsky.embed.recordWithMedia#view';
+  }
+
+  /**
+   * Extract quoted post info from a quote post
+   */
+  public static function extractQuotedPost(array $post): ?array
+  {
+    $embed = $post['embed'] ?? null;
+    if (!$embed) return null;
+
+    // Handle both record and recordWithMedia types
+    $record = $embed['record']['record'] ?? $embed['record'] ?? null;
+    if (!$record || !isset($record['author'])) return null;
+
+    // Check for external embed on quoted record
+    $externalUri = '';
+    $embeds = $record['embeds'] ?? [];
+    foreach ($embeds as $recordEmbed) {
+      if (isset($recordEmbed['external']['uri'])) {
+        $externalUri = $recordEmbed['external']['uri'];
+        break;
+      }
+    }
+
+    return [
+      'author_handle' => $record['author']['handle'] ?? '',
+      'author_did' => $record['author']['did'] ?? '',
+      'author_name' => $record['author']['displayName'] ?? $record['author']['handle'] ?? '',
+      'text' => $record['value']['text'] ?? '',
+      'uri' => $record['uri'] ?? '',
+      'external_uri' => $externalUri,
+    ];
+  }
+
+  /**
    * Check if URL is a YouTube URL
    */
   private static function isYouTubeUrl(string $url): bool
@@ -224,7 +266,39 @@ class BlueskyParser
       return false;
     }
 
-    return self::isLinkPost($post) || self::hasBuildinpublicTag($post);
+    // Check standard criteria
+    if (self::isLinkPost($post) || self::hasBuildinpublicTag($post)) {
+      return true;
+    }
+
+    // Check quote posts for link content
+    if (self::isQuotePost($post)) {
+      $quotedPost = self::extractQuotedPost($post);
+      if ($quotedPost) {
+        $quotedText = $quotedPost['text'];
+        $excludeDomains = option('dominik.bluesky.excludeDomains', ['bsky.app', 'dominikhofer.me']);
+
+        // Check 1: Standalone links in quoted text
+        if (preg_match_all('/^(https?:\/\/[^\s]+)$/m', $quotedText, $matches)) {
+          foreach ($matches[1] as $url) {
+            $host = parse_url($url, PHP_URL_HOST);
+            if ($host && self::isAllowedDomain($host, $excludeDomains)) {
+              return true;
+            }
+          }
+        }
+
+        // Check 2: External embed on quoted record
+        if (!empty($quotedPost['external_uri'])) {
+          $host = parse_url($quotedPost['external_uri'], PHP_URL_HOST);
+          if ($host && self::isAllowedDomain($host, $excludeDomains)) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
   }
 
   /**
@@ -235,6 +309,7 @@ class BlueskyParser
   {
     $post = $feedItem['post'] ?? $feedItem;
     $isRepost = self::isRepost($feedItem);
+    $isQuote = self::isQuotePost($post);
 
     $rkey = BlueskyApi::extractRkey($post['uri']);
     $createdAt = $post['record']['createdAt'] ?? $post['indexedAt'] ?? date('c');
@@ -265,12 +340,35 @@ class BlueskyParser
       }
     }
 
+    // Extract quoted post data if this is a quote post
+    $quotedPost = null;
+    if ($isQuote) {
+      $quotedPost = self::extractQuotedPost($post);
+      if ($quotedPost) {
+        $handle = $quotedPost['author_handle'];
+        $did = $quotedPost['author_did'];
+        $quotePrefix = 'Quoting <a href="https://bsky.app/profile/' .
+                      htmlspecialchars($did, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">@' .
+                      htmlspecialchars($handle, ENT_QUOTES, 'UTF-8') . '</a>' . "\n\n";
+        $bodyText = $quotePrefix . $bodyText;
+      }
+    }
+
     // Build tags array: always include 'bluesky', plus extracted hashtags
     $tags = array_merge(['bluesky'], $extracted['tags']);
+
+    // Add 'link' tag if this is a link post
+    if (self::isLinkPost($post)) {
+      $tags[] = 'link';
+    }
+
     $tags = array_unique($tags);
 
     // Extract media URLs from embed
     $mediaUrls = self::extractMediaUrls($post);
+
+    // Extract external link embed data
+    $externalEmbed = self::extractExternalEmbed($post);
 
     return [
       'slug' => $rkey,
@@ -284,6 +382,8 @@ class BlueskyParser
         'body' => $bodyText,
         'uuid' => 'bluesky://' . $rkey,
         'media_urls' => implode(', ', $mediaUrls),
+        'quoted_post' => $quotedPost ? json_encode($quotedPost) : '',
+        'external_link' => $externalEmbed ? json_encode($externalEmbed) : '',
       ]
     ];
   }
@@ -324,8 +424,12 @@ class BlueskyParser
       }
     }
 
-    // Handle video
-    if (isset($embed['video']['playlist'])) {
+    // Handle video - check both structures
+    if (isset($embed['playlist'])) {
+      // Feed view: playlist is directly on embed
+      $urls[] = $embed['playlist'];
+    } elseif (isset($embed['video']['playlist'])) {
+      // Thread view: playlist nested under video
       $urls[] = $embed['video']['playlist'];
     }
 
@@ -338,7 +442,36 @@ class BlueskyParser
       }
     }
 
+    // Handle recordWithMedia video
+    if (isset($embed['media']['playlist'])) {
+      $urls[] = $embed['media']['playlist'];
+    }
+
     return $urls;
+  }
+
+  /**
+   * Extract external link embed data (OG cards)
+   */
+  private static function extractExternalEmbed(array $post): ?array
+  {
+    $embed = $post['embed'] ?? null;
+    if (!$embed) return null;
+
+    $external = $embed['external'] ?? null;
+    if (!$external || !isset($external['uri'])) return null;
+
+    // Skip YouTube links - they're already embedded via facets
+    if (self::isYouTubeUrl($external['uri'])) {
+      return null;
+    }
+
+    return [
+      'uri' => $external['uri'] ?? '',
+      'title' => $external['title'] ?? '',
+      'description' => $external['description'] ?? '',
+      'thumb' => $external['thumb'] ?? '',
+    ];
   }
 
   /**
@@ -436,6 +569,8 @@ class BlueskyParser
     $bodies = [];
     $allMediaUrls = [];
     $allTags = ['bluesky'];
+    $externalEmbed = null;
+    $quotedPost = null;
 
     foreach ($threadItems as $feedItem) {
       $post = $feedItem['post'] ?? $feedItem;
@@ -457,12 +592,27 @@ class BlueskyParser
       // Collect media URLs
       $mediaUrls = self::extractMediaUrls($post);
       $allMediaUrls = array_merge($allMediaUrls, $mediaUrls);
+
+      // Collect external embed from first post that has one
+      if (!$externalEmbed) {
+        $externalEmbed = self::extractExternalEmbed($post);
+      }
+
+      // Collect quoted post from first post that has one
+      if (!$quotedPost && self::isQuotePost($post)) {
+        $quotedPost = self::extractQuotedPost($post);
+      }
     }
 
     $rootPost = $rootItem['post'] ?? $rootItem;
     $rkey = BlueskyApi::extractRkey($rootPost['uri']);
     $createdAt = $rootPost['record']['createdAt'] ?? $rootPost['indexedAt'] ?? date('c');
     $date = new DateTime($createdAt);
+
+    // Check root post for link criteria
+    if (self::isLinkPost($rootPost)) {
+      $allTags[] = 'link';
+    }
 
     $allTags = array_unique($allTags);
     $allMediaUrls = array_unique($allMediaUrls);
@@ -480,6 +630,8 @@ class BlueskyParser
         'uuid' => 'bluesky://' . $rkey,
         'media_urls' => implode(', ', $allMediaUrls),
         'thread_count' => count($threadItems),
+        'quoted_post' => $quotedPost ? json_encode($quotedPost) : '',
+        'external_link' => $externalEmbed ? json_encode($externalEmbed) : '',
       ]
     ];
   }

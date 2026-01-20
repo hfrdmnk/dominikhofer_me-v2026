@@ -56,6 +56,39 @@ $detailUrl = $item->url();
     <?php endif ?>
   </div>
 
+  <?php if ($item->quoted_post()->isNotEmpty()): ?>
+    <?php $quotedPost = json_decode($item->quoted_post()->value(), true); ?>
+    <?php if ($quotedPost): ?>
+    <div class="col-start-2 mt-3 rounded-medium border border-border bg-primary/5 p-3">
+      <div class="mb-1 text-sm text-tertiary">
+        <a href="https://bsky.app/profile/<?= htmlspecialchars($quotedPost['author_did'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener noreferrer" class="hover:underline">
+          @<?= htmlspecialchars($quotedPost['author_handle'], ENT_QUOTES, 'UTF-8') ?>
+        </a>
+      </div>
+      <div class="prose prose-sm prose-neutral max-w-none text-secondary"><?= nl2br(htmlspecialchars($quotedPost['text'], ENT_QUOTES, 'UTF-8')) ?></div>
+    </div>
+    <?php endif ?>
+  <?php endif ?>
+
+  <?php if ($item->external_link()->isNotEmpty()): ?>
+    <?php $link = json_decode($item->external_link()->value(), true); ?>
+    <?php if ($link): ?>
+    <a href="<?= htmlspecialchars($link['uri'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener noreferrer"
+       class="col-start-2 mt-3 block overflow-hidden rounded-medium border border-border transition-colors hover:border-accent">
+      <?php if (!empty($link['thumb'])): ?>
+      <img src="<?= htmlspecialchars($link['thumb'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="aspect-[2/1] w-full object-cover">
+      <?php endif ?>
+      <div class="p-3">
+        <div class="line-clamp-1 font-medium text-primary"><?= htmlspecialchars($link['title'], ENT_QUOTES, 'UTF-8') ?></div>
+        <?php if (!empty($link['description'])): ?>
+        <div class="mt-1 line-clamp-2 text-sm text-secondary"><?= htmlspecialchars($link['description'], ENT_QUOTES, 'UTF-8') ?></div>
+        <?php endif ?>
+        <div class="mt-2 text-xs text-tertiary"><?= parse_url($link['uri'], PHP_URL_HOST) ?></div>
+      </div>
+    </a>
+    <?php endif ?>
+  <?php endif ?>
+
   <?php if ($hasLocalMedia): ?>
   <a href="<?= $detailUrl ?>" class="col-start-2 mt-3 block overflow-hidden rounded-medium">
     <?php if ($mediaCount === 1): ?>

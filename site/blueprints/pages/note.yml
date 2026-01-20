@@ -53,6 +53,10 @@ columns:
           tags:
             label: Tags
             type: tags
+          quoted_post:
+            type: hidden
+          external_link:
+            type: hidden
       media:
         type: fields
         fields:
