@@ -326,6 +326,16 @@ class BlueskyParser
   }
 
   /**
+   * Escape markdown heading patterns for Bluesky content
+   * Since Bluesky hashtags are already converted to <a> links by facets,
+   * any remaining # at line start would be misinterpreted as markdown headings
+   */
+  public static function escapeMarkdownHeadings(string $text): string
+  {
+    return preg_replace('/^#/m', '&#35;', $text);
+  }
+
+  /**
    * Check if feed item should be imported (matches filter criteria)
    * Accepts full feed item (with 'post', 'reason', 'reply' fields)
    */

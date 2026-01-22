@@ -43,16 +43,17 @@ $hasRemoteMedia = count($remoteMedia) > 0;
       <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
     </div>
 
+    <?php $isBluesky = str_starts_with($page->content()->get('uuid')->value() ?? '', 'bluesky://'); ?>
     <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium prose-img:rounded-small mt-6 max-w-none">
       <?php if ($isThread): ?>
         <?php foreach ($bodyParts as $index => $part): ?>
           <?php if ($index > 0): ?>
           <hr class="my-6 border-border">
           <?php endif ?>
-          <?= kirbytext($part) ?>
+          <?= $isBluesky ? kirbytext(BlueskyParser::escapeMarkdownHeadings($part)) : kirbytext($part) ?>
         <?php endforeach ?>
       <?php else: ?>
-        <?= $page->body()->kt() ?>
+        <?= $isBluesky ? kirbytext(BlueskyParser::escapeMarkdownHeadings($page->body()->value())) : $page->body()->kt() ?>
       <?php endif ?>
     </div>
 

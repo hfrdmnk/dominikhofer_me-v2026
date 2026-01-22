@@ -44,8 +44,9 @@ $detailUrl = $item->url();
 <article class="group grid grid-cols-[2rem_1fr] gap-x-3">
   <?php snippet('author-row', ['item' => $item, 'linkUrl' => $detailUrl]) ?>
 
+  <?php $isBluesky = str_starts_with($item->content()->get('uuid')->value() ?? '', 'bluesky://'); ?>
   <div class="col-start-2 prose prose-neutral prose-card mt-2 max-w-none leading-relaxed text-secondary">
-    <?= kirbytext($firstPost) ?>
+    <?= $isBluesky ? kirbytext(BlueskyParser::escapeMarkdownHeadings($firstPost)) : kirbytext($firstPost) ?>
     <?php if ($hasThread): ?>
     <a href="<?= $detailUrl ?>" class="mt-2 inline-flex items-center gap-1 text-xs font-mono text-muted">
       Show thread (<?= $threadCount ?> posts)
