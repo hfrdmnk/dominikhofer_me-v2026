@@ -13,7 +13,7 @@ $rssFeeds = $site->rss_feeds()->toStructure();
       <h2 class="text-lg font-medium text-primary">Follow</h2>
       <button
         type="button"
-        class="text-muted transition-colors hover:text-primary"
+        class="text-muted transition-colors hover:text-accent"
         aria-label="Close"
         data-follow-modal-close
       >

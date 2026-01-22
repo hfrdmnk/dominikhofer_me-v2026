@@ -51,6 +51,10 @@ $logoClass = $isDetailPage
         </main>
       </div>
     </div>
+
+    <?php if (isset($pagination) && $pagination->hasPages()): ?>
+      <?php snippet('pagination', ['pagination' => $pagination]) ?>
+    <?php endif ?>
   </div>
 
   <?php snippet('footer') ?>
