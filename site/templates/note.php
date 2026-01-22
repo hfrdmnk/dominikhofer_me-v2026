@@ -47,7 +47,7 @@ $hasRemoteMedia = count($remoteMedia) > 0;
       <?php if ($isThread): ?>
         <?php foreach ($bodyParts as $index => $part): ?>
           <?php if ($index > 0): ?>
-          <hr class="my-6 border-tertiary">
+          <hr class="my-6 border-border">
           <?php endif ?>
           <?= kirbytext($part) ?>
         <?php endforeach ?>

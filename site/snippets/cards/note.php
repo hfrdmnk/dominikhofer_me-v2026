@@ -47,10 +47,7 @@ $detailUrl = $item->url();
   <div class="col-start-2 prose prose-neutral prose-card mt-2 max-w-none leading-relaxed text-secondary">
     <?= kirbytext($firstPost) ?>
     <?php if ($hasThread): ?>
-    <a href="<?= $detailUrl ?>" class="mt-2 inline-flex items-center gap-1 text-sm text-accent no-underline hover:underline">
-      <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-      </svg>
+    <a href="<?= $detailUrl ?>" class="mt-2 inline-flex items-center gap-1 text-xs font-mono text-muted">
       Show thread (<?= $threadCount ?> posts)
     </a>
     <?php endif ?>

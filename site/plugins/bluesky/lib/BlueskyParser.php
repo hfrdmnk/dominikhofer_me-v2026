@@ -78,6 +78,76 @@ class BlueskyParser
   }
 
   /**
+   * Check if post has any link (not just standalone)
+   * Used for repost/quote post filtering
+   */
+  public static function hasAnyLink(array $post): bool
+  {
+    $excludeDomains = option('dominik.bluesky.excludeDomains', ['bsky.app', 'dominikhofer.me']);
+
+    // Check 1: External embed on the post itself
+    $embed = $post['embed'] ?? null;
+    if ($embed && isset($embed['external']['uri'])) {
+      $host = parse_url($embed['external']['uri'], PHP_URL_HOST);
+      if ($host && self::isAllowedDomain($host, $excludeDomains)) {
+        return true;
+      }
+    }
+
+    // Check 2: Any URL in facets
+    $facets = $post['record']['facets'] ?? [];
+    foreach ($facets as $facet) {
+      foreach ($facet['features'] ?? [] as $feature) {
+        if (($feature['$type'] ?? '') === 'app.bsky.richtext.facet#link') {
+          $uri = $feature['uri'] ?? '';
+          if ($uri) {
+            $host = parse_url($uri, PHP_URL_HOST);
+            if ($host && self::isAllowedDomain($host, $excludeDomains)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    // Check 3: Any URL in text (regex fallback)
+    $text = $post['record']['text'] ?? '';
+    if (preg_match_all('/https?:\/\/[^\s]+/', $text, $matches)) {
+      foreach ($matches[0] as $url) {
+        $host = parse_url($url, PHP_URL_HOST);
+        if ($host && self::isAllowedDomain($host, $excludeDomains)) {
+          return true;
+        }
+      }
+    }
+
+    // Check 4: For quote posts, check quoted content
+    if (self::isQuotePost($post)) {
+      $quotedPost = self::extractQuotedPost($post);
+      if ($quotedPost) {
+        // Check external URI on quoted record
+        if (!empty($quotedPost['external_uri'])) {
+          $host = parse_url($quotedPost['external_uri'], PHP_URL_HOST);
+          if ($host && self::isAllowedDomain($host, $excludeDomains)) {
+            return true;
+          }
+        }
+        // Check URLs in quoted text
+        if (preg_match_all('/https?:\/\/[^\s]+/', $quotedPost['text'], $matches)) {
+          foreach ($matches[0] as $url) {
+            $host = parse_url($url, PHP_URL_HOST);
+            if ($host && self::isAllowedDomain($host, $excludeDomains)) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  /**
    * Extract trailing hashtags from text
    * Returns: ['text' => 'cleaned text', 'tags' => ['tag1', 'tag2']]
    */
@@ -262,46 +332,22 @@ class BlueskyParser
   public static function shouldImport(array $feedItem): bool
   {
     $post = $feedItem['post'] ?? $feedItem;
+    $isRepost = self::isRepost($feedItem);
+    $isQuote = self::isQuotePost($post);
 
-    // Skip replies (posts that are replies to someone else, unless it's a repost)
-    // For reposts, we import based on the original post's criteria
-    if (!self::isRepost($feedItem) && isset($post['record']['reply'])) {
+    // Skip replies (unless it's a repost)
+    if (!$isRepost && isset($post['record']['reply'])) {
       return false;
     }
 
-    // Check standard criteria
-    if (self::isLinkPost($post) || self::hasBuildinpublicTag($post)) {
-      return true;
+    // Different criteria for reposts and quote posts
+    // They only need to have a link somewhere (not on single line), no #buildinpublic exception
+    if ($isRepost || $isQuote) {
+      return self::hasAnyLink($post);
     }
 
-    // Check quote posts for link content
-    if (self::isQuotePost($post)) {
-      $quotedPost = self::extractQuotedPost($post);
-      if ($quotedPost) {
-        $quotedText = $quotedPost['text'];
-        $excludeDomains = option('dominik.bluesky.excludeDomains', ['bsky.app', 'dominikhofer.me']);
-
-        // Check 1: Standalone links in quoted text
-        if (preg_match_all('/^(https?:\/\/[^\s]+)$/m', $quotedText, $matches)) {
-          foreach ($matches[1] as $url) {
-            $host = parse_url($url, PHP_URL_HOST);
-            if ($host && self::isAllowedDomain($host, $excludeDomains)) {
-              return true;
-            }
-          }
-        }
-
-        // Check 2: External embed on quoted record
-        if (!empty($quotedPost['external_uri'])) {
-          $host = parse_url($quotedPost['external_uri'], PHP_URL_HOST);
-          if ($host && self::isAllowedDomain($host, $excludeDomains)) {
-            return true;
-          }
-        }
-      }
-    }
-
-    return false;
+    // Regular posts: link on single line OR #buildinpublic
+    return self::isLinkPost($post) || self::hasBuildinpublicTag($post);
   }
 
   /**
@@ -360,8 +406,8 @@ class BlueskyParser
     // Build tags array: always include 'bluesky', plus extracted hashtags
     $tags = array_merge(['bluesky'], $extracted['tags']);
 
-    // Add 'link' tag if this is a link post
-    if (self::isLinkPost($post)) {
+    // Add 'link' tag if this is a link post OR if it's a repost/quote (they require links)
+    if (self::isLinkPost($post) || $isRepost || $isQuote) {
       $tags[] = 'link';
     }
 
@@ -612,8 +658,8 @@ class BlueskyParser
     $createdAt = $rootPost['record']['createdAt'] ?? $rootPost['indexedAt'] ?? date('c');
     $date = new DateTime($createdAt);
 
-    // Check root post for link criteria
-    if (self::isLinkPost($rootPost)) {
+    // Check root post for link criteria or if it's a quote post
+    if (self::isLinkPost($rootPost) || self::isQuotePost($rootPost)) {
       $allTags[] = 'link';
     }
 

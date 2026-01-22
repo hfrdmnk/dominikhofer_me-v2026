@@ -15,7 +15,7 @@ $tabs = [
     <li>
       <a
         href="<?= $tab['url'] ?>"
-        class="relative block py-3 text-sm transition-colors <?= $isActive ? 'font-medium text-accent' : 'text-muted hover:text-primary' ?>"
+        class="relative block py-3 text-sm transition-colors <?= $isActive ? 'font-medium text-accent' : 'text-muted hover:text-accent' ?>"
       >
         <?= $tab['label'] ?>
         <?php if ($isActive): ?>
