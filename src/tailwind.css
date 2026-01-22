@@ -10,6 +10,10 @@
     "Departure Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
     "Liberation Mono", "Courier New", monospace;
 
+  --font-code:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+
   --container-prose: 42rem;
 
   --color-bg: oklch(0.9753 0.004 106.47);
@@ -59,6 +63,16 @@
 /* Global prose font size */
 .prose {
   font-size: 0.875rem; /* text-sm */
+}
+
+/* Prose code uses system monospace (not Departure Mono) */
+.prose code {
+  font-family: var(--font-code);
+}
+
+.prose code::before,
+.prose code::after {
+  content: "";
 }
 
 /* Card-specific prose sizing: text-sm base, text-base headings */
