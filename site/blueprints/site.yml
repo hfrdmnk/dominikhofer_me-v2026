@@ -160,6 +160,24 @@ tabs:
             info: "{{ page.distance }}km in {{ page.time }}"
             sortBy: date desc
 
+  analytics:
+    label: Analytics
+    icon: chart
+    sections:
+      plausible:
+        type: fields
+        fields:
+          plausible_domain:
+            label: Plausible Domain
+            type: text
+            placeholder: dominikhofer.me
+            help: Your site's domain tracked in Plausible
+          plausible_script:
+            label: Plausible Script URL
+            type: url
+            placeholder: https://analytics.linea.studio/js/script.outbound-links.js
+            help: URL to your Plausible tracking script
+
   pages:
     label: Pages
     icon: page

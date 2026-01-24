@@ -97,6 +97,34 @@ return [
 
   // Flat URL routing for content items
   'routes' => [
+    // XML Sitemap
+    [
+      'pattern' => 'sitemap.xml',
+      'action'  => function () {
+        $pages = site()->index()
+          ->listed()
+          ->filter(fn($p) => !in_array($p->intendedTemplate()->name(), ['error']));
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+        $xml .= '  <url>' . "\n";
+        $xml .= '    <loc>' . site()->url() . '</loc>' . "\n";
+        $xml .= '    <lastmod>' . date('Y-m-d', site()->modified()) . '</lastmod>' . "\n";
+        $xml .= '    <priority>1.0</priority>' . "\n";
+        $xml .= '  </url>' . "\n";
+
+        foreach ($pages as $p) {
+          $xml .= '  <url>' . "\n";
+          $xml .= '    <loc>' . $p->url() . '</loc>' . "\n";
+          $xml .= '    <lastmod>' . date('Y-m-d', $p->modified()) . '</lastmod>' . "\n";
+          $xml .= '  </url>' . "\n";
+        }
+
+        $xml .= '</urlset>';
+
+        return new Kirby\Cms\Response($xml, 'application/xml', 200);
+      }
+    ],
     // Tag archive route
     [
       'pattern' => 'tag/(:any)',
