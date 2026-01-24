@@ -42,10 +42,10 @@ $mediaCount = $hasLocalMedia ? count($mediaFiles) : count($remoteMedia);
 $detailUrl = $item->url();
 ?>
 <article class="group grid grid-cols-[2rem_1fr] gap-x-3">
-  <?php snippet('author-row', ['item' => $item, 'linkUrl' => $detailUrl]) ?>
+  <?php snippet('author-row', ['item' => $item, 'linkUrl' => $detailUrl, 'showTags' => false]) ?>
 
   <?php $isBluesky = str_starts_with($item->content()->get('uuid')->value() ?? '', 'bluesky://'); ?>
-  <div class="col-start-2 prose prose-neutral prose-card mt-2 max-w-none leading-relaxed text-secondary">
+  <div class="col-span-2 md:col-start-2 md:col-span-1 prose prose-neutral prose-card mt-2 max-w-none leading-relaxed text-secondary">
     <?= $isBluesky ? kirbytext(BlueskyParser::escapeMarkdownHeadings($firstPost)) : kirbytext($firstPost) ?>
     <?php if ($hasThread): ?>
     <a href="<?= $detailUrl ?>" class="mt-2 inline-flex items-center gap-1 text-xs font-mono text-muted">
@@ -66,7 +66,7 @@ $detailUrl = $item->url();
         }
       ?>
     <a href="<?= $quotedPostUrl ?>" target="_blank" rel="noopener noreferrer"
-       class="col-start-2 mt-3 grid grid-cols-[1.5rem_1fr] gap-x-2 rounded-medium border border-border bg-subtle p-3 transition-colors hover:border-accent">
+       class="col-span-2 md:col-start-2 md:col-span-1 mt-3 grid grid-cols-[1.5rem_1fr] gap-x-2 rounded-medium border border-border bg-subtle p-3 transition-colors hover:border-accent">
       <?php if (!empty($quotedPost['author_avatar'])): ?>
       <img src="<?= htmlspecialchars($quotedPost['author_avatar'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="size-6 rounded-small object-cover">
       <?php else: ?>
@@ -85,7 +85,7 @@ $detailUrl = $item->url();
     <?php $link = json_decode($item->external_link()->value(), true); ?>
     <?php if ($link): ?>
     <a href="<?= htmlspecialchars($link['uri'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener noreferrer"
-       class="col-start-2 mt-3 block overflow-hidden rounded-medium border border-border transition-colors hover:border-accent">
+       class="col-span-2 md:col-start-2 md:col-span-1 mt-3 block overflow-hidden rounded-medium border border-border transition-colors hover:border-accent">
       <?php if (!empty($link['thumb'])): ?>
       <img src="<?= htmlspecialchars($link['thumb'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="aspect-[2/1] w-full object-cover">
       <?php endif ?>
@@ -101,7 +101,7 @@ $detailUrl = $item->url();
   <?php endif ?>
 
   <?php if ($hasLocalMedia): ?>
-  <a href="<?= $detailUrl ?>" class="col-start-2 mt-3 block overflow-hidden rounded-medium">
+  <a href="<?= $detailUrl ?>" class="col-span-2 md:col-start-2 md:col-span-1 mt-3 block overflow-hidden rounded-medium">
     <?php if ($mediaCount === 1): ?>
       <?php $file = $mediaFiles[0]; ?>
       <?php if ($file->type() === 'video'): ?>
@@ -198,7 +198,7 @@ $detailUrl = $item->url();
   </a>
 
   <?php elseif ($hasRemoteMedia): ?>
-  <a href="<?= $detailUrl ?>" class="col-start-2 mt-3 block overflow-hidden rounded-medium">
+  <a href="<?= $detailUrl ?>" class="col-span-2 md:col-start-2 md:col-span-1 mt-3 block overflow-hidden rounded-medium">
     <?php if ($mediaCount === 1): ?>
       <?php $media = $remoteMedia[0]; ?>
       <?php if ($media['type'] === 'video'): ?>
@@ -295,7 +295,16 @@ $detailUrl = $item->url();
   </a>
   <?php endif ?>
 
-  <div class="col-start-2">
+  <?php $tags = $item->tags()->isNotEmpty() ? $item->tags()->split() : []; ?>
+  <?php if (count($tags) > 0): ?>
+  <div class="col-span-2 md:col-start-2 md:col-span-1 mt-3 flex flex-wrap gap-2 font-mono text-xs text-muted">
+    <?php foreach ($tags as $tag): ?>
+    <a href="<?= url('tag/' . urlencode($tag)) ?>" class="hover:text-accent transition-colors">#<?= htmlspecialchars($tag) ?></a>
+    <?php endforeach ?>
+  </div>
+  <?php endif ?>
+
+  <div class="col-span-2 md:col-start-2 md:col-span-1">
     <?php snippet('card-footer', ['item' => $item]) ?>
   </div>
 </article>
