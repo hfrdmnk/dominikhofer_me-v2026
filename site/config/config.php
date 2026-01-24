@@ -10,9 +10,10 @@ return [
     'excludeDomains' => ['bsky.app', 'dominikhofer.me'],
   ],
 
-  // Enable Bluesky cache
+  // Enable caches
   'cache' => [
-    'bluesky' => true
+    'bluesky' => true,
+    'og-image' => true
   ],
 
   // Panel sidebar menu with quick access to content types

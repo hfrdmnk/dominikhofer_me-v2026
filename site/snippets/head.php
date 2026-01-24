@@ -24,12 +24,18 @@
 <meta property="og:description" content="<?= $site->author_bio()->excerpt(160)->escape() ?>">
 <?php endif ?>
 
-<?php if ($page->intendedTemplate() == 'photo' && $page->files()->first()): ?>
-<meta property="og:image" content="<?= $page->files()->first()->resize(1200)->url() ?>">
-<?php elseif ($page->cover()->isNotEmpty() && $page->cover()->toFile()): ?>
-<meta property="og:image" content="<?= $page->cover()->toFile()->resize(1200)->url() ?>">
-<?php elseif ($site->header_image()->isNotEmpty() && $site->header_image()->toFile()): ?>
-<meta property="og:image" content="<?= $site->header_image()->toFile()->resize(1200)->url() ?>">
+<?php if ($page->intendedTemplate() == 'photo' && $image = $page->files()->first()): ?>
+<meta property="og:image" content="<?= $image->resize(1200)->url() ?>">
+<meta property="og:image:width" content="<?= $image->resize(1200)->width() ?>">
+<meta property="og:image:height" content="<?= $image->resize(1200)->height() ?>">
+<?php elseif ($page->cover()->isNotEmpty() && $image = $page->cover()->toFile()): ?>
+<meta property="og:image" content="<?= $image->resize(1200)->url() ?>">
+<meta property="og:image:width" content="<?= $image->resize(1200)->width() ?>">
+<meta property="og:image:height" content="<?= $image->resize(1200)->height() ?>">
+<?php else: ?>
+<meta property="og:image" content="<?= $page->url() . ($page->isHomePage() ? '/' : '') ?>.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="628">
 <?php endif ?>
 
 <link rel="alternate" type="application/rss+xml" title="<?= $site->author_name() ?>" href="<?= url('rss') ?>">

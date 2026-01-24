@@ -7,7 +7,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
 ?>
 <header id="site-header">
   <?php if ($headerImage): ?>
-  <div class="relative h-72 overflow-hidden">
+  <div class="relative h-48 md:h-72 overflow-hidden">
     <img
       src="<?= $headerImage->resize(1200)->url() ?>"
       alt=""
@@ -16,18 +16,18 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
     <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
   </div>
   <?php else: ?>
-  <div class="h-72 bg-gradient-to-br from-cyan-400 to-purple-500"></div>
+  <div class="h-48 md:h-72 bg-gradient-to-br from-cyan-400 to-purple-500"></div>
   <?php endif ?>
 
   <div class="relative px-4">
     <!-- Profile section: image, name/tagline, and social icons bottom-aligned -->
-    <div class="-mt-12 flex items-end justify-between gap-4">
+    <div class="-mt-8 md:-mt-12 flex items-end justify-between gap-4">
       <div class="flex items-end gap-4">
         <?php if ($profileImage): ?>
         <img
           src="<?= $profileImage->crop(256, 256)->url() ?>"
           alt="<?= $site->author_name() ?>"
-          class="h-28 w-28 shrink-0 rounded-medium border-4 border-bg-secondary bg-bg-secondary object-cover"
+          class="h-20 w-20 md:h-28 md:w-28 shrink-0 rounded-medium border-4 border-bg-secondary bg-bg-secondary object-cover"
         >
         <?php endif ?>
         <div>

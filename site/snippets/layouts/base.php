@@ -13,9 +13,9 @@ $logoClass = $isDetailPage
   <?php snippet('head') ?>
 </head>
 <body class="min-h-screen bg-bg text-primary antialiased">
-  <div class="mx-auto max-w-3xl px-4 py-6 md:py-10">
+  <div class="mx-auto max-w-3xl md:px-4 py-6 md:py-10">
     <!-- Top bar: Logo + Navigation -->
-    <div class="mb-4 flex items-center justify-between">
+    <div class="mb-4 flex items-center justify-between px-4 md:px-0">
       <a href="<?= $site->url() ?>" class="group z-50 block" aria-label="Home">
         <?php snippet('icon', ['name' => 'logo', 'class' => $logoClass]) ?>
       </a>
