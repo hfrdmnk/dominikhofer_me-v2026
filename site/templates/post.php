@@ -10,7 +10,7 @@ $cover = $page->cover()->toFile();
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
     <div class="grid grid-cols-[2rem_1fr] gap-x-3">
-      <?php snippet('author-row', ['item' => $page, 'showReadTime' => true]) ?>
+      <?php snippet('author-row', ['item' => $page, 'showReadTime' => true, 'showTags' => false]) ?>
     </div>
 
     <?php if ($cover): ?>
@@ -27,16 +27,6 @@ $cover = $page->cover()->toFile();
       <?= $page->body()->kirbytext() ?>
     </div>
 
-    <?php snippet('card-footer', ['item' => $page]) ?>
-
-    <?php if ($page->tags()->isNotEmpty()): ?>
-    <div class="mt-8 flex flex-wrap gap-2">
-      <?php foreach ($page->tags()->split() as $tag): ?>
-      <span class="rounded-full bg-accent-bg px-3 py-1 text-sm text-accent">
-        <?= $tag ?>
-      </span>
-      <?php endforeach ?>
-    </div>
-    <?php endif ?>
+    <?php snippet('card-footer', ['item' => $page, 'tags' => $page->tags()->split()]) ?>
   </article>
 <?php endsnippet() ?>

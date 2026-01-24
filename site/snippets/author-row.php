@@ -8,6 +8,7 @@
 $profileImage = $site->author_image()->toFile();
 $linkUrl = $linkUrl ?? null;
 $relativeDate = $relativeDate ?? true;
+$showTags = $showTags ?? true;
 $tags = $item->tags()->isNotEmpty() ? $item->tags()->split() : [];
 $displayDate = $relativeDate ? $item->timeAgo() : $item->formattedDate();
 ?>
@@ -31,7 +32,7 @@ $displayDate = $relativeDate ? $item->timeAgo() : $item->formattedDate();
     <?php endif ?>
   </div>
 
-  <?php if (count($tags) > 0): ?>
+  <?php if ($showTags && count($tags) > 0): ?>
   <div class="flex flex-wrap items-center gap-2 font-mono text-xs text-muted">
     <?php foreach ($tags as $tag): ?>
     <span>#<?= $tag ?></span>

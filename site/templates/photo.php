@@ -10,7 +10,7 @@ $image = $page->files()->first();
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
     <div class="grid grid-cols-[2rem_1fr] gap-x-3">
-      <?php snippet('author-row', ['item' => $page]) ?>
+      <?php snippet('author-row', ['item' => $page, 'showTags' => false]) ?>
     </div>
 
     <?php if ($image): ?>
@@ -25,23 +25,13 @@ $image = $page->files()->first();
     <?php snippet('card-footer', [
       'item' => $page,
       'leftContent' => $page->location()->isNotEmpty() ? $page->location()->value() : null,
-      'leftClass' => 'font-mono text-muted'
+      'tags' => $page->tags()->split()
     ]) ?>
     <?php endif ?>
 
     <?php if ($page->body()->isNotEmpty()): ?>
     <div class="prose prose-neutral mt-6 max-w-none">
       <?= $page->body()->kt() ?>
-    </div>
-    <?php endif ?>
-
-    <?php if ($page->tags()->isNotEmpty()): ?>
-    <div class="mt-8 flex flex-wrap gap-2">
-      <?php foreach ($page->tags()->split() as $tag): ?>
-      <span class="rounded-full bg-accent-bg px-3 py-1 text-sm text-accent">
-        <?= $tag ?>
-      </span>
-      <?php endforeach ?>
     </div>
     <?php endif ?>
   </article>
