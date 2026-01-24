@@ -21,8 +21,8 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
 
   <div class="relative px-4">
     <!-- Profile section: image, name/tagline, and social icons bottom-aligned -->
-    <div class="-mt-8 md:-mt-12 flex items-end justify-between gap-4">
-      <div class="flex items-end gap-4">
+    <div class="-mt-4 md:-mt-12 flex items-end justify-between gap-4">
+      <div class="flex items-end gap-2 md:gap-4">
         <?php if ($profileImage): ?>
         <img
           src="<?= $profileImage->crop(256, 256)->url() ?>"
@@ -31,7 +31,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
         >
         <?php endif ?>
         <div>
-          <h1 class="text-lg font-medium text-primary"><?= $site->author_name() ?></h1>
+          <h1 class="md:text-lg font-medium text-primary"><?= $site->author_name() ?></h1>
           <?php if ($site->author_tagline()->isNotEmpty()): ?>
           <p class="text-sm text-muted"><?= $site->author_tagline() ?></p>
           <?php endif ?>

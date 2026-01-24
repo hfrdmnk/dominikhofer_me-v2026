@@ -43,7 +43,8 @@ columns:
           updated:
             label: Last Updated
             type: date
-            help: Optional date shown on page
+            time: true
+            help: Optional date and time shown on page
       files:
         type: fields
         fields:
