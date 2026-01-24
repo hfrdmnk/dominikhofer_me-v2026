@@ -1,9 +1,9 @@
 <?php
 /** @var Kirby\Cms\Site $site */
 $navItems = [
-  ['url' => url('about'), 'label' => 'About'],
-  ['url' => url('now'), 'label' => 'Now'],
-  ['url' => url('slash'), 'label' => 'Slash'],
+  ['url' => url('about'), 'label' => 'About', 'slug' => 'about'],
+  ['url' => url('now'), 'label' => 'Now', 'slug' => 'now'],
+  ['url' => url('slash'), 'label' => 'Slash', 'slug' => 'slash'],
 ];
 ?>
 <div
@@ -28,11 +28,13 @@ $navItems = [
     </div>
 
     <ul class="space-y-4">
-      <?php foreach ($navItems as $item): ?>
+      <?php foreach ($navItems as $item):
+        $isActive = $page->slug() === $item['slug'];
+      ?>
       <li>
         <a
           href="<?= $item['url'] ?>"
-          class="block text-lg text-primary transition-colors hover:text-accent"
+          class="block text-lg <?= $isActive ? 'text-accent' : 'text-primary' ?> transition-colors hover:text-accent"
         >
           <?= $item['label'] ?>
         </a>
