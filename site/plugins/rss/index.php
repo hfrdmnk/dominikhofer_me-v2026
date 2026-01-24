@@ -13,7 +13,7 @@ Kirby::plugin('dominik/rss', [
   'routes' => [
     // Home feed - all content types
     [
-      'pattern' => 'rss',
+      'pattern' => 'rss|rss.xml',
       'action' => function () {
         $feed = new RssFeed();
         return $feed->home();
@@ -21,7 +21,7 @@ Kirby::plugin('dominik/rss', [
     ],
     // Posts feed
     [
-      'pattern' => 'posts/rss',
+      'pattern' => 'posts/rss|posts/rss.xml',
       'action' => function () {
         $feed = new RssFeed();
         return $feed->section('posts');
@@ -29,7 +29,7 @@ Kirby::plugin('dominik/rss', [
     ],
     // Notes feed
     [
-      'pattern' => 'notes/rss',
+      'pattern' => 'notes/rss|notes/rss.xml',
       'action' => function () {
         $feed = new RssFeed();
         return $feed->section('notes');
@@ -37,7 +37,7 @@ Kirby::plugin('dominik/rss', [
     ],
     // Photos feed
     [
-      'pattern' => 'photos/rss',
+      'pattern' => 'photos/rss|photos/rss.xml',
       'action' => function () {
         $feed = new RssFeed();
         return $feed->section('photos');
@@ -45,7 +45,7 @@ Kirby::plugin('dominik/rss', [
     ],
     // Races feed
     [
-      'pattern' => 'races/rss',
+      'pattern' => 'races/rss|races/rss.xml',
       'action' => function () {
         $feed = new RssFeed();
         return $feed->section('races');
