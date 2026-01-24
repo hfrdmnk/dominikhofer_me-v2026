@@ -35,7 +35,7 @@ $displayDate = $relativeDate ? $item->timeAgo() : $item->formattedDate();
   <?php if ($showTags && count($tags) > 0): ?>
   <div class="flex flex-wrap items-center gap-2 font-mono text-xs text-muted">
     <?php foreach ($tags as $tag): ?>
-    <span>#<?= $tag ?></span>
+    <a href="<?= url('tag/' . urlencode($tag)) ?>" class="hover:text-accent transition-colors">#<?= htmlspecialchars($tag) ?></a>
     <?php endforeach ?>
   </div>
   <?php endif ?>

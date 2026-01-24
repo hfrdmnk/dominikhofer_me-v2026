@@ -23,7 +23,7 @@ $blueskyUrl = 'https://bsky.app/intent/compose?text=' . urlencode($shareTitle . 
     <span class="mx-1">·</span>
     <?php endif ?>
     <?php foreach ($tags as $tag): ?>
-    <span>#<?= $tag ?></span><?php if ($tag !== end($tags)): ?> <?php endif ?>
+    <a href="<?= url('tag/' . urlencode($tag)) ?>" class="hover:text-accent transition-colors">#<?= htmlspecialchars($tag) ?></a><?php if ($tag !== end($tags)): ?> <?php endif ?>
     <?php endforeach ?>
   </div>
 

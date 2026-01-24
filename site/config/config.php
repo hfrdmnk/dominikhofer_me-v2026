@@ -97,6 +97,32 @@ return [
 
   // Flat URL routing for content items
   'routes' => [
+    // Tag archive route
+    [
+      'pattern' => 'tag/(:any)',
+      'action'  => function ($tag) {
+        $tag = urldecode($tag);
+
+        $items = site()->index()
+          ->listed()
+          ->filterBy('intendedTemplate', 'in', ['post', 'note', 'photo', 'race'])
+          ->filterBy('tags', $tag, ',')
+          ->sortBy('date', 'desc');
+
+        if ($items->isEmpty()) {
+          return site()->errorPage();
+        }
+
+        return Page::factory([
+          'slug' => 'tag',
+          'template' => 'tag',
+          'content' => [
+            'title' => '#' . $tag,
+            'tag' => $tag
+          ]
+        ]);
+      }
+    ],
     // Route individual content items to flat URLs
     [
       'pattern' => '(:any)',
