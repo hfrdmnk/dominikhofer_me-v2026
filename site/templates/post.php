@@ -10,7 +10,7 @@ $cover = $page->cover()->toFile();
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
     <div class="grid grid-cols-[2rem_1fr] gap-x-3">
-      <?php snippet('author-row', ['item' => $page, 'showReadTime' => true, 'relativeDate' => false]) ?>
+      <?php snippet('author-row', ['item' => $page, 'showReadTime' => true]) ?>
     </div>
 
     <?php if ($cover): ?>

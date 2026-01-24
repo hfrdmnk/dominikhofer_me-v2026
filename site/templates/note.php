@@ -40,7 +40,7 @@ $hasRemoteMedia = count($remoteMedia) > 0;
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
     <div class="grid grid-cols-[2rem_1fr] gap-x-3">
-      <?php snippet('author-row', ['item' => $page, 'relativeDate' => false]) ?>
+      <?php snippet('author-row', ['item' => $page]) ?>
     </div>
 
     <?php $isBluesky = str_starts_with($page->content()->get('uuid')->value() ?? '', 'bluesky://'); ?>

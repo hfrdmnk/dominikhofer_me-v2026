@@ -11,7 +11,7 @@ $cover = $page->cover()->toFile();
   <article class="px-4 py-8">
     <?php if ($page->updated()->isNotEmpty()): ?>
     <p class="font-mono text-xs text-muted">
-      Last updated: <?= $page->updated()->toDate('F j, Y') ?>
+      Updated <?= $site->timeAgoFromTimestamp($page->updated()->toDate()) ?>
     </p>
     <?php endif ?>
 
