@@ -8,31 +8,39 @@
   // Mobile menu
   const mobileMenu = document.querySelector("[data-mobile-menu]");
   const menuTriggers = document.querySelectorAll("[data-mobile-menu-trigger]");
-  const menuClose = document.querySelector("[data-mobile-menu-close]");
-  const menuBackdrop = document.querySelector("[data-mobile-menu-backdrop]");
 
   if (mobileMenu) {
     function openMenu() {
       mobileMenu.classList.remove("hidden");
+      mobileMenu.classList.add("flex");
       document.body.style.overflow = "hidden";
+      menuTriggers.forEach((t) => t.classList.add("open"));
     }
 
     function closeMenu() {
       mobileMenu.classList.add("hidden");
+      mobileMenu.classList.remove("flex");
       document.body.style.overflow = "";
+      menuTriggers.forEach((t) => t.classList.remove("open"));
     }
 
+    // Burger button toggles menu open/close
     menuTriggers.forEach((trigger) => {
-      trigger.addEventListener("click", openMenu);
+      trigger.addEventListener("click", () => {
+        if (mobileMenu.classList.contains("hidden")) {
+          openMenu();
+        } else {
+          closeMenu();
+        }
+      });
     });
 
-    if (menuClose) {
-      menuClose.addEventListener("click", closeMenu);
-    }
-
-    if (menuBackdrop) {
-      menuBackdrop.addEventListener("click", closeMenu);
-    }
+    // Click on menu background (not links) closes menu
+    mobileMenu.addEventListener("click", (e) => {
+      if (e.target === mobileMenu) {
+        closeMenu();
+      }
+    });
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !mobileMenu.classList.contains("hidden")) {

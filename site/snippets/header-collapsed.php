@@ -14,22 +14,21 @@ $currentFilter = $page->slug();
         <?php snippet('social-icons', ['outlined' => true]) ?>
         <button
           type="button"
+          class="flex h-9 w-9 cursor-pointer items-center justify-center rounded-small bg-accent text-white transition-colors hover:bg-accent-hover md:hidden"
+          data-follow-trigger
+          aria-label="Follow"
+        >
+          <?php snippet('icon', ['name' => 'subscribe', 'class' => 'h-4 w-4']) ?>
+        </button>
+        <button
+          type="button"
           class="hidden cursor-pointer items-center gap-2 rounded-small bg-accent px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover md:flex"
           data-follow-trigger
         >
           Follow
         </button>
 
-        <button
-          type="button"
-          class="md:hidden"
-          aria-label="Open menu"
-          data-mobile-menu-trigger
-        >
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
+<?php snippet('burger-button') ?>
       </div>
     </div>
 

@@ -156,3 +156,26 @@ button {
   aspect-ratio: 16 / 9;
   border-radius: var(--radius-medium);
 }
+
+/* Burger menu animation */
+.burger-bar {
+  @apply transition-transform duration-300;
+}
+.burger-bar-2 {
+  transition-delay: 75ms;
+}
+.burger-bar-3 {
+  transition-delay: 150ms;
+}
+
+.burger-x {
+  @apply transition-transform duration-300;
+  transition-delay: 200ms;
+}
+
+.open .burger-bar {
+  @apply translate-x-10;
+}
+.open .burger-x {
+  @apply translate-x-0;
+}

@@ -5,7 +5,7 @@ $rssFeeds = $site->rss_feeds()->toStructure();
 ?>
 <dialog
   id="follow-modal"
-  class="relative m-auto w-full max-w-md rounded-big bg-bg-secondary p-0 shadow-xl backdrop:bg-black/50"
+  class="fixed inset-0 z-50 h-full w-full bg-bg-secondary p-0 backdrop:bg-black/50 md:relative md:inset-auto md:z-auto md:m-auto md:h-auto md:max-w-md md:rounded-big md:shadow-xl"
   data-follow-modal
 >
   <div class="p-6">

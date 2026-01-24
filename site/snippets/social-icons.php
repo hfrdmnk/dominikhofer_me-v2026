@@ -1,11 +1,13 @@
 <?php
 /** @var Kirby\Cms\Site $site */
 /** @var bool $outlined - Whether to use outlined button style */
+/** @var bool $alwaysShow - Whether to show on mobile (default: hidden on mobile) */
 $socialLinks = $site->social_links()->toStructure();
 $outlined = $outlined ?? false;
+$alwaysShow = $alwaysShow ?? false;
 ?>
 <?php if ($socialLinks->isNotEmpty()): ?>
-<div class="hidden items-center gap-2 md:flex">
+<div class="<?= $alwaysShow ? 'flex' : 'hidden md:flex' ?> items-center gap-2">
   <?php foreach ($socialLinks as $link): ?>
   <?php if ($outlined): ?>
   <a

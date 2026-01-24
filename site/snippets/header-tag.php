@@ -42,16 +42,7 @@
           <?php snippet('icon', ['name' => 'subscribe', 'class' => 'h-4 w-4']) ?>
         </button>
 
-        <button
-          type="button"
-          class="md:hidden"
-          aria-label="Open menu"
-          data-mobile-menu-trigger
-        >
-          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
+<?php snippet('burger-button') ?>
       </div>
     </div>
   </div>
