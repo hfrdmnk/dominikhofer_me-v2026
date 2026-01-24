@@ -56,8 +56,6 @@ $slug = '/' . $page->slug();
         >
           <?php snippet('icon', ['name' => 'subscribe', 'class' => 'h-4 w-4']) ?>
         </button>
-
-<?php snippet('burger-button') ?>
       </div>
     </div>
   </div>

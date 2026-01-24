@@ -38,7 +38,7 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
         </div>
       </div>
 
-      <div class="flex shrink-0 items-center gap-3">
+      <div class="flex shrink-0 pb-1 items-center gap-3">
         <?php snippet('social-icons', ['outlined' => true]) ?>
         <button
           type="button"
