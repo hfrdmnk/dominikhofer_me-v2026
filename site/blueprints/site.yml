@@ -67,6 +67,13 @@ tabs:
                   mail: Mail
                   rss: RSS
                   subscribe: Subscribe
+      bluesky:
+        type: fields
+        fields:
+          bluesky_import_tags:
+            label: Bluesky Import Hashtags
+            type: tags
+            help: "Posts with any of these hashtags will be imported. Enter without # (e.g., 'buildinpublic')."
 
   subscribe:
     label: Subscribe

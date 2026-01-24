@@ -69,12 +69,35 @@ class BlueskyParser
   }
 
   /**
-   * Check if post has #buildinpublic hashtag
+   * Check if post has any of the configured import hashtags
    */
-  public static function hasBuildinpublicTag(array $post): bool
+  public static function hasImportTag(array $post): bool
   {
     $text = $post['record']['text'] ?? '';
-    return preg_match('/#buildinpublic\b/i', $text) === 1;
+    $configuredTags = self::getImportTags();
+
+    if (empty($configuredTags)) {
+      return false;
+    }
+
+    // Match any configured tag (case-insensitive, word boundary)
+    $pattern = '/#(' . implode('|', array_map('preg_quote', $configuredTags)) . ')\b/i';
+    return preg_match($pattern, $text) === 1;
+  }
+
+  /**
+   * Get configured import tags from site content
+   */
+  private static function getImportTags(): array
+  {
+    $site = kirby()->site();
+    $tagsField = $site->bluesky_import_tags();
+
+    if (!$tagsField || $tagsField->isEmpty()) {
+      return [];
+    }
+
+    return $tagsField->split(',');
   }
 
   /**
@@ -351,13 +374,13 @@ class BlueskyParser
     }
 
     // Different criteria for reposts and quote posts
-    // They only need to have a link somewhere (not on single line), no #buildinpublic exception
+    // They only need to have a link somewhere (not on single line), no hashtag exception
     if ($isRepost || $isQuote) {
       return self::hasAnyLink($post);
     }
 
-    // Regular posts: link on single line OR #buildinpublic
-    return self::isLinkPost($post) || self::hasBuildinpublicTag($post);
+    // Regular posts: link on single line OR configured hashtag
+    return self::isLinkPost($post) || self::hasImportTag($post);
   }
 
   /**
