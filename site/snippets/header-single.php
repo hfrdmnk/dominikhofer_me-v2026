@@ -6,7 +6,7 @@ $template = $page->intendedTemplate()->name();
 
 // Custom titles for certain templates
 $displayTitle = match($template) {
-  'note' => 'Micro Post',
+  'note' => 'Note',
   'photo' => 'Photo',
   default => $page->title(),
 };
