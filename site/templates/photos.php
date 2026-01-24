@@ -11,13 +11,18 @@ $feed = $page->children()
   ->paginate(50);
 ?>
 <?php snippet('layouts/base', ['pagination' => $feed->pagination()], slots: true) ?>
-  <div class="px-4 py-8">
-    <?php if ($feed->isNotEmpty()): ?>
-      <?php foreach ($feed as $item): ?>
-        <?php snippet('feed-item', ['item' => $item]) ?>
-      <?php endforeach ?>
-    <?php else: ?>
-      <p class="py-12 text-center text-muted">No photos yet.</p>
-    <?php endif ?>
+  <div class="grid grid-cols-[repeat(auto-fill,_minmax(150px,_1fr))] gap-0.5 p-4">
+    <?php foreach ($feed as $photo): ?>
+      <?php if ($image = $photo->image()): ?>
+        <a href="<?= $photo->url() ?>" class="aspect-square overflow-hidden rounded-sm">
+          <img
+            src="<?= $image->resize(400)->url() ?>"
+            alt="<?= $image->alt()->or($photo->title()) ?>"
+            class="w-full h-full object-cover hover:opacity-80 transition-opacity"
+            loading="lazy"
+          >
+        </a>
+      <?php endif ?>
+    <?php endforeach ?>
   </div>
 <?php endsnippet() ?>
