@@ -170,10 +170,18 @@
   document.querySelectorAll("[data-back-button]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const fallbackUrl = btn.dataset.fallbackUrl;
+      const alwaysHome = btn.hasAttribute("data-always-home");
+
+      // Static pages always go home
+      if (alwaysHome) {
+        window.location.href = fallbackUrl;
+        return;
+      }
+
+      // Dynamic pages use history if coming from internal page
       const referrer = document.referrer;
       const currentHost = window.location.host;
 
-      // Check if referrer is from our site (internal navigation)
       if (referrer && new URL(referrer).host === currentHost) {
         history.back();
       } else {

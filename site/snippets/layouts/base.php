@@ -2,6 +2,7 @@
 $template = $page->intendedTemplate()->name();
 $listingPages = ['home', 'posts', 'notes', 'photos', 'races'];
 $isDetailPage = !in_array($template, $listingPages);
+$isStaticPage = $template === 'default';
 $logoClass = $isDetailPage
   ? 'h-10 w-10 text-muted transition-colors group-hover:text-accent'
   : 'h-10 w-10 text-accent';
@@ -39,13 +40,14 @@ $logoClass = $isDetailPage
         aria-label="Go back"
         data-back-button
         data-fallback-url="<?= $site->url() ?>"
+        <?php if ($isStaticPage): ?>data-always-home<?php endif ?>
       >
         <?php snippet('icon', ['name' => 'back', 'class' => 'h-4 w-4']) ?>
       </button>
       <?php endif; ?>
 
       <div class="overflow-hidden rounded-big bg-bg-secondary">
-        <?php snippet($header ?? 'header') ?>
+        <?php snippet($header ?? 'header', ['isStaticPage' => $isStaticPage]) ?>
         <main>
           <?= $slot ?>
         </main>

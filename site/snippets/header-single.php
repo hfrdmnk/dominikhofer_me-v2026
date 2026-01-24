@@ -1,7 +1,9 @@
 <?php
 /** @var Kirby\Cms\Site $site */
 /** @var Kirby\Cms\Page $page */
+/** @var bool $isStaticPage */
 
+$isStaticPage = $isStaticPage ?? false;
 $template = $page->intendedTemplate()->name();
 
 // Custom titles for certain templates
@@ -26,6 +28,7 @@ $slug = '/' . $page->slug();
           aria-label="Go back"
           data-back-button
           data-fallback-url="<?= $site->url() ?>"
+          <?php if ($isStaticPage): ?>data-always-home<?php endif ?>
         >
           <?php snippet('icon', ['name' => 'back', 'class' => 'h-4 w-4']) ?>
         </button>
