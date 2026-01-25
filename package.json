@@ -3,16 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "watch": "tailwindcss -i ./src/tailwind.css -o ./assets/css/styles.css -w",
-    "build": "tailwindcss -i ./src/tailwind.css -o ./assets/css/styles.css -m"
+    "build": "tailwindcss -i ./src/tailwind.css -o ./assets/css/styles.css -m",
+    "lint": "eslint 'site/**/*.php'",
+    "lint:fix": "eslint 'site/**/*.php' --fix",
+    "format": "prettier --write 'site/**/*.php'",
+    "format:check": "prettier --check 'site/**/*.php'"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.28.0",
   "devDependencies": {
+    "@prettier/plugin-php": "^0.24.0",
     "@tailwindcss/cli": "^4.1.18",
+    "eslint": "^9.39.2",
+    "eslint-plugin-tailwindcss": "4.0.0-beta.0",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18"
   },
   "dependencies": {

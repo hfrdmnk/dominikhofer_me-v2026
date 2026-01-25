@@ -13,10 +13,10 @@ $currentFilter = $page->isHomePage() ? 'all' : $page->slug();
       alt=""
       class="h-full w-full object-cover"
     >
-    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+    <div class="absolute inset-0 bg-linear-to-t from-black/20 to-transparent"></div>
   </div>
   <?php else: ?>
-  <div class="h-48 md:h-72 bg-gradient-to-br from-cyan-400 to-purple-500"></div>
+  <div class="h-48 md:h-72 bg-linear-to-br from-cyan-400 to-purple-500"></div>
   <?php endif ?>
 
   <div class="relative px-4">
