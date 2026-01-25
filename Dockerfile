@@ -87,6 +87,7 @@ COPY --from=css-builder /build/assets/css ./assets/css
 COPY index.php ./
 COPY site ./site
 COPY assets ./assets
+COPY bin ./bin
 
 # Create placeholder directories for volumes (will be overwritten by mounts)
 RUN mkdir -p content media site/accounts site/cache site/sessions \
