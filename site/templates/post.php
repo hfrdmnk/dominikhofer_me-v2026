@@ -6,11 +6,13 @@
  */
 
 $cover = $page->cover()->toFile();
+$minutes = $page->body()->isNotEmpty() ? round(str_word_count(strip_tags($page->body()->kirbytext())) / 200) : 0;
+$readTime = $minutes > 0 ? $minutes . ' min read' : null;
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
     <div class="grid grid-cols-[2rem_1fr] gap-x-3">
-      <?php snippet('author-row', ['item' => $page, 'showReadTime' => true, 'showTags' => false]) ?>
+      <?php snippet('author-row', ['item' => $page, 'metadata' => $readTime]) ?>
     </div>
 
     <?php if ($cover): ?>

@@ -6,11 +6,12 @@
  */
 
 $image = $page->files()->first();
+$location = $page->location()->isNotEmpty() ? $page->location()->value() : null;
 ?>
 <?php snippet('layouts/base', ['header' => 'header-single'], slots: true) ?>
   <article class="px-4 py-8">
     <div class="grid grid-cols-[2rem_1fr] gap-x-3">
-      <?php snippet('author-row', ['item' => $page, 'showTags' => false]) ?>
+      <?php snippet('author-row', ['item' => $page, 'metadata' => $location]) ?>
     </div>
 
     <?php if ($image): ?>
@@ -24,7 +25,6 @@ $image = $page->files()->first();
 
     <?php snippet('card-footer', [
       'item' => $page,
-      'leftContent' => $page->location()->isNotEmpty() ? $page->location()->value() : null,
       'tags' => $page->tags()->split()
     ]) ?>
     <?php endif ?>

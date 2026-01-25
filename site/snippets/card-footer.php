@@ -1,12 +1,9 @@
 <?php
 /**
- * Card footer with metadata and share popover
+ * Card footer with hashtags and share popover
  * @param Kirby\Cms\Page $item - The content page
- * @param string|null $leftContent - Optional text for left side
- * @param string $leftClass - Additional classes for left content
+ * @param array $tags - Hashtags to display
  */
-$leftContent = $leftContent ?? null;
-$leftClass = $leftClass ?? '';
 $tags = $tags ?? [];
 $popoverId = 'share-' . $item->id();
 $anchorName = '--share-' . str_replace('/', '-', $item->id());
@@ -14,16 +11,10 @@ $shareUrl = $item->url();
 $shareTitle = $item->title()->value() ?: 'Check this out';
 $blueskyUrl = 'https://bsky.app/intent/compose?text=' . urlencode($shareTitle . ' ' . $shareUrl);
 ?>
-<footer class="mt-4 flex items-center justify-between text-xs">
-  <div class="font-mono text-muted <?= $leftClass ?>">
-    <?php if ($leftContent): ?>
-    <?= $leftContent ?>
-    <?php endif ?>
-    <?php if ($leftContent && count($tags) > 0): ?>
-    <span class="mx-1">·</span>
-    <?php endif ?>
+<footer class="mt-4 flex items-center gap-3 text-xs">
+  <div class="flex flex-1 flex-wrap gap-2 font-mono text-muted">
     <?php foreach ($tags as $tag): ?>
-    <a href="<?= url('tag/' . urlencode($tag)) ?>" class="hover:text-accent transition-colors">#<?= htmlspecialchars($tag) ?></a><?php if ($tag !== end($tags)): ?> <?php endif ?>
+    <a href="<?= url('tag/' . urlencode($tag)) ?>" class="hover:text-accent transition-colors">#<?= htmlspecialchars($tag) ?></a>
     <?php endforeach ?>
   </div>
 

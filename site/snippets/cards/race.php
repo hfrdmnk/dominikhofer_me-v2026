@@ -4,6 +4,7 @@
  * @param Kirby\Cms\Page $item - The race page
  */
 $detailUrl = $item->url();
+$tags = $item->tags()->isNotEmpty() ? $item->tags()->split() : [];
 ?>
 <article class="group grid grid-cols-[2rem_1fr] gap-x-3">
   <?php snippet('author-row', ['item' => $item]) ?>
@@ -38,6 +39,6 @@ $detailUrl = $item->url();
   </a>
 
   <div class="col-span-2 md:col-start-2 md:col-span-1">
-    <?php snippet('card-footer', ['item' => $item]) ?>
+    <?php snippet('card-footer', ['item' => $item, 'tags' => $tags]) ?>
   </div>
 </article>

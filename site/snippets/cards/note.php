@@ -296,15 +296,7 @@ $detailUrl = $item->url();
   <?php endif ?>
 
   <?php $tags = $item->tags()->isNotEmpty() ? $item->tags()->split() : []; ?>
-  <?php if (count($tags) > 0): ?>
-  <div class="col-span-2 md:col-start-2 md:col-span-1 mt-3 flex flex-wrap gap-2 font-mono text-xs text-muted">
-    <?php foreach ($tags as $tag): ?>
-    <a href="<?= url('tag/' . urlencode($tag)) ?>" class="hover:text-accent transition-colors">#<?= htmlspecialchars($tag) ?></a>
-    <?php endforeach ?>
-  </div>
-  <?php endif ?>
-
   <div class="col-span-2 md:col-start-2 md:col-span-1">
-    <?php snippet('card-footer', ['item' => $item]) ?>
+    <?php snippet('card-footer', ['item' => $item, 'tags' => $tags]) ?>
   </div>
 </article>
