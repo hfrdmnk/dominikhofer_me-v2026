@@ -66,3 +66,11 @@ Icon
 # ---------------
 
 /site/config/.license
+
+# Docker
+# ---------------
+
+# Keep lock files for reproducible builds
+# but ignore local override files
+docker-compose.override.yml
+.env

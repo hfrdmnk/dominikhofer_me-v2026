@@ -1,0 +1,37 @@
+# Git
+.git
+.gitignore
+
+# Development files
+node_modules
+.DS_Store
+.vscode
+.idea
+*.sublime-workspace
+
+# Content and user data (mounted as volumes)
+content/*
+!content/index.html
+media/*
+!media/index.html
+site/accounts/*
+!site/accounts/index.html
+site/cache/*
+!site/cache/index.html
+site/sessions/*
+!site/sessions/index.html
+
+# License (added via environment variable)
+site/config/.license
+
+# Lock files (keep composer.lock and pnpm-lock.yaml for reproducible builds)
+.lock
+
+# Documentation
+docs/
+*.md
+!site/**/*.md
+
+# Docker files (not needed in build context for final image)
+docker-compose.yml
+Dockerfile

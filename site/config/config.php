@@ -1,7 +1,10 @@
 <?php
 
 return [
-  'debug' => false,
+  // Environment-based configuration
+  'debug' => filter_var(getenv('KIRBY_DEBUG') ?: 'false', FILTER_VALIDATE_BOOLEAN),
+  'url' => getenv('KIRBY_URL') ?: null,
+  'license' => getenv('KIRBY_LICENSE') ?: null,
 
   // Bluesky integration
   'dominik.bluesky' => [

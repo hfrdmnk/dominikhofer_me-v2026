@@ -1,0 +1,29 @@
+services:
+  kirby:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+      # Persistent volumes for content and user data
+      - kirby_content:/var/www/html/content
+      - kirby_media:/var/www/html/media
+      - kirby_accounts:/var/www/html/site/accounts
+      - kirby_cache:/var/www/html/site/cache
+      - kirby_sessions:/var/www/html/site/sessions
+    environment:
+      - KIRBY_DEBUG=${KIRBY_DEBUG:-false}
+      - KIRBY_URL=${KIRBY_URL:-http://localhost:8080}
+      - KIRBY_LICENSE=${KIRBY_LICENSE:-}
+      # S3 backup configuration (optional)
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-eu-central-1}
+      - S3_BUCKET=${S3_BUCKET:-}
+    restart: unless-stopped
+
+volumes:
+  kirby_content:
+  kirby_media:
+  kirby_accounts:
+  kirby_cache:
+  kirby_sessions:
