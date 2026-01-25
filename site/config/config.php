@@ -16,6 +16,11 @@ return [
     'og-image' => true
   ],
 
+  // Default thumbnail format
+  'thumbs' => [
+    'format' => 'webp'
+  ],
+
   // Panel sidebar menu with quick access to content types
   'panel' => [
     'menu' => [
