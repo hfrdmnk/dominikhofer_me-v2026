@@ -5,9 +5,9 @@
 <title><?= $page->isHomePage() ? $titleSuffix : $page->title() . ' | ' . $titleSuffix ?></title>
 
 <?php if ($page->excerpt()->isNotEmpty()): ?>
-<meta name="description" content="<?= $page->excerpt()->escape() ?>">
+<meta name="description" content="<?= $page->excerpt() ?>">
 <?php elseif ($site->author_bio()->isNotEmpty()): ?>
-<meta name="description" content="<?= $site->author_bio()->excerpt(160)->escape() ?>">
+<meta name="description" content="<?= $site->author_bio()->excerpt(160) ?>">
 <?php endif ?>
 
 <link rel="icon" href="<?= url('assets/icons/favicon.svg') ?>" type="image/svg+xml">
@@ -20,9 +20,9 @@
 <meta property="og:site_name" content="<?= $site->author_name()->escape() ?>">
 <?php endif ?>
 <?php if ($page->excerpt()->isNotEmpty()): ?>
-<meta property="og:description" content="<?= $page->excerpt()->escape() ?>">
+<meta property="og:description" content="<?= $page->excerpt() ?>">
 <?php elseif ($site->author_bio()->isNotEmpty()): ?>
-<meta property="og:description" content="<?= $site->author_bio()->excerpt(160)->escape() ?>">
+<meta property="og:description" content="<?= $site->author_bio()->excerpt(160) ?>">
 <?php endif ?>
 
 <?php if ($page->intendedTemplate() == 'photo' && $image = $page->files()->first()): ?>
