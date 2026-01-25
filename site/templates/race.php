@@ -13,7 +13,7 @@ $location = $page->location()->isNotEmpty() ? $page->location()->value() : null;
       <?php snippet('author-row', ['item' => $page, 'metadata' => $location]) ?>
     </div>
 
-    <div class="mt-6 grid grid-cols-3 gap-3">
+    <div class="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
       <div class="rounded-small border border-accent bg-accent/20 p-4 text-center">
         <span class="block font-mono text-xl font-medium text-accent">
           <?= $page->distance() ?>
