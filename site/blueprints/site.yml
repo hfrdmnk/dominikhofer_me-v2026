@@ -12,6 +12,10 @@ tabs:
             label: Name
             type: text
             required: true
+          title_suffix:
+            label: Title Suffix
+            type: text
+            help: "Text shown after the pipe in page titles, e.g. 'My Site' → 'Page | My Site'"
           author_tagline:
             label: Tagline
             type: text

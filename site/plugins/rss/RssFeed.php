@@ -11,6 +11,7 @@ class RssFeed
   private $authorName;
   private $authorEmail;
   private $authorBio;
+  private $titleSuffix;
 
   public function __construct()
   {
@@ -18,6 +19,7 @@ class RssFeed
     $this->authorName = $this->site->author_name()->value();
     $this->authorBio = $this->site->author_bio()->value();
     $this->authorEmail = $this->getAuthorEmail();
+    $this->titleSuffix = $this->site->title_suffix()->or($this->site->author_name())->value();
   }
 
   /**
@@ -42,15 +44,19 @@ class RssFeed
    */
   public function home(): Kirby\Cms\Response
   {
+    $feedUrl = $this->site->url() . '/rss';
+    $feedConfig = $this->site->rss_feeds()->toStructure()->findBy('url', $feedUrl);
+    $title = $feedConfig ? $feedConfig->name()->value() : 'Everything';
+
     $items = $this->site->index()->listed()
       ->filterBy('intendedTemplate', 'in', ['post', 'note', 'photo', 'race'])
       ->sortBy('date', 'desc');
 
     return $this->generate(
-      title: 'All Posts',
+      title: $title,
       description: $this->authorBio,
       link: $this->site->url(),
-      feedUrl: $this->site->url() . '/rss',
+      feedUrl: $feedUrl,
       items: $items
     );
   }
@@ -104,7 +110,7 @@ class RssFeed
     $xml .= '     xmlns:media="http://search.yahoo.com/mrss/"' . "\n";
     $xml .= '     xmlns:atom="http://www.w3.org/2005/Atom">' . "\n";
     $xml .= '  <channel>' . "\n";
-    $xml .= '    <title>' . $this->escape($title . ' | ' . $this->authorName) . '</title>' . "\n";
+    $xml .= '    <title>' . $this->escape($title . ' | ' . $this->titleSuffix) . '</title>' . "\n";
     $xml .= '    <link>' . $this->escape($link) . '</link>' . "\n";
     $xml .= '    <atom:link href="' . $this->escape($feedUrl) . '" rel="self" type="application/rss+xml"/>' . "\n";
     $xml .= '    <description>' . $this->escape($description) . '</description>' . "\n";

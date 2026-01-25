@@ -1,7 +1,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title><?= $page->isHomePage() ? $site->title() : $page->title() . ' | ' . $site->title() ?></title>
+<?php $titleSuffix = $site->title_suffix()->or($site->author_name())->value(); ?>
+<title><?= $page->isHomePage() ? $titleSuffix : $page->title() . ' | ' . $titleSuffix ?></title>
 
 <?php if ($page->excerpt()->isNotEmpty()): ?>
 <meta name="description" content="<?= $page->excerpt()->escape() ?>">

@@ -8,13 +8,13 @@ $detailUrl = $item->url();
 <article class="group grid grid-cols-[2rem_1fr] gap-x-3">
   <?php snippet('author-row', ['item' => $item]) ?>
 
-  <a href="<?= $detailUrl ?>" class="col-start-2 mt-2 block">
+  <a href="<?= $detailUrl ?>" class="col-span-2 md:col-start-2 md:col-span-1 mt-2 block">
     <h2 class="text-base font-medium text-primary hover:text-accent transition-colors">
       <?= $item->title() ?>
     </h2>
   </a>
 
-  <a href="<?= $detailUrl ?>" class="col-start-2 mt-3 grid grid-cols-3 gap-3">
+  <a href="<?= $detailUrl ?>" class="col-span-2 md:col-start-2 md:col-span-1 mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
     <div class="rounded-small border border-accent bg-accent/20 p-4 text-center">
       <span class="block font-mono text-xl font-medium text-accent">
         <?= $item->distance() ?>
@@ -37,7 +37,7 @@ $detailUrl = $item->url();
     </div>
   </a>
 
-  <div class="col-start-2">
+  <div class="col-span-2 md:col-start-2 md:col-span-1">
     <?php snippet('card-footer', ['item' => $item]) ?>
   </div>
 </article>
