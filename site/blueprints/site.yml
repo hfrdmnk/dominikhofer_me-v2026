@@ -50,7 +50,7 @@ tabs:
                 type: select
                 options:
                   bluesky: Bluesky
-                  mastodon: Mastodon
+                  fediverse: Fediverse
                   github: GitHub
                   email: Email
                   rss: RSS
