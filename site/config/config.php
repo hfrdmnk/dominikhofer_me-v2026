@@ -2,93 +2,94 @@
 
 return [
   // Environment-based configuration
-  'debug' => filter_var(getenv('KIRBY_DEBUG') ?: 'false', FILTER_VALIDATE_BOOLEAN),
-  'url' => getenv('KIRBY_URL') ?: null,
-  'license' => getenv('KIRBY_LICENSE') ?: null,
+  "debug" => filter_var(getenv("KIRBY_DEBUG") ?: "false", FILTER_VALIDATE_BOOLEAN),
+  "url" => getenv("KIRBY_URL") ?: null,
+  "license" => getenv("KIRBY_LICENSE") ?: null,
 
   // Bluesky integration
-  'dominik.bluesky' => [
-    'did' => 'did:plc:fthx2gjakdj4ynxxu5vysjty',
-    'cacheTtl' => 60 * 60, // 1 hour
-    'excludeDomains' => ['bsky.app', 'dominikhofer.me'],
+  "dominik.bluesky" => [
+    "did" => "did:plc:fthx2gjakdj4ynxxu5vysjty",
+    "cacheTtl" => 60 * 60, // 1 hour
+    "excludeDomains" => ["bsky.app", "dominikhofer.me"],
   ],
 
   // Enable caches
-  'cache' => [
-    'bluesky' => true,
-    'og-image' => true
+  "cache" => [
+    "bluesky" => true,
+    "og-image" => true,
   ],
 
   // Default thumbnail format
-  'thumbs' => [
-    'format' => 'webp'
+  "thumbs" => [
+    "format" => "webp",
   ],
 
   // Panel sidebar menu with quick access to content types
-  'panel' => [
-    'menu' => [
-      'site',
-      '-',
-      'posts' => [
-        'label' => 'Posts',
-        'link'  => 'pages/posts',
-        'icon'  => 'text'
+  "panel" => [
+    "install" => filter_var(getenv("KIRBY_PANEL_INSTALL") ?: "false", FILTER_VALIDATE_BOOLEAN),
+    "menu" => [
+      "site",
+      "-",
+      "posts" => [
+        "label" => "Posts",
+        "link" => "pages/posts",
+        "icon" => "text",
       ],
-      'notes' => [
-        'label' => 'Notes',
-        'link'  => 'pages/notes',
-        'icon'  => 'chat'
+      "notes" => [
+        "label" => "Notes",
+        "link" => "pages/notes",
+        "icon" => "chat",
       ],
-      'photos' => [
-        'label' => 'Photos',
-        'link'  => 'pages/photos',
-        'icon'  => 'image'
+      "photos" => [
+        "label" => "Photos",
+        "link" => "pages/photos",
+        "icon" => "image",
       ],
-      'races' => [
-        'label' => 'Races',
-        'link'  => 'pages/races',
-        'icon'  => 'bolt'
+      "races" => [
+        "label" => "Races",
+        "link" => "pages/races",
+        "icon" => "bolt",
       ],
-      '-',
-      'users',
-      'system'
-    ]
+      "-",
+      "users",
+      "system",
+    ],
   ],
 
   // Enable Markdown Extra for footnotes support
-  'markdown' => [
-    'extra' => true
+  "markdown" => [
+    "extra" => true,
   ],
 
   // Image processing: Replace originals on upload (2160px max, 80% quality, WebP)
-  'hooks' => [
-    'file.create:after' => function ($file) {
+  "hooks" => [
+    "file.create:after" => function ($file) {
       if ($file->isResizable() && $file->width() > 2160) {
         kirby()->thumb($file->root(), $file->root(), [
-          'width'   => 2160,
-          'quality' => 80,
-          'format'  => 'webp'
+          "width" => 2160,
+          "quality" => 80,
+          "format" => "webp",
         ]);
       }
     },
-    'file.replace:after' => function ($newFile, $oldFile) {
+    "file.replace:after" => function ($newFile, $oldFile) {
       if ($newFile->isResizable() && $newFile->width() > 2160) {
         kirby()->thumb($newFile->root(), $newFile->root(), [
-          'width'   => 2160,
-          'quality' => 80,
-          'format'  => 'webp'
+          "width" => 2160,
+          "quality" => 80,
+          "format" => "webp",
         ]);
       }
     },
 
     // Update folder prefix when date changes on listed pages
-    'page.update:after' => function ($newPage, $oldPage) {
-      if ($newPage->status() !== 'listed') {
+    "page.update:after" => function ($newPage, $oldPage) {
+      if ($newPage->status() !== "listed") {
         return;
       }
 
       $template = $newPage->intendedTemplate()->name();
-      if (!in_array($template, ['post', 'note', 'photo', 'race'])) {
+      if (!in_array($template, ["post", "note", "photo", "race"])) {
         return;
       }
 
@@ -96,87 +97,89 @@ return [
       $oldDate = $oldPage->date()->toDate();
 
       if ($newDate !== $oldDate) {
-        $newNum = (int) date('Ymd', $newDate);
+        $newNum = (int) date("Ymd", $newDate);
         if ($newPage->num() !== $newNum) {
           $newPage->changeNum($newNum);
         }
       }
-    }
+    },
   ],
 
   // Flat URL routing for content items
-  'routes' => [
+  "routes" => [
     // XML Sitemap
     [
-      'pattern' => 'sitemap.xml',
-      'action'  => function () {
-        $pages = site()->index()
+      "pattern" => "sitemap.xml",
+      "action" => function () {
+        $pages = site()
+          ->index()
           ->listed()
-          ->filter(fn($p) => !in_array($p->intendedTemplate()->name(), ['error']));
+          ->filter(fn($p) => !in_array($p->intendedTemplate()->name(), ["error"]));
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
-        $xml .= '  <url>' . "\n";
-        $xml .= '    <loc>' . site()->url() . '</loc>' . "\n";
-        $xml .= '    <lastmod>' . date('Y-m-d', site()->modified()) . '</lastmod>' . "\n";
-        $xml .= '    <priority>1.0</priority>' . "\n";
-        $xml .= '  </url>' . "\n";
+        $xml .= "  <url>" . "\n";
+        $xml .= "    <loc>" . site()->url() . "</loc>" . "\n";
+        $xml .= "    <lastmod>" . date("Y-m-d", site()->modified()) . "</lastmod>" . "\n";
+        $xml .= "    <priority>1.0</priority>" . "\n";
+        $xml .= "  </url>" . "\n";
 
         foreach ($pages as $p) {
-          $xml .= '  <url>' . "\n";
-          $xml .= '    <loc>' . $p->url() . '</loc>' . "\n";
-          $xml .= '    <lastmod>' . date('Y-m-d', $p->modified()) . '</lastmod>' . "\n";
-          $xml .= '  </url>' . "\n";
+          $xml .= "  <url>" . "\n";
+          $xml .= "    <loc>" . $p->url() . "</loc>" . "\n";
+          $xml .= "    <lastmod>" . date("Y-m-d", $p->modified()) . "</lastmod>" . "\n";
+          $xml .= "  </url>" . "\n";
         }
 
-        $xml .= '</urlset>';
+        $xml .= "</urlset>";
 
-        return new Kirby\Cms\Response($xml, 'application/xml', 200);
-      }
+        return new Kirby\Cms\Response($xml, "application/xml", 200);
+      },
     ],
     // Tag archive route
     [
-      'pattern' => 'tag/(:any)',
-      'action'  => function ($tag) {
+      "pattern" => "tag/(:any)",
+      "action" => function ($tag) {
         $tag = urldecode($tag);
 
-        $items = site()->index()
+        $items = site()
+          ->index()
           ->listed()
-          ->filterBy('intendedTemplate', 'in', ['post', 'note', 'photo', 'race'])
-          ->filterBy('tags', $tag, ',')
-          ->sortBy('date', 'desc');
+          ->filterBy("intendedTemplate", "in", ["post", "note", "photo", "race"])
+          ->filterBy("tags", $tag, ",")
+          ->sortBy("date", "desc");
 
         if ($items->isEmpty()) {
           return site()->errorPage();
         }
 
         return Page::factory([
-          'slug' => 'tag',
-          'template' => 'tag',
-          'content' => [
-            'title' => '#' . $tag,
-            'tag' => $tag
-          ]
+          "slug" => "tag",
+          "template" => "tag",
+          "content" => [
+            "title" => "#" . $tag,
+            "tag" => $tag,
+          ],
         ]);
-      }
+      },
     ],
     // Route individual content items to flat URLs
     [
-      'pattern' => '(:any)',
-      'action'  => function ($slug) {
+      "pattern" => "(:any)",
+      "action" => function ($slug) {
         // Try direct pages first (about, now, slash, home, posts, notes, etc.)
         if ($page = page($slug)) {
           return $page;
         }
         // Try content types as children of collection pages
-        foreach (['posts', 'notes', 'photos', 'races'] as $parent) {
-          if ($page = page($parent . '/' . $slug)) {
+        foreach (["posts", "notes", "photos", "races"] as $parent) {
+          if ($page = page($parent . "/" . $slug)) {
             return site()->visit($page);
           }
         }
         // Not found
         return site()->errorPage();
-      }
-    ]
-  ]
+      },
+    ],
+  ],
 ];
