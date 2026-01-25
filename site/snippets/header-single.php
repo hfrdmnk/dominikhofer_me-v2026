@@ -10,6 +10,7 @@ $template = $page->intendedTemplate()->name();
 $displayTitle = match($template) {
   'note' => 'Note',
   'photo' => 'Photo',
+  'error' => '404',
   default => $page->title(),
 };
 
