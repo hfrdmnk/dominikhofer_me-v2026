@@ -11,7 +11,7 @@ Kirby::plugin('dominik/og-image', [
         $kirby = kirby();
 
         // Determine which page this is for
-        if (empty($slug)) {
+        if (empty($slug) || $slug === 'home') {
           // Homepage
           $page = $site->homePage();
         } else {

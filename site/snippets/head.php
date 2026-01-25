@@ -34,7 +34,7 @@
 <meta property="og:image:width" content="<?= $image->resize(1200)->width() ?>">
 <meta property="og:image:height" content="<?= $image->resize(1200)->height() ?>">
 <?php else: ?>
-<meta property="og:image" content="<?= $page->url() . ($page->isHomePage() ? '/' : '') ?>.png">
+<meta property="og:image" content="<?= $page->isHomePage() ? url('home.png') : $page->url() . '.png' ?>">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="628">
 <?php endif ?>
