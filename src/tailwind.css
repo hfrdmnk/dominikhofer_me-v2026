@@ -4,6 +4,7 @@
 
 @source not "../vendor";
 @source not "../kirby";
+@source "../site";
 
 @theme {
   --font-mono:
