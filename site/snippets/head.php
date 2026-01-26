@@ -13,7 +13,7 @@
 <link rel="icon" href="<?= url('assets/icons/favicon.svg') ?>" type="image/svg+xml">
 <link rel="canonical" href="<?= $page->url() ?>">
 
-<meta property="og:title" content="<?= $page->title()->escape() ?>">
+<meta property="og:title" content="<?= $page->isHomePage() ? $titleSuffix : $page->title() . ' | ' . $titleSuffix ?>">
 <meta property="og:url" content="<?= $page->url() ?>">
 <meta property="og:type" content="<?= $page->isHomePage() ? 'website' : 'article' ?>">
 <?php if ($site->author_name()->isNotEmpty()): ?>
