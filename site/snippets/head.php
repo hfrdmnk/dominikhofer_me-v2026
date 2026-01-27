@@ -1,8 +1,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<?php $titleSuffix = $site->title_suffix()->or($site->author_name())->value(); ?>
-<title><?= $page->isHomePage() ? $titleSuffix : $page->title() . ' | ' . $titleSuffix ?></title>
+<?php
+$titleSuffix = $site->title_suffix()->or($site->author_name())->value();
+$displayTitle = match($page->intendedTemplate()->name()) {
+  'note' => 'Note',
+  'photo' => 'Photo',
+  default => $page->title()->value(),
+};
+?>
+<title><?= $page->isHomePage() ? $titleSuffix : $displayTitle . ' | ' . $titleSuffix ?></title>
 
 <?php if ($page->excerpt()->isNotEmpty()): ?>
 <meta name="description" content="<?= $page->excerpt() ?>">
@@ -13,7 +20,7 @@
 <link rel="icon" href="<?= url('assets/icons/favicon.svg') ?>" type="image/svg+xml">
 <link rel="canonical" href="<?= $page->url() ?>">
 
-<meta property="og:title" content="<?= $page->isHomePage() ? $titleSuffix : $page->title() . ' | ' . $titleSuffix ?>">
+<meta property="og:title" content="<?= $page->isHomePage() ? $titleSuffix : $displayTitle . ' | ' . $titleSuffix ?>">
 <meta property="og:url" content="<?= $page->url() ?>">
 <meta property="og:type" content="<?= $page->isHomePage() ? 'website' : 'article' ?>">
 <?php if ($site->author_name()->isNotEmpty()): ?>

@@ -8,7 +8,11 @@ $tags = $tags ?? [];
 $popoverId = 'share-' . $item->id();
 $anchorName = '--share-' . str_replace('/', '-', $item->id());
 $shareUrl = $item->url();
-$shareTitle = $item->title()->value() ?: 'Check this out';
+$shareTitle = match($item->intendedTemplate()->name()) {
+  'note' => 'Note',
+  'photo' => 'Photo',
+  default => $item->title()->value() ?: 'Check this out',
+};
 $blueskyUrl = 'https://bsky.app/intent/compose?text=' . urlencode($shareTitle . ' ' . $shareUrl);
 ?>
 <footer class="mt-4 flex items-center gap-3 text-xs">

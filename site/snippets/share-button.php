@@ -1,5 +1,10 @@
 <?php
 /** @var Kirby\Cms\Page $page */
+$shareTitle = match($page->intendedTemplate()->name()) {
+  'note' => 'Note',
+  'photo' => 'Photo',
+  default => $page->title()->value(),
+};
 ?>
 <div class="flex shrink-0 items-center gap-2">
   <button
@@ -7,7 +12,7 @@
     class="cursor-pointer rounded-medium bg-accent p-2 text-white transition-colors hover:bg-accent-hover"
     aria-label="Share this page"
     data-share-button
-    data-share-title="<?= $page->title()->escape() ?>"
+    data-share-title="<?= esc($shareTitle) ?>"
     data-share-url="<?= $page->url() ?>"
   >
     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
