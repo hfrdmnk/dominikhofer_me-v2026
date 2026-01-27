@@ -69,9 +69,6 @@ WORKDIR /var/www/html
 # Copy PHP configuration
 COPY docker/php.ini /usr/local/etc/php/conf.d/kirby.ini
 
-# Copy PHP-FPM pool configuration (allow env vars)
-COPY docker/www.conf /usr/local/etc/php-fpm.d/zz-docker.conf
-
 # Copy Nginx configuration
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 
@@ -129,4 +126,8 @@ EOF
 
 EXPOSE 80
 
-CMD ["supervisord", "-c", "/etc/supervisord.conf"]
+# Copy entrypoint script that clears cache before starting services
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
