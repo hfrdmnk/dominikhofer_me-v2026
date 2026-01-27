@@ -394,7 +394,13 @@ class BlueskyParser
     $isQuote = self::isQuotePost($post);
 
     $rkey = BlueskyApi::extractRkey($post['uri']);
-    $createdAt = $post['record']['createdAt'] ?? $post['indexedAt'] ?? date('c');
+
+    // For reposts, use the repost timestamp, not the original post's timestamp
+    if ($isRepost && isset($feedItem['reason']['indexedAt'])) {
+      $createdAt = $feedItem['reason']['indexedAt'];
+    } else {
+      $createdAt = $post['record']['createdAt'] ?? $post['indexedAt'] ?? date('c');
+    }
     $date = new DateTime($createdAt);
 
     // Extract text and trailing hashtags
