@@ -88,7 +88,7 @@ return [
         "icon" => "bolt",
       ],
       "-",
-      "indieConnector",
+      "webmentions",
       "-",
       "users",
       "system",
