@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => ({
   build: {
     outDir: "dist",
     rollupOptions: {
-      input: "src/main.css",
+      input: ["src/main.css", "src/app.js"],
     },
   },
   plugins: [

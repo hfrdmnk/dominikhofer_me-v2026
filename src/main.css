@@ -4,7 +4,6 @@
 
 @source "../site";
 @source "../site/plugins";
-@source "../assets";
 
 @theme {
   --font-mono:

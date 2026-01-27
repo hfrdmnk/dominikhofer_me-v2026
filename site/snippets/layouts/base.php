@@ -58,6 +58,6 @@ $logoClass = $isDetailPage
   <?php snippet('footer') ?>
   <?php snippet('follow-modal') ?>
 
-  <script src="<?= url('assets/js/app.js') ?>" defer></script>
+  <?= vite()->js('src/app.js') ?>
 </body>
 </html>
