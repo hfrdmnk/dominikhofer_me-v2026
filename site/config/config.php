@@ -37,6 +37,15 @@ return [
 
     // SQLite path (inside content/ for Docker volume persistence)
     "sqlitePath" => "content/.sqlite/",
+
+    // Secret for webhooks (required for queue/responses)
+    "secret" => getenv("INDIECONNECTOR_SECRET") ?: "",
+
+    // Panel statistics
+    "stats.enabled" => filter_var(getenv("INDIECONNECTOR_STATS") ?: "false", FILTER_VALIDATE_BOOLEAN),
+
+    // Response collection (likes/replies from Mastodon/Bluesky)
+    "responses.enabled" => filter_var(getenv("INDIECONNECTOR_RESPONSES") ?: "false", FILTER_VALIDATE_BOOLEAN),
   ],
 
   // Enable caches
