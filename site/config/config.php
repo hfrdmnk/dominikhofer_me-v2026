@@ -15,7 +15,9 @@ return [
 
   // Enable caches
   "cache" => [
-    "bluesky" => true,
+    "bluesky" => [
+      "prefix" => "bluesky",
+    ],
     "og-image" => true,
   ],
 
