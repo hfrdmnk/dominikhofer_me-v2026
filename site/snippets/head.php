@@ -87,4 +87,4 @@ if ($fediverse):
 <script defer data-domain="<?= $site->plausible_domain() ?>" src="<?= $site->plausible_script() ?>"></script>
 <?php endif ?>
 
-<?= css('assets/css/styles.css') ?>
+<?= vite()->css('src/main.css') ?>

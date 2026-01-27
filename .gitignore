@@ -15,6 +15,7 @@ Icon
 /vendor
 /kirby
 /assets/css
+/dist
 
 # Temporary files
 # ---------------

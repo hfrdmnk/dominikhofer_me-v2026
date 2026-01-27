@@ -12,13 +12,13 @@ COPY package.json pnpm-lock.yaml ./
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Copy source files for Tailwind
+# Copy source files for Vite/Tailwind
 COPY src/ ./src/
-COPY tailwind.config.js* ./
+COPY vite.config.js ./
 COPY site/templates/ ./site/templates/
 COPY site/snippets/ ./site/snippets/
 
-# Build minified CSS
+# Build assets with Vite
 RUN pnpm build
 
 
@@ -80,8 +80,8 @@ RUN chmod +x /usr/local/bin/backup-to-s3
 COPY --from=php-builder /build/kirby ./kirby
 COPY --from=php-builder /build/vendor ./vendor
 
-# Copy built CSS
-COPY --from=css-builder /build/assets/css ./assets/css
+# Copy Vite-built assets (CSS with content hashes)
+COPY --from=css-builder /build/dist ./dist
 
 # Copy application files
 COPY index.php ./
