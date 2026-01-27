@@ -56,6 +56,7 @@ tabs:
                   bluesky: Bluesky
                   fediverse: Fediverse
                   github: GitHub
+                  mastodon: Mastodon
                   email: Email
                   rss: RSS
               url:
@@ -68,6 +69,7 @@ tabs:
                 options:
                   bluesky: Bluesky
                   fediverse: Fediverse
+                  mastodon: Mastodon
                   mail: Mail
                   rss: RSS
                   subscribe: Subscribe
