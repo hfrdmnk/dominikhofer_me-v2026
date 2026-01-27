@@ -29,7 +29,7 @@
 <?php endif ?>
 
 <?php if ($item->body()->isNotEmpty()): ?>
-<?= $item->body()->kirbytext() ?>
+<?= $site->absoluteUrls($item->body()->kirbytext()) ?>
 <?php endif ?>
 
 <hr>

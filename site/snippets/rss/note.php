@@ -43,9 +43,9 @@ if (empty($mediaFiles) && $item->media_urls()->isNotEmpty()) {
 <hr style="margin: 1.5em 0; border: none; border-top: 1px solid #ccc;">
   <?php endif ?>
   <?php if ($isBluesky): ?>
-<?= kirbytext(BlueskyParser::escapeMarkdownHeadings($part)) ?>
+<?= $site->absoluteUrls(kirbytext(BlueskyParser::escapeMarkdownHeadings($part))) ?>
   <?php else: ?>
-<?= kirbytext($part) ?>
+<?= $site->absoluteUrls(kirbytext($part)) ?>
   <?php endif ?>
 <?php endforeach ?>
 

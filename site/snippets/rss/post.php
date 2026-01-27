@@ -13,7 +13,7 @@ $cover = $item->cover()->toFile();
 <p><img src="<?= $cover->url() ?>" alt="" style="max-width: 100%; height: auto;"></p>
 <?php endif ?>
 
-<?= $item->body()->kirbytext() ?>
+<?= $site->absoluteUrls($item->body()->kirbytext()) ?>
 
 <hr>
 <p>
