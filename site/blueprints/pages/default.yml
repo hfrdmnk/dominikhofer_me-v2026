@@ -33,6 +33,11 @@ columns:
                 type: group
                 fieldsets:
                   - code
+              feeds:
+                label: Feeds
+                type: group
+                fieldsets:
+                  - feedlist
 
   sidebar:
     width: 1/3

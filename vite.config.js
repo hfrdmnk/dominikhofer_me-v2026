@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     tailwindcss(),
     kirby({
-      watch: ["site/(templates|snippets|controllers|models|layouts)/**/*.php"],
+      watch: ["site/(templates|snippets|controllers|models|layouts|plugins)/**/*.php"],
     }),
   ],
 }))
