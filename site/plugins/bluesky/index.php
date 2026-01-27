@@ -44,14 +44,9 @@ Kirby::plugin('dominik/bluesky', [
         'pattern' => 'bluesky/sync',
         'method' => 'POST',
         'action' => function () {
-          // Clear cache and refetch
-          $cache = kirby()->cache('bluesky');
-          $cache->flush();
-
-          // Trigger a refetch by accessing the notes page
+          // Force refetch - getBlueskyPosts(true) bypasses cache and overwrites it
           $notesPage = page('notes');
           if ($notesPage) {
-            // Force cache rebuild
             $notesPage->getBlueskyPosts(true);
           }
 

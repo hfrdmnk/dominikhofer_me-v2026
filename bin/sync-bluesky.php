@@ -7,7 +7,6 @@
 require __DIR__ . '/../kirby/bootstrap.php';
 
 $kirby = new Kirby();
-$kirby->cache('bluesky')->flush();
 $kirby->site()->find('notes')?->getBlueskyPosts(true);
 
 echo "Bluesky sync complete\n";
