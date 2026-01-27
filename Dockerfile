@@ -69,6 +69,9 @@ WORKDIR /var/www/html
 # Copy PHP configuration
 COPY docker/php.ini /usr/local/etc/php/conf.d/kirby.ini
 
+# Copy PHP-FPM pool configuration (allow env vars)
+COPY docker/www.conf /usr/local/etc/php-fpm.d/zz-docker.conf
+
 # Copy Nginx configuration
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 
