@@ -33,17 +33,40 @@
 <meta property="og:image" content="<?= $image->resize(1200)->url() ?>">
 <meta property="og:image:width" content="<?= $image->resize(1200)->width() ?>">
 <meta property="og:image:height" content="<?= $image->resize(1200)->height() ?>">
+<?php elseif ($page->intendedTemplate() == 'note'):
+  // Check media_1 through media_4 for first image
+  $ogImage = null;
+  foreach (['media_1', 'media_2', 'media_3', 'media_4'] as $field) {
+    if ($page->$field()->isNotEmpty()) {
+      $file = $page->$field()->toFile();
+      if ($file && $file->type() === 'image') {
+        $ogImage = $file;
+        break;
+      }
+    }
+  }
+  if ($ogImage):
+?>
+<meta property="og:image" content="<?= $ogImage->resize(1200)->url() ?>">
+<meta property="og:image:width" content="<?= $ogImage->resize(1200)->width() ?>">
+<meta property="og:image:height" content="<?= $ogImage->resize(1200)->height() ?>">
+<?php else: ?>
+<meta property="og:image" content="<?= $page->url() . '.png' ?>">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<?php endif; ?>
 <?php else: ?>
 <meta property="og:image" content="<?= $page->isHomePage() ? url('home.png') : $page->url() . '.png' ?>">
 <meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="628">
+<meta property="og:image:height" content="630">
 <?php endif ?>
 
 <link rel="alternate" type="application/rss+xml" title="<?= $site->author_name() ?>" href="<?= url('rss') ?>">
 <link rel="sitemap" href="<?= url('sitemap.xml') ?>">
 
 <?php
-$fediverse = $site->social_links()->toStructure()->findBy('icon', 'fediverse');
+$mastodon = $site->social_links()->toStructure()->findBy('icon', 'mastodon');
+$fediverse = $mastodon ?? $site->social_links()->toStructure()->findBy('icon', 'fediverse');
 if ($fediverse):
   $url = parse_url($fediverse->url());
   $handle = ltrim($url['path'] ?? '', '/@');
