@@ -15,18 +15,20 @@ $readTime = $minutes > 0 ? $minutes . ' min read' : null;
       <?php snippet('author-row', ['item' => $page, 'metadata' => $readTime]) ?>
     </div>
 
-    <?php if ($cover): ?>
-    <div class="mt-6 overflow-hidden rounded-medium">
-      <img
-        src="<?= $cover->resize(1200)->url() ?>"
-        alt=""
-        class="w-full"
-      >
-    </div>
-    <?php endif ?>
+    <div class="mt-6 space-y-6">
+      <?php if ($cover): ?>
+      <div class="overflow-hidden rounded-medium">
+        <img
+          src="<?= $cover->resize(1200)->url() ?>"
+          alt=""
+          class="w-full"
+        >
+      </div>
+      <?php endif ?>
 
-    <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium prose-img:rounded-small mt-6 max-w-none">
-      <?= $page->body()->kirbytext() ?>
+      <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium prose-img:rounded-small max-w-none">
+        <?= $page->body()->kirbytext() ?>
+      </div>
     </div>
 
     <?php snippet('card-footer', ['item' => $page, 'tags' => $page->tags()->split()]) ?>

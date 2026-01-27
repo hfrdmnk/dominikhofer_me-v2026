@@ -14,25 +14,27 @@ $location = $page->location()->isNotEmpty() ? $page->location()->value() : null;
       <?php snippet('author-row', ['item' => $page, 'metadata' => $location]) ?>
     </div>
 
-    <?php if ($image): ?>
-    <div class="mt-6 overflow-hidden rounded-medium">
-      <img
-        src="<?= $image->resize(1200)->url() ?>"
-        alt=""
-        class="w-full"
-      >
+    <div class="mt-6 space-y-6">
+      <?php if ($image): ?>
+      <div class="overflow-hidden rounded-medium">
+        <img
+          src="<?= $image->resize(1200)->url() ?>"
+          alt=""
+          class="w-full"
+        >
+      </div>
+      <?php endif ?>
+
+      <?php if ($page->body()->isNotEmpty()): ?>
+      <div class="prose prose-neutral max-w-none">
+        <?= $page->body()->kt() ?>
+      </div>
+      <?php endif ?>
     </div>
 
     <?php snippet('card-footer', [
       'item' => $page,
       'tags' => $page->tags()->split()
     ]) ?>
-    <?php endif ?>
-
-    <?php if ($page->body()->isNotEmpty()): ?>
-    <div class="prose prose-neutral mt-6 max-w-none">
-      <?= $page->body()->kt() ?>
-    </div>
-    <?php endif ?>
   </article>
 <?php endsnippet() ?>

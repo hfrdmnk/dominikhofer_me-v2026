@@ -43,105 +43,107 @@ $hasRemoteMedia = count($remoteMedia) > 0;
       <?php snippet('author-row', ['item' => $page, 'showTags' => false]) ?>
     </div>
 
-    <?php $isBluesky = str_starts_with($page->content()->get('uuid')->value() ?? '', 'bluesky://'); ?>
-    <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium prose-img:rounded-small mt-6 max-w-none">
-      <?php if ($isThread): ?>
-        <?php foreach ($bodyParts as $index => $part): ?>
-          <?php if ($index > 0): ?>
-          <hr class="my-6 border-border">
+    <div class="mt-6 space-y-6">
+      <?php $isBluesky = str_starts_with($page->content()->get('uuid')->value() ?? '', 'bluesky://'); ?>
+      <div class="prose prose-neutral prose-headings:font-medium prose-strong:font-medium prose-img:rounded-small max-w-none">
+        <?php if ($isThread): ?>
+          <?php foreach ($bodyParts as $index => $part): ?>
+            <?php if ($index > 0): ?>
+            <hr class="my-6 border-border">
+            <?php endif ?>
+            <?= $isBluesky ? kirbytext(BlueskyParser::escapeMarkdownHeadings($part)) : kirbytext($part) ?>
+          <?php endforeach ?>
+        <?php else: ?>
+          <?= $isBluesky ? kirbytext(BlueskyParser::escapeMarkdownHeadings($page->body()->value())) : $page->body()->kt() ?>
+        <?php endif ?>
+      </div>
+
+      <?php if ($page->quoted_post()->isNotEmpty()): ?>
+        <?php $quotedPost = json_decode($page->quoted_post()->value(), true); ?>
+        <?php if ($quotedPost): ?>
+          <?php
+            // Convert AT URI to Bluesky web URL
+            $atUri = $quotedPost['uri'] ?? '';
+            $quotedPostUrl = '';
+            if (preg_match('/at:\/\/([^\/]+)\/app\.bsky\.feed\.post\/(.+)/', $atUri, $matches)) {
+              $quotedPostUrl = 'https://bsky.app/profile/' . $matches[1] . '/post/' . $matches[2];
+            }
+          ?>
+        <a href="<?= $quotedPostUrl ?>" target="_blank" rel="noopener noreferrer"
+           class="grid grid-cols-[1.5rem_1fr] gap-x-2 rounded-medium border border-border bg-subtle p-3 transition-colors hover:border-accent">
+          <?php if (!empty($quotedPost['author_avatar'])): ?>
+          <img src="<?= htmlspecialchars($quotedPost['author_avatar'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="size-6 rounded-small object-cover">
+          <?php else: ?>
+          <div class="size-6 rounded-small bg-border"></div>
           <?php endif ?>
-          <?= $isBluesky ? kirbytext(BlueskyParser::escapeMarkdownHeadings($part)) : kirbytext($part) ?>
+          <div class="flex items-center gap-2 text-sm">
+            <span class="font-medium text-primary"><?= htmlspecialchars($quotedPost['author_name'] ?: $quotedPost['author_handle'], ENT_QUOTES, 'UTF-8') ?></span>
+            <span class="text-muted">@<?= htmlspecialchars($quotedPost['author_handle'], ENT_QUOTES, 'UTF-8') ?></span>
+          </div>
+          <div class="col-start-2 prose prose-sm prose-neutral prose-card mt-1 max-w-none text-secondary"><?= nl2br(htmlspecialchars($quotedPost['text'], ENT_QUOTES, 'UTF-8')) ?></div>
+        </a>
+        <?php endif ?>
+      <?php endif ?>
+
+      <?php if ($page->external_link()->isNotEmpty()): ?>
+        <?php $link = json_decode($page->external_link()->value(), true); ?>
+        <?php if ($link): ?>
+        <a href="<?= htmlspecialchars($link['uri'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener noreferrer"
+           class="block overflow-hidden rounded-medium border border-border transition-colors hover:border-accent">
+          <?php if (!empty($link['thumb'])): ?>
+          <img src="<?= htmlspecialchars($link['thumb'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="aspect-[2/1] w-full object-cover">
+          <?php endif ?>
+          <div class="p-3">
+            <div class="line-clamp-1 font-medium text-primary"><?= htmlspecialchars($link['title'], ENT_QUOTES, 'UTF-8') ?></div>
+            <?php if (!empty($link['description'])): ?>
+            <div class="mt-1 line-clamp-2 text-sm text-secondary"><?= htmlspecialchars($link['description'], ENT_QUOTES, 'UTF-8') ?></div>
+            <?php endif ?>
+            <div class="mt-2 text-xs text-tertiary"><?= parse_url($link['uri'], PHP_URL_HOST) ?></div>
+          </div>
+        </a>
+        <?php endif ?>
+      <?php endif ?>
+
+      <?php if ($hasLocalMedia): ?>
+      <div class="flex flex-col gap-4">
+        <?php foreach ($mediaFiles as $file): ?>
+          <?php if ($file->type() === 'video'): ?>
+          <video
+            src="<?= $file->url() ?>"
+            class="w-full rounded-medium"
+            controls
+            playsinline
+          ></video>
+          <?php else: ?>
+          <img
+            src="<?= $file->resize(1200)->url() ?>"
+            alt=""
+            class="w-full rounded-medium"
+          >
+          <?php endif ?>
         <?php endforeach ?>
-      <?php else: ?>
-        <?= $isBluesky ? kirbytext(BlueskyParser::escapeMarkdownHeadings($page->body()->value())) : $page->body()->kt() ?>
-      <?php endif ?>
-    </div>
-
-    <?php if ($page->quoted_post()->isNotEmpty()): ?>
-      <?php $quotedPost = json_decode($page->quoted_post()->value(), true); ?>
-      <?php if ($quotedPost): ?>
-        <?php
-          // Convert AT URI to Bluesky web URL
-          $atUri = $quotedPost['uri'] ?? '';
-          $quotedPostUrl = '';
-          if (preg_match('/at:\/\/([^\/]+)\/app\.bsky\.feed\.post\/(.+)/', $atUri, $matches)) {
-            $quotedPostUrl = 'https://bsky.app/profile/' . $matches[1] . '/post/' . $matches[2];
-          }
-        ?>
-      <a href="<?= $quotedPostUrl ?>" target="_blank" rel="noopener noreferrer"
-         class="mt-6 grid grid-cols-[1.5rem_1fr] gap-x-2 rounded-medium border border-border bg-subtle p-3 transition-colors hover:border-accent">
-        <?php if (!empty($quotedPost['author_avatar'])): ?>
-        <img src="<?= htmlspecialchars($quotedPost['author_avatar'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="size-6 rounded-small object-cover">
-        <?php else: ?>
-        <div class="size-6 rounded-small bg-border"></div>
-        <?php endif ?>
-        <div class="flex items-center gap-2 text-sm">
-          <span class="font-medium text-primary"><?= htmlspecialchars($quotedPost['author_name'] ?: $quotedPost['author_handle'], ENT_QUOTES, 'UTF-8') ?></span>
-          <span class="text-muted">@<?= htmlspecialchars($quotedPost['author_handle'], ENT_QUOTES, 'UTF-8') ?></span>
-        </div>
-        <div class="col-start-2 prose prose-sm prose-neutral prose-card mt-1 max-w-none text-secondary"><?= nl2br(htmlspecialchars($quotedPost['text'], ENT_QUOTES, 'UTF-8')) ?></div>
-      </a>
-      <?php endif ?>
-    <?php endif ?>
-
-    <?php if ($page->external_link()->isNotEmpty()): ?>
-      <?php $link = json_decode($page->external_link()->value(), true); ?>
-      <?php if ($link): ?>
-      <a href="<?= htmlspecialchars($link['uri'], ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener noreferrer"
-         class="mt-6 block overflow-hidden rounded-medium border border-border transition-colors hover:border-accent">
-        <?php if (!empty($link['thumb'])): ?>
-        <img src="<?= htmlspecialchars($link['thumb'], ENT_QUOTES, 'UTF-8') ?>" alt="" class="aspect-[2/1] w-full object-cover">
-        <?php endif ?>
-        <div class="p-3">
-          <div class="line-clamp-1 font-medium text-primary"><?= htmlspecialchars($link['title'], ENT_QUOTES, 'UTF-8') ?></div>
-          <?php if (!empty($link['description'])): ?>
-          <div class="mt-1 line-clamp-2 text-sm text-secondary"><?= htmlspecialchars($link['description'], ENT_QUOTES, 'UTF-8') ?></div>
+      </div>
+      <?php elseif ($hasRemoteMedia): ?>
+      <div class="flex flex-col gap-4">
+        <?php foreach ($remoteMedia as $media): ?>
+          <?php if ($media['type'] === 'video'): ?>
+          <video
+            src="<?= $media['url'] ?>"
+            class="w-full rounded-medium"
+            controls
+            playsinline
+          ></video>
+          <?php else: ?>
+          <img
+            src="<?= $media['url'] ?>"
+            alt=""
+            class="w-full rounded-medium"
+          >
           <?php endif ?>
-          <div class="mt-2 text-xs text-tertiary"><?= parse_url($link['uri'], PHP_URL_HOST) ?></div>
-        </div>
-      </a>
+        <?php endforeach ?>
+      </div>
       <?php endif ?>
-    <?php endif ?>
-
-    <?php if ($hasLocalMedia): ?>
-    <div class="mt-6 flex flex-col gap-4">
-      <?php foreach ($mediaFiles as $file): ?>
-        <?php if ($file->type() === 'video'): ?>
-        <video
-          src="<?= $file->url() ?>"
-          class="w-full rounded-medium"
-          controls
-          playsinline
-        ></video>
-        <?php else: ?>
-        <img
-          src="<?= $file->resize(1200)->url() ?>"
-          alt=""
-          class="w-full rounded-medium"
-        >
-        <?php endif ?>
-      <?php endforeach ?>
     </div>
-    <?php elseif ($hasRemoteMedia): ?>
-    <div class="mt-6 flex flex-col gap-4">
-      <?php foreach ($remoteMedia as $media): ?>
-        <?php if ($media['type'] === 'video'): ?>
-        <video
-          src="<?= $media['url'] ?>"
-          class="w-full rounded-medium"
-          controls
-          playsinline
-        ></video>
-        <?php else: ?>
-        <img
-          src="<?= $media['url'] ?>"
-          alt=""
-          class="w-full rounded-medium"
-        >
-        <?php endif ?>
-      <?php endforeach ?>
-    </div>
-    <?php endif ?>
 
     <?php snippet('card-footer', ['item' => $page, 'tags' => $page->tags()->split()]) ?>
   </article>
