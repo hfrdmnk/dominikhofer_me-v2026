@@ -75,3 +75,7 @@ Icon
 # but ignore local override files
 docker-compose.override.yml
 .env
+
+# IndieConnector SQLite database
+indieConnector.sqlite
+content/.sqlite/

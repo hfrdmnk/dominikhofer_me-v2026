@@ -90,7 +90,7 @@ COPY assets ./assets
 COPY bin ./bin
 
 # Create placeholder directories for volumes (will be overwritten by mounts)
-RUN mkdir -p content media site/accounts site/cache site/sessions \
+RUN mkdir -p content media site/accounts site/cache site/sessions content/.sqlite \
   && touch content/index.html media/index.html site/accounts/index.html \
          site/cache/index.html site/sessions/index.html
 

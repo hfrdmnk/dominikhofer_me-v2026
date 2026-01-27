@@ -83,6 +83,14 @@ if ($fediverse):
 <meta name="fediverse:creator" content="@<?= $handle ?>@<?= $instance ?>">
 <?php endif; endif; ?>
 
+<?php
+// rel="me" links for Mastodon/Fediverse profile verification
+foreach ($site->social_links()->toStructure() as $link):
+  if (in_array($link->icon()->value(), ['mastodon', 'fediverse'])):
+?>
+<link rel="me" href="<?= $link->url() ?>">
+<?php endif; endforeach; ?>
+
 <?php if (option('debug') === false && $site->plausible_domain()->isNotEmpty() && $site->plausible_script()->isNotEmpty()): ?>
 <script defer data-domain="<?= $site->plausible_domain() ?>" src="<?= $site->plausible_script() ?>"></script>
 <?php endif ?>

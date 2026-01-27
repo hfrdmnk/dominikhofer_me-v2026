@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbf79bc3fce2e8d6c706548bc4699ff2",
+    "content-hash": "b793a4655551ea260005bd8735fcee66",
     "packages": [
         {
             "name": "arnoson/kirby-vite",
@@ -104,6 +104,54 @@
                 "source": "https://github.com/ChristianRiesen/base32/tree/1.6.0"
             },
             "time": "2021-02-26T10:19:33+00:00"
+        },
+        {
+            "name": "cjrasmussen/bluesky-api",
+            "version": "2.3.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cjrasmussen/BlueskyApi.git",
+                "reference": "d55fdf60e9ee3b9c46a37079d64a4c76b99b5106"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cjrasmussen/BlueskyApi/zipball/d55fdf60e9ee3b9c46a37079d64a4c76b99b5106",
+                "reference": "d55fdf60e9ee3b9c46a37079d64a4c76b99b5106",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "ext-json": "*",
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "cjrasmussen\\BlueskyApi\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Clark Rasmussen",
+                    "homepage": "https://cjr.dev",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Simple helper for interacting with the Bluesky API/AT protocol",
+            "homepage": "https://cjr.dev",
+            "keywords": [
+                "at protocol",
+                "bluesky"
+            ],
+            "support": {
+                "issues": "https://github.com/cjrasmussen/BlueskyApi/issues",
+                "source": "https://github.com/cjrasmussen/BlueskyApi"
+            },
+            "time": "2025-05-13T13:49:11+00:00"
         },
         {
             "name": "claviska/simpleimage",
@@ -454,6 +502,52 @@
             "time": "2020-12-28T12:54:39+00:00"
         },
         {
+            "name": "indieweb/mention-client",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/indieweb/mention-client-php.git",
+                "reference": "6807f4b1b96df7f47ea425eebfc7c032768652cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/indieweb/mention-client-php/zipball/6807f4b1b96df7f47ea425eebfc7c032768652cf",
+                "reference": "6807f4b1b96df7f47ea425eebfc7c032768652cf",
+                "shasum": ""
+            },
+            "require": {
+                "mf2/mf2": ">=0.2",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "IndieWeb": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Aaron Parecki",
+                    "email": "aaron@parecki.com",
+                    "homepage": "http://aaronparecki.com/"
+                }
+            ],
+            "description": "Client library for sending webmention and pingback notifications",
+            "homepage": "https://github.com/indieweb/mention-client-php",
+            "support": {
+                "issues": "https://github.com/indieweb/mention-client-php/issues",
+                "source": "https://github.com/indieweb/mention-client-php/tree/1.2.1"
+            },
+            "time": "2021-02-02T13:13:07+00:00"
+        },
+        {
             "name": "laminas/laminas-escaper",
             "version": "2.18.0",
             "source": {
@@ -574,6 +668,126 @@
                 "source": "https://github.com/thephpleague/color-extractor/tree/0.4.0"
             },
             "time": "2022-09-24T15:57:16+00:00"
+        },
+        {
+            "name": "mauricerenck/indieconnector",
+            "version": "2.14.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mauricerenck/indieConnector.git",
+                "reference": "6d46d0d514e8f08dda34e0854335e68acf1bd063"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mauricerenck/indieConnector/zipball/6d46d0d514e8f08dda34e0854335e68acf1bd063",
+                "reference": "6d46d0d514e8f08dda34e0854335e68acf1bd063",
+                "shasum": ""
+            },
+            "require": {
+                "cjrasmussen/bluesky-api": "^2.0",
+                "ext-curl": "*",
+                "getkirby/composer-installer": "^1.2",
+                "indieweb/mention-client": "^1.2",
+                "mf2/mf2": "^0.5.0",
+                "php": ">=8.2.0"
+            },
+            "replace": {
+                "mauricerenck/tratschtante": "*"
+            },
+            "require-dev": {
+                "getkirby/cms": "^5",
+                "mockery/mockery": "^1.5",
+                "phpunit/phpunit": "^10"
+            },
+            "type": "kirby-plugin",
+            "autoload": {
+                "psr-4": {
+                    "mauricerenck\\IndieConnector\\": "lib/"
+                },
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Maurice Renck",
+                    "email": "hello@maurice-renck.de"
+                }
+            ],
+            "description": "A Kirby IndieWeb plugin",
+            "homepage": "https://github.com/mauricerenck/indieConnector",
+            "support": {
+                "docs": "https://github.com/mauricerenck/indieConnector/blob/main/README.md",
+                "issues": "https://github.com/mauricerenck/indieConnector/issues",
+                "source": "https://github.com/mauricerenck/indieConnector"
+            },
+            "time": "2026-01-09T13:41:33+00:00"
+        },
+        {
+            "name": "mf2/mf2",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/microformats/php-mf2.git",
+                "reference": "ddc56de6be62ed4a21f569de9b80e17af678ca50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/microformats/php-mf2/zipball/ddc56de6be62ed4a21f569de9b80e17af678ca50",
+                "reference": "ddc56de6be62ed4a21f569de9b80e17af678ca50",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
+                "mf2/tests": "dev-master#e9e2b905821ba0a5b59dab1a8eaf40634ce9cd49",
+                "phpcompatibility/php-compatibility": "^9.3",
+                "phpunit/phpunit": "^5.7",
+                "squizlabs/php_codesniffer": "^3.6.2"
+            },
+            "suggest": {
+                "barnabywalters/mf-cleaner": "To more easily handle the canonical data php-mf2 gives you",
+                "masterminds/html5": "Alternative HTML parser for PHP, for better HTML5 support."
+            },
+            "bin": [
+                "bin/fetch-mf2",
+                "bin/parse-mf2"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Mf2/Parser.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC0-1.0"
+            ],
+            "authors": [
+                {
+                    "name": "Barnaby Walters",
+                    "homepage": "http://waterpigs.co.uk"
+                }
+            ],
+            "description": "A pure, generic microformats2 parser — makes HTML as easy to consume as a JSON API",
+            "keywords": [
+                "html",
+                "microformats",
+                "microformats 2",
+                "parser",
+                "semantic"
+            ],
+            "support": {
+                "issues": "https://github.com/microformats/php-mf2/issues",
+                "source": "https://github.com/microformats/php-mf2/tree/v0.5.0"
+            },
+            "time": "2022-02-10T01:05:27+00:00"
         },
         {
             "name": "michelf/php-smartypants",

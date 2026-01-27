@@ -6,11 +6,37 @@ return [
   "url" => getenv("KIRBY_URL") ?: null,
   "license" => getenv("KIRBY_LICENSE") ?: null,
 
-  // Bluesky integration
+  // Bluesky feed integration (reading posts)
   "dominik.bluesky" => [
     "did" => "did:plc:fthx2gjakdj4ynxxu5vysjty",
     "cacheTtl" => 60 * 60, // 1 hour
     "excludeDomains" => ["bsky.app", "dominikhofer.me"],
+  ],
+
+  // IndieConnector: cross-post new posts to social networks
+  "mauricerenck.indieConnector" => [
+    // Only post for "post" template
+    "post.allowedTemplates" => ["post"],
+
+    // Use custom socialText method (excerpt + hashtags)
+    "post.textfields" => ["socialText"],
+
+    // Cover image for media attachment
+    "post.imagefield" => "cover",
+
+    // Mastodon
+    "mastodon.enabled" => (bool) getenv("MASTODON_BEARER"),
+    "mastodon.bearer" => getenv("MASTODON_BEARER"),
+    "mastodon.instance-url" => getenv("MASTODON_INSTANCE_URL"),
+    "mastodon.text-length" => 500,
+
+    // Bluesky
+    "bluesky.enabled" => (bool) getenv("BLUESKY_APP_PASSWORD"),
+    "bluesky.handle" => getenv("BLUESKY_HANDLE"),
+    "bluesky.password" => getenv("BLUESKY_APP_PASSWORD"),
+
+    // SQLite path (inside content/ for Docker volume persistence)
+    "sqlitePath" => "content/.sqlite/",
   ],
 
   // Enable caches
