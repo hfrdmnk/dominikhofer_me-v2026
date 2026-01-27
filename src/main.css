@@ -1,19 +1,17 @@
 @import "./fonts.css";
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-@source not "../vendor";
-@source not "../kirby";
 @source "../site";
 
 @theme {
   --font-mono:
-    "Departure Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+    "Departure Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 
   --font-code:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
 
   --container-prose: 42rem;
 
@@ -35,6 +33,11 @@
   --radius-big: 1rem;
   --radius-medium: 0.5rem;
   --radius-small: 0.25rem;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
 }
 
 button {
