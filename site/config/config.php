@@ -18,8 +18,8 @@ return [
     // Only post for "post" template
     "post.allowedTemplates" => ["post"],
 
-    // Use custom socialText method (excerpt + hashtags)
-    "post.textfields" => ["socialText"],
+    // Use excerpt for social post text (URL appended automatically by plugin)
+    "post.textfields" => ["excerpt"],
 
     // Cover image for media attachment
     "post.imagefield" => "cover",
