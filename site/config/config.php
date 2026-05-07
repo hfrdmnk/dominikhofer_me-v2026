@@ -34,6 +34,7 @@ return [
     "bluesky.enabled" => (bool) getenv("BLUESKY_APP_PASSWORD"),
     "bluesky.handle" => getenv("BLUESKY_HANDLE"),
     "bluesky.password" => getenv("BLUESKY_APP_PASSWORD"),
+    "bluesky.host" => getenv("BLUESKY_HOST") ?: "bsky.social",
 
     // SQLite path (inside content/ for Docker volume persistence)
     "sqlitePath" => "content/.sqlite/",

@@ -14,6 +14,7 @@ class BlueskySender extends ExternalPostSender
         private ?string $password = null,
         private ?bool $enabled = null,
         private ?int $resizeImages = null,
+        private ?string $host = null,
     ) {
         parent::__construct();
 
@@ -21,6 +22,7 @@ class BlueskySender extends ExternalPostSender
         $this->handle = $password ?? option('mauricerenck.indieConnector.bluesky.handle', false);
         $this->password = $password ?? option('mauricerenck.indieConnector.bluesky.password', false);
         $this->resizeImages = $resizeImages ?? option('mauricerenck.indieConnector.bluesky.resizeImages', 800);
+        $this->host = $host ?? option('mauricerenck.indieConnector.bluesky.host', 'bsky.social');
     }
 
     public function sendPost($page, string | null $manualTextMessage = null)
@@ -69,7 +71,7 @@ class BlueskySender extends ExternalPostSender
                 $language = $this->prefereLanguage;
             }
 
-            $bluesky = new BlueskyApi();
+            $bluesky = new BlueskyApi($this->host);
             $bluesky->auth($this->handle, $this->password);
 
             $args = [
