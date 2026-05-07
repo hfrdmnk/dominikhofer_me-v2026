@@ -1,0 +1,38 @@
+Support custom Bluesky PDS host in IndieConnector
+
+Adds a `bluesky.host` option (default `bsky.social`) and passes it to
+the BlueskyApi constructor so accounts on a non-bsky.social PDS
+(e.g. Eurosky) can authenticate against their actual entryway.
+
+Upstream: https://github.com/mauricerenck/indieConnector
+Local change: site/plugins/indieconnector/lib/BlueskySender.php
+
+diff --git a/lib/BlueskySender.php b/lib/BlueskySender.php
+index e98d4d7..abdf043 100644
+--- a/lib/BlueskySender.php
++++ b/lib/BlueskySender.php
+@@ -14,6 +14,7 @@ class BlueskySender extends ExternalPostSender
+         private ?string $password = null,
+         private ?bool $enabled = null,
+         private ?int $resizeImages = null,
++        private ?string $host = null,
+     ) {
+         parent::__construct();
+
+@@ -21,6 +22,7 @@ class BlueskySender extends ExternalPostSender
+         $this->handle = $password ?? option('mauricerenck.indieConnector.bluesky.handle', false);
+         $this->password = $password ?? option('mauricerenck.indieConnector.bluesky.password', false);
+         $this->resizeImages = $resizeImages ?? option('mauricerenck.indieConnector.bluesky.resizeImages', 800);
++        $this->host = $host ?? option('mauricerenck.indieConnector.bluesky.host', 'bsky.social');
+     }
+
+     public function sendPost($page, string | null $manualTextMessage = null)
+@@ -69,7 +71,7 @@ class BlueskySender extends ExternalPostSender
+                 $language = $this->prefereLanguage;
+             }
+
+-            $bluesky = new BlueskyApi();
++            $bluesky = new BlueskyApi($this->host);
+             $bluesky->auth($this->handle, $this->password);
+
+             $args = [
