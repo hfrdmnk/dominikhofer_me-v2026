@@ -5,6 +5,7 @@
  * @var Kirby\Cms\Site $site
  * @var string $authorEmail
  * @var string $authorName
+ * @var bool $showSubfeedHint
  */
 
 // Check if this is a Bluesky virtual page
@@ -114,3 +115,12 @@ if (empty($mediaFiles) && $item->media_urls()->isNotEmpty()) {
   <a href="<?= $item->url() ?>">View on site</a> |
   <a href="mailto:<?= $authorEmail ?>?subject=Re: Note">Reply via email</a>
 </p>
+<?php if ($showSubfeedHint ?? false): ?>
+<p style="font-size: 0.9em; color: #666;">
+  Too much for one feed? Subscribe to just
+  <a href="<?= $site->url() ?>/posts/rss">Posts</a>,
+  <a href="<?= $site->url() ?>/notes/rss">Notes</a>,
+  <a href="<?= $site->url() ?>/photos/rss">Photos</a>, or
+  <a href="<?= $site->url() ?>/races/rss">Races</a>.
+</p>
+<?php endif ?>

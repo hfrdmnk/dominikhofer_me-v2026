@@ -68,7 +68,15 @@ $displayTitle = match($page->intendedTemplate()->name()) {
 <meta property="og:image:height" content="630">
 <?php endif ?>
 
-<link rel="alternate" type="application/rss+xml" title="<?= $site->author_name() ?>" href="<?= url('rss') ?>">
+<?php foreach ($site->rss_feeds()->toStructure() as $feed):
+  $mime = match ($feed->type()->or('rss')->value()) {
+    'atom' => 'application/atom+xml',
+    'json' => 'application/feed+json',
+    default => 'application/rss+xml',
+  };
+?>
+<link rel="alternate" type="<?= $mime ?>" title="<?= $feed->name()->escape() ?>" href="<?= $feed->url() ?>">
+<?php endforeach ?>
 <link rel="sitemap" href="<?= url('sitemap.xml') ?>">
 
 <?php

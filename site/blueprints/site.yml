@@ -105,6 +105,14 @@ tabs:
               description:
                 label: Description
                 type: text
+              type:
+                label: Format
+                type: select
+                default: rss
+                options:
+                  rss: RSS
+                  atom: Atom
+                  json: JSON Feed
 
   footer:
     label: Footer

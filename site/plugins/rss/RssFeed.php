@@ -11,7 +11,6 @@ class RssFeed
   private $authorName;
   private $authorEmail;
   private $authorBio;
-  private $titleSuffix;
 
   public function __construct()
   {
@@ -19,7 +18,20 @@ class RssFeed
     $this->authorName = $this->site->author_name()->value();
     $this->authorBio = $this->site->author_bio()->value();
     $this->authorEmail = $this->getAuthorEmail();
-    $this->titleSuffix = $this->site->title_suffix()->or($this->site->author_name())->value();
+  }
+
+  /**
+   * Look up a feed's title from the Panel rss_feeds structure (matched by URL path).
+   */
+  private function getFeedTitle(string $feedUrl, string $fallback): string
+  {
+    $path = parse_url($feedUrl, PHP_URL_PATH);
+    foreach ($this->site->rss_feeds()->toStructure() as $feed) {
+      if (parse_url($feed->url()->value(), PHP_URL_PATH) === $path) {
+        return $feed->name()->value();
+      }
+    }
+    return $fallback;
   }
 
   /**
@@ -45,19 +57,17 @@ class RssFeed
   public function home(): Kirby\Cms\Response
   {
     $feedUrl = $this->site->url() . '/rss';
-    $feedConfig = $this->site->rss_feeds()->toStructure()->findBy('url', $feedUrl);
-    $title = $feedConfig ? $feedConfig->name()->value() : 'Everything';
-
     $items = $this->site->index()->listed()
       ->filterBy('intendedTemplate', 'in', ['post', 'note', 'photo', 'race'])
       ->sortBy('date', 'desc');
 
     return $this->generate(
-      title: $title,
+      title: $this->getFeedTitle($feedUrl, 'Everything'),
       description: $this->authorBio,
       link: $this->site->url(),
       feedUrl: $feedUrl,
-      items: $items
+      items: $items,
+      isHomeFeed: true
     );
   }
 
@@ -72,19 +82,13 @@ class RssFeed
     }
 
     $items = $page->children()->listed()->sortBy('date', 'desc');
-
-    $titles = [
-      'posts' => 'Posts',
-      'notes' => 'Notes',
-      'photos' => 'Photos',
-      'races' => 'Races',
-    ];
+    $feedUrl = $page->url() . '/rss';
 
     return $this->generate(
-      title: $titles[$section] ?? ucfirst($section),
+      title: $this->getFeedTitle($feedUrl, ucfirst($section)),
       description: $this->authorBio,
       link: $page->url(),
-      feedUrl: $page->url() . '/rss',
+      feedUrl: $feedUrl,
       items: $items
     );
   }
@@ -97,7 +101,8 @@ class RssFeed
     string $description,
     string $link,
     string $feedUrl,
-    $items
+    $items,
+    bool $isHomeFeed = false
   ): Kirby\Cms\Response {
     $lastBuildDate = $items->first()
       ? date('r', $items->first()->date()->toTimestamp())
@@ -108,9 +113,10 @@ class RssFeed
     $xml .= '<rss version="2.0"' . "\n";
     $xml .= '     xmlns:content="http://purl.org/rss/1.0/modules/content/"' . "\n";
     $xml .= '     xmlns:media="http://search.yahoo.com/mrss/"' . "\n";
+    $xml .= '     xmlns:dc="http://purl.org/dc/elements/1.1/"' . "\n";
     $xml .= '     xmlns:atom="http://www.w3.org/2005/Atom">' . "\n";
     $xml .= '  <channel>' . "\n";
-    $xml .= '    <title>' . $this->escape($title . ' | ' . $this->titleSuffix) . '</title>' . "\n";
+    $xml .= '    <title>' . $this->escape($title) . '</title>' . "\n";
     $xml .= '    <link>' . $this->escape($link) . '</link>' . "\n";
     $xml .= '    <atom:link href="' . $this->escape($feedUrl) . '" rel="self" type="application/rss+xml"/>' . "\n";
     $xml .= '    <description>' . $this->escape($description) . '</description>' . "\n";
@@ -118,7 +124,7 @@ class RssFeed
     $xml .= '    <lastBuildDate>' . $lastBuildDate . '</lastBuildDate>' . "\n";
 
     foreach ($items as $item) {
-      $xml .= $this->generateItem($item);
+      $xml .= $this->generateItem($item, $isHomeFeed);
     }
 
     $xml .= '  </channel>' . "\n";
@@ -133,15 +139,14 @@ class RssFeed
   /**
    * Generate a single RSS item
    */
-  private function generateItem($item): string
+  private function generateItem($item, bool $isHomeFeed = false): string
   {
     $template = $item->intendedTemplate()->name();
     $title = $this->getItemTitle($item, $template);
     $link = $item->url();
     $pubDate = date('r', $item->date()->toTimestamp());
     $description = $this->getItemDescription($item, $template);
-    $content = $this->getItemContent($item, $template);
-    $author = $this->authorEmail . ' (' . $this->authorName . ')';
+    $content = $this->getItemContent($item, $template, $isHomeFeed);
 
     $xml = '    <item>' . "\n";
     $xml .= '      <title>' . $this->escape($title) . '</title>' . "\n";
@@ -150,7 +155,7 @@ class RssFeed
     $xml .= '      <pubDate>' . $pubDate . '</pubDate>' . "\n";
     $xml .= '      <description>' . $this->escape($description) . '</description>' . "\n";
     $xml .= '      <content:encoded><![CDATA[' . $content . ']]></content:encoded>' . "\n";
-    $xml .= '      <author>' . $this->escape($author) . '</author>' . "\n";
+    $xml .= '      <dc:creator>' . $this->escape($this->authorName) . '</dc:creator>' . "\n";
 
     // Add media:content for items with images
     $mediaUrl = $this->getMediaUrl($item, $template);
@@ -199,13 +204,14 @@ class RssFeed
   /**
    * Get full HTML content using snippets
    */
-  private function getItemContent($item, string $template): string
+  private function getItemContent($item, string $template, bool $isHomeFeed = false): string
   {
     return snippet('rss/' . $template, [
       'item' => $item,
       'site' => $this->site,
       'authorEmail' => $this->authorEmail,
       'authorName' => $this->authorName,
+      'showSubfeedHint' => $isHomeFeed,
     ], true);
   }
 
